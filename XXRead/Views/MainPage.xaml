@@ -16,6 +16,8 @@
     <ContentPage.Resources>
         <ResourceDictionary>
 
+
+
             <toolkit:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter"/>
 
             <converters:ViewStateConverter x:Key="ViewStateConverter"/>
@@ -77,32 +79,32 @@
                         </StackLayout>
 
                         <!--<StackLayout Orientation="Horizontal" HorizontalOptions="End">
-                            <StackLayout.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding SortTappedCommand}"/>
-                            </StackLayout.GestureRecognizers>
-                            <Label Style="{StaticResource Key=LabelPrimary}">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="{x:Static Member=constants:MainPageConstants.MAINPAGE_SORT_CONTROL}"/>
-                                        <Span Text="récentes ↓" TextDecorations="Underline"/>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                        </StackLayout>-->
+            <StackLayout.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding SortTappedCommand}"/>
+            </StackLayout.GestureRecognizers>
+            <Label Style="{StaticResource Key=LabelPrimary}">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{x:Static Member=constants:MainPageConstants.MAINPAGE_SORT_CONTROL}"/>
+                        <Span Text="récentes ↓" TextDecorations="Underline"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+        </StackLayout>-->
                     </StackLayout>
                 </ListView.Header>
                 <ListView.Footer>
                     <StackLayout>
                         <Button Text="Charger plus" 
-                            Margin="13,0" 
-                            Command="{Binding LoadMoreStoriesCommand}"
-                            BackgroundColor="{Binding ThemeMain}"/>
+                                Margin="13,0" 
+                                Command="{Binding LoadMoreStoriesCommand}"
+                                BackgroundColor="{Binding ThemeMain}"/>
                     </StackLayout>
                 </ListView.Footer>
                 <ListView.Behaviors>
                     <toolkit:EventToCommandBehavior EventName="ItemTapped" 
-                                                    Command="{Binding StoriesItemTappedCommand}" 
-                                                    EventArgsConverter="{StaticResource ItemTappedEventArgsConverter}"/>
+                                                                Command="{Binding StoriesItemTappedCommand}" 
+                                                                EventArgsConverter="{StaticResource ItemTappedEventArgsConverter}"/>
                 </ListView.Behaviors>
             </ListView>
         </StackLayout>

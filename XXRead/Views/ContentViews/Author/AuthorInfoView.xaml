@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:XXRead.Helpers.Converters"
+             xmlns:styles="clr-namespace:XXRead.Helpers.Styles"
+             xmlns:vms="clr-namespace:XXRead.ViewModels"
+             x:DataType="vms:AuthorPageViewModel"
+             x:Class="XXRead.Views.ContentViews.Author.AuthorInfoView"
+             BindingContext="{Binding Source={x:RelativeSource AncestorType={x:Type vms:BaseViewModel}}}">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <converters:AuthorInfoViewConverter x:Key="AuthorInfoViewConverter"/>
+
+            <Style TargetType="Frame" x:Key="MainFrame" BasedOn="{x:Static Member=styles:FrameStyles.MainFrameStyle}"/>
+
+            <Style TargetType="Label" x:Key="LabelStoryTitles" BasedOn="{StaticResource Key=LabelPrimary}">
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="LineHeight" Value="1.1"/>
+            </Style>
+            
+            <Style TargetType="Image" x:Key="TitleImageStyle" BasedOn="{x:Static styles:ImageStyles.TitleImageStyle}"/>
+        </ResourceDictionary>
+    </ContentView.Resources>
+    
+    <ScrollView Padding="0,0,0,13">
+        <Frame Style="{StaticResource Key=MainFrame}" BackgroundColor="{Binding ThemeSecondary}">
+            <StackLayout>
+                 <!-- Author header --> 
+                <StackLayout Margin="20">
+                    <Image Source="{Binding Author.Avatar}" HeightRequest="50" Style="{StaticResource Key=TitleImageStyle}"/>
+                    <Label Text="{Binding Author.Name}" FontSize="Title" HorizontalTextAlignment="Center" Style="{StaticResource Key=LabelStoryTitles}"/>
+                </StackLayout>
+
+                 <!-- Author infos --> 
+                <ContentView Content="{Binding Author, Converter={StaticResource Key=AuthorInfoViewConverter}}"/>
+                 <!-- / Author infos --> 
+            </StackLayout>
+        </Frame>
+    </ScrollView>
+</ContentView>

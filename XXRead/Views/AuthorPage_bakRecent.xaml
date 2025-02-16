@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:converters="clr-namespace:XXRead.Helpers.Converters"
+             xmlns:contentViews="clr-namespace:XXRead.Views.ContentViews"
+             xmlns:styles="clr-namespace:XXRead.Helpers.Styles"
+             xmlns:constants="clr-namespace:XXRead.Helpers.Constants"
+             x:Class="XXRead.Views.AuthorPage_bakRecent"
+             Title="{Binding Title}" 
+             BackgroundColor="{Binding ThemePrimary}" 
+             Shell.BackgroundColor="{Binding ThemeMain}" 
+             Shell.TitleColor="{Binding ThemeFontPrimary}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter"/>
+
+            <converters:ViewStateConverter x:Key="ViewStateConverter"/>
+            <converters:AuthorInfoViewConverter x:Key="AuthorInfoViewConverter"/>
+            <converters:AuthorHasMorePagesConverter x:Key="AuthorHasMorePagesConverter"/>
+
+            <Style TargetType="Frame" x:Key="MainFrame" BasedOn="{x:Static Member=styles:FrameStyles.MainFrameStyle}"/>
+
+            <!-- Style for Title labels -->
+            <Style TargetType="Label" x:Key="LabelStoryTitles" BasedOn="{StaticResource Key=LabelPrimary}">
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="LineHeight" Value="1.1"/>
+            </Style>
+
+            <Style TargetType="Label" x:Key="AuthorStoriesLabel" BasedOn="{StaticResource Key=LabelPrimary}">
+                <Setter Property="FontSize" Value="Large"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="Margin" Value="10,0,0,0"/>
+            </Style>
+
+            <Style TargetType="Image" x:Key="CategoryThumbnailImageStyle" BasedOn="{x:Static styles:ImageStyles.CategoryThumbnailImageStyle}"/>
+            <Style TargetType="Image" x:Key="TitleImageStyle" BasedOn="{x:Static styles:ImageStyles.TitleImageStyle}"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <ContentView>
+                <Grid ColumnDefinitions="*,*" BackgroundColor="{Binding ThemeMain}">
+                    <VerticalStackLayout Grid.Column="0" 
+                                         Margin="5"
+                                         Padding="10" 
+                                         HorizontalOptions="Center">
+                        <Label Text="{x:Static Member=constants:AuthorPageConstants.AUTHORPAGE_HEADER_INFOS}" 
+                               TextTransform="Uppercase"
+                               TextColor="{Binding ThemeFontPrimary}"
+                               FontSize="16"
+                               CharacterSpacing="1.1"
+                               FontAttributes="Bold"
+                               HorizontalTextAlignment="Center"/>
+                        <Rectangle BackgroundColor="White" Fill="White" Aspect="Uniform"/>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Column="1"
+                                         Margin="5"
+                                         Padding="10"
+                                         HorizontalOptions="Center">
+                        <Label Text="{x:Static Member=constants:AuthorPageConstants.AUTHORPAGE_HEADER_STORIES}"
+                               TextTransform="Uppercase"
+                               TextColor="{Binding SelectedUnSelected}"
+                               FontSize="16"
+                               CharacterSpacing="1.1"
+                               FontAttributes="Bold"
+                               HorizontalTextAlignment="Center"/>
+                        <Rectangle BackgroundColor="White" Fill="White" Aspect="Uniform"/>
+                    </VerticalStackLayout>
+                </Grid>
+            </ContentView>
+
+            <ContentView IsVisible="{Binding ViewState, Converter={StaticResource Key=ViewStateConverter}, ConverterParameter='loading'}">
+                <ContentView.Content>
+                    <contentViews:LoadingView/>
+                </ContentView.Content>
+            </ContentView>
+
+            <ContentView IsVisible="{Binding ViewState, Converter={StaticResource Key=ViewStateConverter}, ConverterParameter='error'}">
+                <ContentView.Content>
+                    <contentViews:ErrorView/>
+                </ContentView.Content>
+            </ContentView>
+
+            <StackLayout IsVisible="{Binding ViewState, Converter={StaticResource Key=ViewStateConverter}}">
+                <!-- INFOS -->
+                <ContentView IsVisible="{Binding AuthorTabState}">
+                    <ScrollView Padding="0,0,0,13">
+                        <Frame Style="{StaticResource Key=MainFrame}" BackgroundColor="{Binding ThemeSecondary}">
+                            <StackLayout>
+                                <!-- Author header -->
+                                <StackLayout Margin="20">
+                                    <Image Source="{Binding Author.Avatar}"
+                               Style="{StaticResource Key=TitleImageStyle}"/>
+                                    <Label Text="{Binding Author.Name}" 
+                               FontSize="Title" 
+                               Style="{StaticResource Key=LabelStoryTitles}"/>
+                                </StackLayout>
+
+                                <!-- Author infos -->
+                                <ContentView Content="{Binding Author, Converter={StaticResource Key=AuthorInfoViewConverter}}"/>
+                                <!-- / Author infos -->
+                            </StackLayout>
+                        </Frame>
+                    </ScrollView>
+                </ContentView>
+
+                <!-- STORIES -->
+                <ContentView IsVisible="{Binding AuthorTabState}">
+                    <Frame Style="{StaticResource Key=MainFrame}" BackgroundColor="Transparent" Padding="0" Margin="0,8">
+                        <!-- Author stories list -->
+                        <ListView ItemsSource="{Binding AuthorStories}" HasUnevenRows="True" SeparatorVisibility="None">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <contentViews:StoriesListItemView/>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                            <ListView.Behaviors>
+                                <toolkit:EventToCommandBehavior EventName="ItemTapped" 
+                                            Command="{Binding AuthorStoryItemTappedCommand}" 
+                                            EventArgsConverter="{StaticResource Key=ItemTappedEventArgsConverter}"/>
+                            </ListView.Behaviors>
+
+                            <!-- Charger plus binding IsVisible -->
+                            <ListView.Footer>
+                                <StackLayout IsVisible="{Binding CanLoadMorePages,Converter={StaticResource Key=AuthorHasMorePagesConverter}}">
+                                    <Button Text="Charger plus" 
+                        Margin="13,0" 
+                        Command="{Binding LoadMoreStoriesCommand}"
+                        BackgroundColor="{Binding ThemeMain}"/>
+                                </StackLayout>
+                            </ListView.Footer>
+                            <!-- / Charger plus binding IsVisible -->
+
+                        </ListView>
+                    </Frame>
+                    <!-- / Author stories list -->
+                </ContentView>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

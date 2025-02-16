@@ -232,7 +232,7 @@
                             <!-- END Chapter name/navigation -->
 
                             <!-- Content -->
-                            <customControls:LabelStoryContent Text="{Binding Story.Content}" TextType="Html" FontSize="14" Margin="10" Style="{StaticResource Key=LabelStoryContentStyle}"/>
+                            <customControls:LabelStoryContent Text="{Binding Story.Content}" TextType="Text" FontSize="14" Margin="10" Style="{StaticResource Key=LabelStoryContentStyle}"/>
                             <!-- / Content -->
 
                             <!-- Separator -->

@@ -6,8 +6,8 @@ namespace XXRead.Helpers.Constants
 {
 	public class AuthorPageConstants
 	{
-		public const string AUTHORPAGE_HEADER_INFOS = "Infos";
-		public const string AUTHORPAGE_HEADER_STORIES = "Stories";
+		public const string AUTHORPAGE_HEADER_INFOS = "INFOS";
+		public const string AUTHORPAGE_HEADER_STORIES = "STORIES";
 
 		public const string AUTHORPAGE_XSTORY_STATUS = "Statut :";
 		public const string AUTHORPAGE_XSTORY_RANK_30DAYS = "Classement (30 derniers jours) :";

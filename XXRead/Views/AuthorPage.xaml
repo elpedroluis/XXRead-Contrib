@@ -4,29 +4,27 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:converters="clr-namespace:XXRead.Helpers.Converters"
              xmlns:contentViews="clr-namespace:XXRead.Views.ContentViews"
+             xmlns:authorContentViews="clr-namespace:XXRead.Views.ContentViews.Author"
+             xmlns:dtSelector="clr-namespace:XXRead.Helpers.DataTemplateSelectors"
              xmlns:styles="clr-namespace:XXRead.Helpers.Styles"
              xmlns:constants="clr-namespace:XXRead.Helpers.Constants"
              x:Class="XXRead.Views.AuthorPage"
              Title="{Binding Title}" 
              BackgroundColor="{Binding ThemePrimary}" 
              Shell.BackgroundColor="{Binding ThemeMain}" 
-             Shell.TitleColor="{Binding ThemeFontPrimary}">
+             Shell.TitleColor="{Binding ThemeFontPrimary}"
+             Shell.ForegroundColor="{Binding ThemeFontPrimary}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter"/>
 
             <converters:ViewStateConverter x:Key="ViewStateConverter"/>
-            <converters:AuthorInfoViewConverter x:Key="AuthorInfoViewConverter"/>
             <converters:AuthorHasMorePagesConverter x:Key="AuthorHasMorePagesConverter"/>
 
             <Style TargetType="Frame" x:Key="MainFrame" BasedOn="{x:Static Member=styles:FrameStyles.MainFrameStyle}"/>
 
             <!-- Style for Title labels -->
-            <Style TargetType="Label" x:Key="LabelStoryTitles" BasedOn="{StaticResource Key=LabelPrimary}">
-                <Setter Property="HorizontalTextAlignment" Value="Center"/>
-                <Setter Property="FontAttributes" Value="Bold"/>
-                <Setter Property="LineHeight" Value="1.1"/>
-            </Style>
+
 
             <Style TargetType="Label" x:Key="AuthorStoriesLabel" BasedOn="{StaticResource Key=LabelPrimary}">
                 <Setter Property="FontSize" Value="Large"/>
@@ -36,41 +34,23 @@
 
             <Style TargetType="Image" x:Key="CategoryThumbnailImageStyle" BasedOn="{x:Static styles:ImageStyles.CategoryThumbnailImageStyle}"/>
             <Style TargetType="Image" x:Key="TitleImageStyle" BasedOn="{x:Static styles:ImageStyles.TitleImageStyle}"/>
+
+            <DataTemplate x:Key="AuthorInfoTemplate">
+                <authorContentViews:AuthorInfoView/>
+            </DataTemplate>
+
+            <DataTemplate x:Key="AuthorStoriesTemplate">
+                <authorContentViews:AuthorStoriesView/>
+            </DataTemplate>
+
+            <dtSelector:AuthorPageDTSelector x:Key="AuthorPageDTSelector" 
+                                             AuthorInfoTemplate="{StaticResource Key=AuthorInfoTemplate}"
+                                             AuthorStoriesTemplate="{StaticResource Key=AuthorStoriesTemplate}"/>
+
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-            <ContentView>
-                <Grid ColumnDefinitions="*,*" BackgroundColor="{Binding ThemeMain}">
-                    <VerticalStackLayout Grid.Column="0" 
-                                         Margin="5"
-                                         Padding="10" 
-                                         HorizontalOptions="Center">
-                        <Label Text="{x:Static Member=constants:AuthorPageConstants.AUTHORPAGE_HEADER_INFOS}" 
-                               TextTransform="Uppercase"
-                               TextColor="{Binding ThemeFontPrimary}"
-                               FontSize="16"
-                               CharacterSpacing="1.1"
-                               FontAttributes="Bold"
-                               HorizontalTextAlignment="Center"/>
-                        <Rectangle BackgroundColor="White" Fill="White" Aspect="Uniform"/>
-                    </VerticalStackLayout>
-                    <VerticalStackLayout Grid.Column="1"
-                                         Margin="5"
-                                         Padding="10"
-                                         HorizontalOptions="Center">
-                        <Label Text="{x:Static Member=constants:AuthorPageConstants.AUTHORPAGE_HEADER_STORIES}"
-                               TextTransform="Uppercase"
-                               TextColor="{Binding SelectedUnSelected}"
-                               FontSize="16"
-                               CharacterSpacing="1.1"
-                               FontAttributes="Bold"
-                               HorizontalTextAlignment="Center"/>
-                        <Rectangle BackgroundColor="White" Fill="White" Aspect="Uniform"/>
-                    </VerticalStackLayout>
-                </Grid>
-            </ContentView>
-
+        <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
             <ContentView IsVisible="{Binding ViewState, Converter={StaticResource Key=ViewStateConverter}, ConverterParameter='loading'}">
                 <ContentView.Content>
                     <contentViews:LoadingView/>
@@ -84,62 +64,81 @@
             </ContentView>
 
             <StackLayout IsVisible="{Binding ViewState, Converter={StaticResource Key=ViewStateConverter}}">
-                <!-- INFOS -->
-                <ContentView IsVisible="{Binding AuthorTabState}">
-                    <ScrollView Padding="0,0,0,13">
-                        <Frame Style="{StaticResource Key=MainFrame}" BackgroundColor="{Binding ThemeSecondary}">
-                            <StackLayout>
-                                <!-- Author header -->
-                                <StackLayout Margin="20">
-                                    <Image Source="{Binding Author.Avatar}"
-                               Style="{StaticResource Key=TitleImageStyle}"/>
-                                    <Label Text="{Binding Author.Name}" 
-                               FontSize="Title" 
-                               Style="{StaticResource Key=LabelStoryTitles}"/>
-                                </StackLayout>
+                <!--<Grid RowDefinitions="*,*">
+                    -->
+                <!--<Grid ColumnDefinitions="*,*" Grid.Row="0" BackgroundColor="{Binding ThemeMain}" RadioButtonGroup.GroupName="AuthorViews">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <RadioButton Content="{Binding .}"/>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                        <BindableLayout.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>INFOS</x:String>
+                                <x:String>HISTOIRES</x:String>
+                            </x:Array>
+                        </BindableLayout.ItemsSource>
+                    </Grid>-->
+                <!--
+                    <Grid ColumnDefinitions="*,*" Grid.Row="0" BackgroundColor="{Binding ThemeMain}" RadioButtonGroup.GroupName="AuthorViews">
+                        <RadioButton Content="{x:Static Member=constants:AuthorPageConstants.AUTHORPAGE_HEADER_INFOS}" Grid.Column="0" HorizontalOptions="Center" FontAttributes="Bold">
+                            <RadioButton.ControlTemplate>
+                                <ControlTemplate>
+                                    <Grid RowDefinitions="25,3">
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroupList>
+                                                <VisualStateGroup x:Name="CheckedState">
+                                                    <VisualState Name="Checked">
+                                                        <VisualState.Setters>
+                                                            <Setter TargetName="HeaderLabel" Property="Label.TextColor" Value="Pink"></Setter>
+                                                            <Setter TargetName="UnderlineBox" Property="BoxView.Color" Value="Pink"></Setter>
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+                                                    <VisualState Name="Unchecked">
+                                                        <VisualState.Setters>
+                                                            <Setter TargetName="HeaderLabel" Property="Label.TextColor" Value="Blue"></Setter>
+                                                            <Setter TargetName="UnderlineBox" Property="BoxView.Color" Value="Blue"></Setter>
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+                                                </VisualStateGroup>
+                                            </VisualStateGroupList>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <Label x:Name="HeaderLabel" Text="{TemplateBinding Content}"/>
+                                        <BoxView x:Name="UnderlineBox" Grid.Row="1" Color="Transparent"/>
+                                    </Grid>
+                                </ControlTemplate>
+                            </RadioButton.ControlTemplate>
+                        </RadioButton>
+                        <RadioButton Content="{x:Static Member=constants:AuthorPageConstants.AUTHORPAGE_HEADER_STORIES}" Grid.Column="1" HorizontalOptions="Center" FontAttributes="Bold">
+                            <RadioButton.ControlTemplate>
+                                <ControlTemplate>
+                                    <Grid RowDefinitions="25,3">
+                                        <Label Text="{TemplateBinding Content}"/>
+                                        <BoxView Grid.Row="1" Color="Green"/>
+                                    </Grid>
+                                </ControlTemplate>
+                            </RadioButton.ControlTemplate>
+                        </RadioButton>
+                    </Grid>
+                    <ContentView Grid.Row="1">
+                        -->
+                <!-- /!\ Utiliser ControlTemplate + VisualStateManager /!\ -->
+                <!--
+                        <authorContentViews:AuthorInfoView />
+                    </ContentView>
+                </Grid>-->
 
-                                <!-- Author infos -->
-                                <ContentView Content="{Binding Author, Converter={StaticResource Key=AuthorInfoViewConverter}}"/>
-                                <!-- / Author infos -->
-                            </StackLayout>
-                        </Frame>
-                    </ScrollView>
-                </ContentView>
-
-                <!-- STORIES -->
-                <ContentView IsVisible="{Binding AuthorTabState}">
-                    <Frame Style="{StaticResource Key=MainFrame}" BackgroundColor="Transparent" Padding="0" Margin="0,8">
-                        <!-- Author stories list -->
-                        <ListView ItemsSource="{Binding AuthorStories}" HasUnevenRows="True" SeparatorVisibility="None">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <ViewCell>
-                                        <contentViews:StoriesListItemView/>
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                            <ListView.Behaviors>
-                                <toolkit:EventToCommandBehavior EventName="ItemTapped" 
-                                            Command="{Binding AuthorStoryItemTappedCommand}" 
-                                            EventArgsConverter="{StaticResource Key=ItemTappedEventArgsConverter}"/>
-                            </ListView.Behaviors>
-
-                            <!-- Charger plus binding IsVisible -->
-                            <ListView.Footer>
-                                <StackLayout IsVisible="{Binding CanLoadMorePages,Converter={StaticResource Key=AuthorHasMorePagesConverter}}">
-                                    <Button Text="Charger plus" 
-                        Margin="13,0" 
-                        Command="{Binding LoadMoreStoriesCommand}"
-                        BackgroundColor="{Binding ThemeMain}"/>
-                                </StackLayout>
-                            </ListView.Footer>
-                            <!-- / Charger plus binding IsVisible -->
-
-                        </ListView>
-                    </Frame>
-                    <!-- / Author stories list -->
-                </ContentView>
+                
+                
+                <CarouselView ItemTemplate="{StaticResource Key=AuthorPageDTSelector}" VerticalOptions="CenterAndExpand">
+                    <CarouselView.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Info</x:String>
+                            <x:String>Stories</x:String>
+                        </x:Array>
+                    </CarouselView.ItemsSource>
+                </CarouselView>
             </StackLayout>
-        </StackLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
