@@ -7,6 +7,8 @@
              xmlns:contentViews="clr-namespace:XXRead.Views.ContentViews"
              xmlns:customControls="clr-namespace:XXRead.Helpers.CustomControls"
              xmlns:styles="clr-namespace:XXRead.Helpers.Styles"
+             xmlns:vm="clr-namespace:XXRead.ViewModels"
+             x:DataType="vm:StoryPageViewModel"
              x:Class="XXRead.Views.StoryPage" 
              Title="{Binding Title}" 
              BackgroundColor="{Binding ThemePrimary}" 
@@ -21,6 +23,7 @@
         <ToolbarItem Text="{x:Static Member=constants:StoryPageConstants.STORYPAGE_SAVE}" Order="Secondary" Command="{Binding SaveStoryCommand}"/>
         <!--<ToolbarItem Text="TestIsEnabledFalse" Order="Secondary" Command="{Binding SaveStoryCommand}"/>-->
         <ToolbarItem Text="{x:Static Member=constants:StoryPageConstants.STORYPAGE_SHARE}" Order="Secondary" Command="{Binding ShareStoryCommand}"/>
+        <ToolbarItem Text="{x:Static Member=constants:StoryPageConstants.STORYPAGE_OPEN_IN_BROWSER}" Order="Secondary" Command="{Binding OpenInBrowserCommand}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Resources>
 
@@ -146,7 +149,7 @@
                                             <TapGestureRecognizer Command="{Binding AuthorTappedCommand}"/>
                                         </Frame.GestureRecognizers>
                                     </Frame>
-                                    
+
                                 </ContentView>
                                 <!-- /Author -->
 

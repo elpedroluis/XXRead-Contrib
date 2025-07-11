@@ -4,6 +4,8 @@
              xmlns:converters="clr-namespace:XXRead.Helpers.Converters"
              xmlns:styles="clr-namespace:XXRead.Helpers.Styles"
              xmlns:vms="clr-namespace:XXRead.ViewModels"
+             xmlns:dto="clr-namespace:XStory.DTO;assembly=XStory.DTO"
+             x:DataType="dto:Story"
              x:Class="XXRead.Views.ContentViews.ChaptersListItemView">
     <ContentView.Resources>
         <ResourceDictionary>

@@ -5,14 +5,14 @@
                xmlns:constants="clr-namespace:XXRead.Helpers.Constants"
                xmlns:contentViews="clr-namespace:XXRead.Views.ContentViews"
                xmlns:converters="clr-namespace:XXRead.Helpers.Converters"
-               xmlns:vms="clr-namespace:XXRead.ViewModels"
+               xmlns:vm="clr-namespace:XXRead.ViewModels.PopupViewModels"
+               x:DataType="vm:PopupChaptersPageViewModel"
                x:Class="XXRead.Views.Popup.PopupChaptersPage"
                Color="Transparent"
                Size="{Binding Converter={StaticResource Key=PopupSizeConverter}}">
     <toolkit:Popup.Resources>
         <ResourceDictionary>
 
-            <!--<converters:CategoryStateColorConverter x:Key="CategoryStateColorConverter"/>-->
             <toolkit:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter"/>
 
             <converters:PopupSizeConverter x:Key="PopupSizeConverter"/>

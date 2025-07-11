@@ -55,31 +55,29 @@ namespace XXRead
 			builder.Services.AddTransient<Views.StoryPage>();
 			builder.Services.AddTransient<Views.WelcomePage>();
 
-			//Register all routes for Shell
-			Routing.RegisterRoute(nameof(Views.AuthorPage), typeof(Views.AuthorPage));
-			Routing.RegisterRoute(nameof(Views.AuthorPage), typeof(Views.AuthorPage));
-			Routing.RegisterRoute(nameof(Views.MainPage), typeof(Views.MainPage));
-			Routing.RegisterRoute(nameof(Views.SettingsPage), typeof(Views.SettingsPage));
-			Routing.RegisterRoute(nameof(Views.StoryInfoPage), typeof(Views.StoryInfoPage));
-			Routing.RegisterRoute(nameof(Views.StoryPage), typeof(Views.StoryPage));
-			Routing.RegisterRoute(nameof(Views.WelcomePage), typeof(Views.WelcomePage));
-			return builder;
-		}
+            //Register all routes for Shell (/!\ all except MainPage /!\)
+            Routing.RegisterRoute(nameof(Views.AuthorPage), typeof(Views.AuthorPage));
+            Routing.RegisterRoute(nameof(Views.SettingsPage), typeof(Views.SettingsPage));
+            Routing.RegisterRoute(nameof(Views.StoryInfoPage), typeof(Views.StoryInfoPage));
+            Routing.RegisterRoute(nameof(Views.StoryPage), typeof(Views.StoryPage));
+            Routing.RegisterRoute(nameof(Views.WelcomePage), typeof(Views.WelcomePage));
+            return builder;
+        }
 
-		public static MauiAppBuilder RegisterViewModels(this MauiAppBuilder builder)
-		{
-			builder.Services.AddTransient<ViewModels.AuthorPageViewModel>();
-			builder.Services.AddTransient<ViewModels.AuthorPageWebViewModel>();
-			builder.Services.AddTransient<ViewModels.MainPageViewModel>();
-			builder.Services.AddTransient<ViewModels.StoryInfoPageViewModel>();
-			builder.Services.AddTransient<ViewModels.StoryPageViewModel>();
-			builder.Services.AddTransient<ViewModels.SettingsPageViewModel>();
-			builder.Services.AddTransient<ViewModels.Settings.SettingsAppearancePageViewModel>();
-			builder.Services.AddTransient<ViewModels.WelcomePageViewModel>();
-			return builder;
-		}
+        public static MauiAppBuilder RegisterViewModels(this MauiAppBuilder builder)
+        {
+            builder.Services.AddTransient<ViewModels.AuthorPageViewModel>();
+            builder.Services.AddTransient<ViewModels.AuthorPageWebViewModel>();
+            builder.Services.AddTransient<ViewModels.MainPageViewModel>();
+            builder.Services.AddTransient<ViewModels.StoryInfoPageViewModel>();
+            builder.Services.AddTransient<ViewModels.StoryPageViewModel>();
+            builder.Services.AddTransient<ViewModels.SettingsPageViewModel>();
+            builder.Services.AddTransient<ViewModels.Settings.SettingsAppearancePageViewModel>();
+            builder.Services.AddTransient<ViewModels.WelcomePageViewModel>();
+            return builder;
+        }
 
-		public static MauiAppBuilder RegisterPopups(this MauiAppBuilder builder)
+        public static MauiAppBuilder RegisterPopups(this MauiAppBuilder builder)
 		{
 			builder.Services.AddTransient<ViewModels.PopupViewModels.BasePopupViewModel>();
 

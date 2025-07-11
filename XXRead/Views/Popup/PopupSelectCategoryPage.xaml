@@ -5,61 +5,68 @@
              xmlns:constants="clr-namespace:XXRead.Helpers.Constants"
              xmlns:converters="clr-namespace:XXRead.Helpers.Converters"
              xmlns:vms="clr-namespace:XXRead.ViewModels.PopupViewModels"
-             x:Class="XXRead.Views.Popup.PopupSelectCategoryPage">
+             x:Class="XXRead.Views.Popup.PopupSelectCategoryPage"
+             Color="Transparent"
+             Size="{Binding Converter={StaticResource Key=PopupSizeConverter}}">
     <toolkit:Popup.Resources>
         <ResourceDictionary>
 
             <toolkit:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter"/>
-            
+
             <converters:StoryCategoryImageConverter x:Key="StoryCategoryImageConverter"/>
+            <converters:PopupSizeConverter x:Key="PopupSizeConverter"/>
 
         </ResourceDictionary>
     </toolkit:Popup.Resources>
-    <Frame Padding="0" BorderColor="{Binding ThemeMain}" BackgroundColor="{Binding ThemePrimary}">
-        <StackLayout>
-            <!-- No category -->
-            <Frame CornerRadius="0" Margin="10,0" BackgroundColor="Transparent">
-                <StackLayout Orientation="Horizontal" Spacing="20">
-                    <Image HeightRequest="25" WidthRequest="25" HorizontalOptions="Start"/>
-                    <Label Text="Toutes" TextColor="{Binding Source={x:RelativeSource AncestorType={x:Type vms:PopupSelectCategoryPageViewModel}}, Path=ThemeFontPrimary}"/>
-                </StackLayout>
-                <Frame.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding ResetCategoriesCommand}"/>
-                </Frame.GestureRecognizers>
-            </Frame>
+    <Grid>
+        <Frame Padding="0" 
+               BorderColor="{Binding ThemeMain}" 
+               BackgroundColor="{Binding ThemePrimary}">
+            <StackLayout>
+                <!-- No category -->
+                <Frame CornerRadius="0" Margin="10,0" BackgroundColor="Transparent">
+                    <StackLayout Orientation="Horizontal" Spacing="20">
+                        <Image HeightRequest="25" WidthRequest="25" HorizontalOptions="Start"/>
+                        <Label Text="Toutes" TextColor="{Binding Source={x:RelativeSource AncestorType={x:Type vms:PopupSelectCategoryPageViewModel}}, Path=ThemeFontPrimary}"/>
+                    </StackLayout>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ResetCategoriesCommand}"/>
+                    </Frame.GestureRecognizers>
+                </Frame>
 
-            <!-- Separator -->
-            <Rectangle HeightRequest="1" BackgroundColor="{Binding Source={x:RelativeSource AncestorType={x:Type vms:PopupSelectCategoryPageViewModel}}, Path=ThemeFontSecondary}"/>
-            <!-- /Separator -->
+                <!-- Separator -->
+                <Rectangle HeightRequest="1" BackgroundColor="{Binding Source={x:RelativeSource AncestorType={x:Type vms:PopupSelectCategoryPageViewModel}}, Path=ThemeFontSecondary}"/>
+                <!-- /Separator -->
 
-            <!-- Categories -->
-            <ListView ItemsSource="{Binding Categories}"
-                      HasUnevenRows="True"
-                      SeparatorVisibility="None">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <!--<StackLayout BackgroundColor="{Binding ThemeMain, Converter={StaticResource Key=CategoryStateColorConverter}}">-->
-                            <Frame CornerRadius="0" Margin="10,0" BackgroundColor="Transparent">
-                                <StackLayout Orientation="Horizontal" Spacing="20">
-                                    <Image Source="{Binding Url, Converter={StaticResource Key=StoryCategoryImageConverter}}" HeightRequest="25" WidthRequest="25" HorizontalOptions="Start"/>
-                                    <Label Text="{Binding Title}" TextColor="{Binding Source={x:RelativeSource AncestorType={x:Type vms:PopupSelectCategoryPageViewModel}}, Path=ThemeFontPrimary}"/>
-                                </StackLayout>
-                            </Frame>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-                <ListView.Behaviors>
-                    <toolkit:EventToCommandBehavior EventName="ItemTapped" 
+                <!-- Categories -->
+                <ListView ItemsSource="{Binding Categories}"
+                          HasUnevenRows="True"
+                          SeparatorVisibility="None">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Frame CornerRadius="0" Margin="10,0" BackgroundColor="Transparent">
+                                    <StackLayout Orientation="Horizontal" Spacing="20">
+                                        <Image Source="{Binding Url, Converter={StaticResource Key=StoryCategoryImageConverter}}" HeightRequest="25" WidthRequest="25" HorizontalOptions="Start"/>
+                                        <Label Text="{Binding Title}" TextColor="{Binding Source={x:RelativeSource AncestorType={x:Type vms:PopupSelectCategoryPageViewModel}}, Path=ThemeFontPrimary}"/>
+                                    </StackLayout>
+                                </Frame>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.Behaviors>
+                        <toolkit:EventToCommandBehavior EventName="ItemTapped" 
                                                   Command="{Binding CategoriesItemTappedCommand}" 
                                                   EventArgsConverter="{StaticResource Key=ItemTappedEventArgsConverter}"/>
-                </ListView.Behaviors>
-            </ListView>
-            <Button Text="{x:Static Member=constants:GlobalConstants.CLOSE}"
-                    Command="{Binding ClosePopupCommand}" 
-                    BackgroundColor="{Binding ThemeMain}" 
-                    CornerRadius="0"
-                    VerticalOptions="End"/>
-        </StackLayout>
-    </Frame>
+                    </ListView.Behaviors>
+                </ListView>
+                <Button Text="{x:Static Member=constants:GlobalConstants.CLOSE}"
+                        Command="{Binding ClosePopupCommand}" 
+                        TextColor="{Binding ThemeFontPrimary}"
+                        BackgroundColor="{Binding ThemeMain}" 
+                        CornerRadius="0"
+                        VerticalOptions="End"/>
+            </StackLayout>
+        </Frame>
+    </Grid>
 </toolkit:Popup>

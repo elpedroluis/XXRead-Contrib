@@ -5,6 +5,8 @@
              xmlns:constants="clr-namespace:XXRead.Helpers.Constants"
              xmlns:contentViews="clr-namespace:XXRead.Views.ContentViews"
              xmlns:converters="clr-namespace:XXRead.Helpers.Converters"
+             xmlns:vm="clr-namespace:XXRead.ViewModels"
+             x:DataType="vm:MainPageViewModel"
              x:Class="XXRead.Views.MainPage"
              Title="{Binding Title}" 
              BackgroundColor="{Binding ThemePrimary}" 

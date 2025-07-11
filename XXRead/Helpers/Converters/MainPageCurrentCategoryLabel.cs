@@ -7,14 +7,8 @@ namespace XXRead.Helpers.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var category = value as XStory.DTO.Category;
-            if (category != null)
-            {
-                return category.Title;
-            }
-            else
-            {
-                return "Toutes";
-            }
+
+            return category?.Title ?? "Toutes";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
