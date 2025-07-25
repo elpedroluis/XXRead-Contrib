@@ -6,7 +6,7 @@
              xmlns:contentViews="clr-namespace:XXRead.Views.ContentViews"
              xmlns:styles="clr-namespace:XXRead.Helpers.Styles"
              xmlns:constants="clr-namespace:XXRead.Helpers.Constants"
-             x:Class="XXRead.Views.AuthorPage_bakRecent"
+             x:Class="XXRead.Views.AuthorPage_bak2"
              Title="{Binding Title}" 
              BackgroundColor="{Binding ThemePrimary}" 
              Shell.BackgroundColor="{Binding ThemeMain}" 

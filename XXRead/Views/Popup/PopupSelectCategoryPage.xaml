@@ -22,7 +22,7 @@
         <Frame Padding="0" 
                BorderColor="{Binding ThemeMain}" 
                BackgroundColor="{Binding ThemePrimary}">
-            <StackLayout>
+            <Grid>
                 <!-- No category -->
                 <Frame CornerRadius="0" Margin="10,0" BackgroundColor="Transparent">
                     <StackLayout Orientation="Horizontal" Spacing="20">
@@ -39,34 +39,29 @@
                 <!-- /Separator -->
 
                 <!-- Categories -->
-                <ListView ItemsSource="{Binding Categories}"
-                          HasUnevenRows="True"
-                          SeparatorVisibility="None">
-                    <ListView.ItemTemplate>
+                <CollectionView ItemsSource="{Binding Categories}"
+                                SelectionMode="Single"
+                                SelectionChangedCommand="{Binding CategoriesItemTappedCommand}"
+                                SelectionChangedCommandParameter="{Binding Path=SelectedItem, Source={RelativeSource Self}}"
+                                SelectedItem="{Binding SelectedStory}">
+                    <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell>
-                                <Frame CornerRadius="0" Margin="10,0" BackgroundColor="Transparent">
-                                    <StackLayout Orientation="Horizontal" Spacing="20">
-                                        <Image Source="{Binding Url, Converter={StaticResource Key=StoryCategoryImageConverter}}" HeightRequest="25" WidthRequest="25" HorizontalOptions="Start"/>
-                                        <Label Text="{Binding Title}" TextColor="{Binding Source={x:RelativeSource AncestorType={x:Type vms:PopupSelectCategoryPageViewModel}}, Path=ThemeFontPrimary}"/>
-                                    </StackLayout>
-                                </Frame>
-                            </ViewCell>
+                            <Frame CornerRadius="0" Margin="10,0" BackgroundColor="Transparent">
+                                <StackLayout Orientation="Horizontal" Spacing="20">
+                                    <Image Source="{Binding Url, Converter={StaticResource Key=StoryCategoryImageConverter}}" HeightRequest="25" WidthRequest="25" HorizontalOptions="Start"/>
+                                    <Label Text="{Binding Title}" TextColor="{Binding Source={x:RelativeSource AncestorType={x:Type vms:PopupSelectCategoryPageViewModel}}, Path=ThemeFontPrimary}"/>
+                                </StackLayout>
+                            </Frame>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                    <ListView.Behaviors>
-                        <toolkit:EventToCommandBehavior EventName="ItemTapped" 
-                                                  Command="{Binding CategoriesItemTappedCommand}" 
-                                                  EventArgsConverter="{StaticResource Key=ItemTappedEventArgsConverter}"/>
-                    </ListView.Behaviors>
-                </ListView>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
                 <Button Text="{x:Static Member=constants:GlobalConstants.CLOSE}"
                         Command="{Binding ClosePopupCommand}" 
                         TextColor="{Binding ThemeFontPrimary}"
                         BackgroundColor="{Binding ThemeMain}" 
                         CornerRadius="0"
                         VerticalOptions="End"/>
-            </StackLayout>
+            </Grid>
         </Frame>
     </Grid>
 </toolkit:Popup>

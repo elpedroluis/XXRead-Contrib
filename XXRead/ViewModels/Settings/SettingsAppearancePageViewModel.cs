@@ -5,7 +5,7 @@ namespace XXRead.ViewModels.Settings
 {
 	public class SettingsAppearancePageViewModel : BaseViewModel
 	{
-		public SettingsAppearancePageViewModel(INavigationService navigationService) : base(navigationService)
+		public SettingsAppearancePageViewModel(Prism.Navigation.INavigationService navigationService) : base(navigationService)
 		{
 			Title = SettingsPageConstants.SETTINGS_APPEARANCE_PAGE_TITLE;
 		}

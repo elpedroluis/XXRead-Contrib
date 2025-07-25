@@ -35,7 +35,7 @@
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
     <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
-    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+    <!--<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>-->
     <DefaultLanguage>fr-fr</DefaultLanguage>
   </PropertyGroup>
 
@@ -205,8 +205,10 @@
     <PackageReference Include="CommunityToolkit.Maui" Version="9.0.1" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="9.0.0" />
-    <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
+    <PackageReference Include="Prism.DryIoc.Maui" Version="9.0.537" />
+    <PackageReference Include="Prism.Maui" Version="9.0.537" />
     <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
   </ItemGroup>
 
@@ -237,14 +239,14 @@
     <Compile Update="RootMainPage.xaml.cs">
       <DependentUpon>RootMainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\AuthorPage_bakRecent.xaml.cs">
-      <DependentUpon>AuthorPage_bakRecent.xaml</DependentUpon>
+    <Compile Update="Views\AuthorPage_bak2.xaml.cs">
+      <DependentUpon>AuthorPage_bak2.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\AuthorPage_bak1.xaml.cs">
+      <DependentUpon>AuthorPage_bak1.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\AuthorPage.xaml.cs">
       <DependentUpon>AuthorPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\AuthorPage_bak.xaml.cs">
-      <DependentUpon>AuthorPage_bak.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\ContentViews\ChaptersListItemView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
@@ -309,13 +311,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <MauiXaml Update="Views\AuthorPage_bakRecent.xaml">
+    <MauiXaml Update="Helpers\DataTemplates\StoryListItemDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\AuthorPage_bak2.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\AuthorPage_bak1.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </MauiXaml>
     <MauiXaml Update="Views\AuthorPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </MauiXaml>
-    <MauiXaml Update="Views\AuthorPage_bak.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
     <MauiXaml Update="Views\ContentViews\Author\AuthorInfoView.xaml">

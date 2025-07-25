@@ -15,7 +15,7 @@ namespace XXRead.ViewModels
             { "Histoires-de-sexe" , GlobalConstants.STORIES_SOURCE_HDS }
         };
 
-        public WelcomePageViewModel(INavigationService navigationService) : base(navigationService)
+        public WelcomePageViewModel(Prism.Navigation.INavigationService navigationService) : base(navigationService)
         {
             Title = Helpers.Constants.WelcomePageConstants.WELCOMEPAGE_TITLE;
 
@@ -32,6 +32,8 @@ namespace XXRead.ViewModels
             {
                 StaticContext.DATASOURCE = _dataSourceDictionary[param];
                 AppSettings.DataSource = StaticContext.DATASOURCE;
+
+                NavigationService.NavigateAsync(string.Concat("/NavigationPage/",nameof(Views.MainPage)));
             }
         }
     }

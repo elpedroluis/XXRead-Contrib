@@ -29,7 +29,7 @@ namespace XXRead.ViewModels.PopupViewModels
 		#endregion
 
 		#region --- Ctor ---
-		public PopupFlyoutMenuPageViewModel(INavigationService navigationService, 
+		public PopupFlyoutMenuPageViewModel(Prism.Navigation.INavigationService navigationService, 
 			XStory.BL.Common.Contracts.IServiceConfig serviceConfig) : base(navigationService)
 		{
 			_serviceConfig = serviceConfig;

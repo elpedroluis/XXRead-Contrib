@@ -17,7 +17,7 @@ namespace XXRead.ViewModels
 			set { _startPath = value; }
 		}
 
-		public AuthorPageWebViewModel(INavigationService navigationService) : base(navigationService)
+		public AuthorPageWebViewModel(Prism.Navigation.INavigationService navigationService) : base(navigationService)
 		{
 			Title = "Saperlipopette";
 

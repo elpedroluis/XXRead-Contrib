@@ -11,10 +11,7 @@
              x:DataType="vm:StoryPageViewModel"
              x:Class="XXRead.Views.StoryPage" 
              Title="{Binding Title}" 
-             BackgroundColor="{Binding ThemePrimary}" 
-             Shell.BackgroundColor="{Binding ThemeMain}" 
-             Shell.TitleColor="{Binding ThemeFontPrimary}"
-             Shell.ForegroundColor="{Binding ThemeFontPrimary}">
+             BackgroundColor="{Binding ThemePrimary}">
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior EventName="Appearing" Command="{Binding AppearingCommand}"/>
     </ContentPage.Behaviors>

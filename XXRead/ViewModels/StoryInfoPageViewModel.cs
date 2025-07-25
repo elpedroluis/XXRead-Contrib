@@ -30,7 +30,7 @@ namespace XXRead.ViewModels
 		#endregion
 
 		#region --- Ctor ---
-		public StoryInfoPageViewModel(INavigationService navigationService) : base(navigationService)
+		public StoryInfoPageViewModel(Prism.Navigation.INavigationService navigationService) : base(navigationService)
 		{
 			IsChapterListVisible = true;
 
@@ -40,7 +40,7 @@ namespace XXRead.ViewModels
 
 		private async void ExecuteChapterSelectionCommand(string url)
 		{
-			var navigationParams = new Dictionary<string, object>()
+			var navigationParams = new NavigationParameters()
 			{
 				{ "storyUrl", url }
 			};

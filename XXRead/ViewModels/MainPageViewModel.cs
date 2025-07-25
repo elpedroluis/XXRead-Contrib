@@ -18,6 +18,13 @@ namespace XXRead.ViewModels
 
         private IPopupService _popupService;
 
+        private Story _selectedStory;
+        public Story SelectedStory
+        {
+            get { return _selectedStory; }
+            set { SetProperty(ref _selectedStory, value); }
+        }
+
         private ObservableCollection<Story> _stories;
 
         public ObservableCollection<Story> Stories
@@ -52,7 +59,7 @@ namespace XXRead.ViewModels
         #endregion
 
         #region --- Ctor ---
-        public MainPageViewModel(INavigationService navigationService,
+        public MainPageViewModel(Prism.Navigation.INavigationService navigationService,
             IPopupService popupService,
             XStory.BL.Common.Contracts.IServiceStory serviceStory,
             XStory.BL.Common.Contracts.IServiceCategory serviceCategory,

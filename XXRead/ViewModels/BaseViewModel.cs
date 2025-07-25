@@ -5,10 +5,10 @@ using XXRead.Helpers.Services;
 
 namespace XXRead.ViewModels
 {
-	public class BaseViewModel : ObservableObject
+	public class BaseViewModel : BindableBase
 	{
-		protected INavigationService NavigationService { get; private set; }
-		public RelayCommand AppearingCommand { get; set; }
+        protected Prism.Navigation.INavigationService NavigationService { get; private set; }
+        public RelayCommand AppearingCommand { get; set; }
 		public RelayCommand TryAgainCommand { get; set; }
 
 		// [ObservableProperty]
@@ -63,7 +63,7 @@ namespace XXRead.ViewModels
 			set { SetProperty(ref _themeFontSecondary, value); }
 		}
 
-		public BaseViewModel(INavigationService navigationService)
+		public BaseViewModel(Prism.Navigation.INavigationService navigationService)
 		{
 			NavigationService = navigationService;
 

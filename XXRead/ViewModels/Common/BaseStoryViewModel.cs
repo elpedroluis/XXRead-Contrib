@@ -30,7 +30,7 @@ namespace XXRead.ViewModels.Common
 		#endregion
 
 		#region --- Ctor ---
-		public BaseStoryViewModel(INavigationService navigationService,
+		public BaseStoryViewModel(Prism.Navigation.INavigationService navigationService,
 			XStory.BL.Common.Contracts.IServiceStory serviceStory) : base(navigationService)
 		{
 			_serviceStory = serviceStory;

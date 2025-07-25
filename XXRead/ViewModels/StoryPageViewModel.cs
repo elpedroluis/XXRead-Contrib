@@ -4,6 +4,8 @@ using XStory.Logger;
 using CommunityToolkit.Mvvm.Input;
 using XXRead.Helpers.Services;
 using CommunityToolkit.Maui.Core;
+using Prism.Common;
+using Microsoft.Maui.Controls.PlatformConfiguration;
 
 namespace XXRead.ViewModels
 {
@@ -39,7 +41,7 @@ namespace XXRead.ViewModels
         #endregion
 
         #region --- Ctor ---
-        public StoryPageViewModel(INavigationService navigationService,
+        public StoryPageViewModel(Prism.Navigation.INavigationService navigationService,
             IPopupService popupService,
             XStory.BL.Common.Contracts.IServiceStory serviceStory,
             XStory.BL.Common.Contracts.IServiceAuthor serviceAuthor)
@@ -73,20 +75,15 @@ namespace XXRead.ViewModels
             {
                 _serviceAuthor.SetCurrentAuthor(Story.Author);
 
-                // experimental ↓↓↓
-                ShellNavigationState state = Shell.Current.CurrentState;
-                if (state.Location.ToString().Contains(nameof(Views.AuthorPage)))
-                // ↑↑↑ experimental --- ↓↓↓ original ↓↓↓
-                //if (NavigationService.GetNavigationUriPath().Contains(nameof(Views.AuthorPage)))
+                var hasAuthorPage = Application.Current.Windows[0].Page.Navigation.NavigationStack.Any(p=>p.GetType() == typeof(Views.AuthorPage));
+                if (hasAuthorPage)
                 {
                     // if AuthorPage exists : same Author so, go back to AuthorPage
                     await NavigationService.GoBackAsync();
                 }
 
                 _storyKeep = Story;
-                //await NavigationService.NavigateAsync(nameof(Views.AuthorPage));
-                //await Shell.Current.GoToAsync($"//AuthorPage");
-                await Shell.Current.GoToAsync(nameof(Views.AuthorPage));
+                await NavigationService.NavigateAsync(nameof(Views.AuthorPage));
             }
         }
 

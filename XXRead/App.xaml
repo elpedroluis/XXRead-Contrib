@@ -8,6 +8,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+                <ResourceDictionary Source="Helpers/DataTemplates/StoryListItemDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <Style TargetType="Label" x:Key="LabelPrimary">

@@ -25,7 +25,7 @@ namespace XXRead.ViewModels.PopupViewModels
 
 		#region --- Ctor ---
 
-		public PopupHiddenCategoriesPageViewModel(INavigationService navigationService,
+		public PopupHiddenCategoriesPageViewModel(Prism.Navigation.INavigationService navigationService,
 			XStory.BL.Common.Contracts.IServiceCategory serviceCategory) : base(navigationService)
 		{
 			_serviceCategory = serviceCategory;

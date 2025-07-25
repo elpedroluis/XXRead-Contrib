@@ -53,7 +53,7 @@ namespace XXRead.ViewModels
         #endregion
 
         #region --- Ctor ---
-        public SettingsPageViewModel(INavigationService navigationService,
+        public SettingsPageViewModel(Prism.Navigation.INavigationService navigationService,
             IPopupService popupService,
             XStory.BL.Common.Contracts.IServiceCategory serviceCategory,
             XStory.BL.Common.Contracts.IServiceConfig serviceConfig)

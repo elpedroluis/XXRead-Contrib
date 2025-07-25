@@ -30,7 +30,7 @@ namespace XXRead.ViewModels.PopupViewModels
 		public RelayCommand<Story> ChapterTappedCommand { get; set; }
 		#endregion
 
-		public PopupChaptersPageViewModel(INavigationService navigationService,
+		public PopupChaptersPageViewModel(Prism.Navigation.INavigationService navigationService,
 			XStory.BL.Common.Contracts.IServiceStory serviceStory) : base(navigationService)
 		{
 			_serviceStory = serviceStory;

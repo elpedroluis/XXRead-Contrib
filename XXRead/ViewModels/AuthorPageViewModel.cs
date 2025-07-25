@@ -14,18 +14,7 @@ namespace XXRead.ViewModels
         private XStory.BL.Common.Contracts.IServiceAuthor _serviceAuthor;
         private XStory.BL.Common.Contracts.IServiceStory _serviceStory;
 
-        public enum AuthorTabState
-        {
-            Infos,
-            Stories
-        }
-        private AuthorTabState _currentTabState;
-        public AuthorTabState CurrentTabState
-        {
-            get { return _currentTabState; }
-            set { SetProperty(ref _currentTabState, value); }
-        }
-
+        
         private bool _canLoadMorePages;
         public bool CanLoadMorePages
         {
@@ -38,20 +27,6 @@ namespace XXRead.ViewModels
         {
             get { return _author; }
             set { SetProperty(ref _author, value); }
-        }
-
-        private ObservableCollection<ContentView> _kebabs;
-        public ObservableCollection<ContentView> Kebabs
-        {
-            get { return _kebabs; }
-            set { SetProperty(ref _kebabs, value); }
-        }
-
-        private ObservableCollection<ContentView> _kebabs2;
-        public ObservableCollection<ContentView> Kebabs2
-        {
-            get { return _kebabs2; }
-            set { SetProperty(ref _kebabs2, value); }
         }
 
         private ObservableCollection<Story> _authorStories;
@@ -67,15 +42,12 @@ namespace XXRead.ViewModels
         #endregion
 
         #region --- Ctor ---
-        public AuthorPageViewModel(INavigationService navigationService,
+        public AuthorPageViewModel(Prism.Navigation.INavigationService navigationService,
             XStory.BL.Common.Contracts.IServiceAuthor serviceAuthor,
             XStory.BL.Common.Contracts.IServiceStory serviceStory) : base(navigationService)
         {
             _serviceAuthor = serviceAuthor;
             _serviceStory = serviceStory;
-
-            CurrentTabState = AuthorTabState.Infos;
-            //Selected / unselected tab converter
 
             AuthorStoryItemTappedCommand = new RelayCommand<Story>((story) => ExecuteAuthorStoryItemTappedCommand(story));
             LoadMoreStoriesCommand = new RelayCommand(ExecuteLoadMoreStoriesCommand);
@@ -145,12 +117,6 @@ namespace XXRead.ViewModels
                 AuthorStories = new ObservableCollection<Story>(_author.Stories);
 
                 CanLoadMorePages = _author.HasMorePages;
-
-                Kebabs = new ObservableCollection<ContentView>();
-                Kebabs.Add(new Views.ContentViews.Author.AuthorInfoView());
-                Kebabs.Add(new Views.ContentViews.Author.AuthorStoriesView());
-
-                
 
                 ViewState = ViewStateEnum.Display;
             }

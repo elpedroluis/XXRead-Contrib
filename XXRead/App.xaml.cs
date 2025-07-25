@@ -14,8 +14,6 @@ namespace XXRead
 			InitializeComponent();
 
 			this.InitLabelStoryContent();
-
-			MainPage = new AppShell();
 		}
 
 		private void InitLabelStoryContent()

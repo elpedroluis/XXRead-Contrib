@@ -16,7 +16,7 @@ namespace XXRead.ViewModels.PopupViewModels
 		#endregion
 
 		#region --- Ctor ---
-		public PopupStoryActionsPageViewModel(INavigationService navigationService,
+		public PopupStoryActionsPageViewModel(Prism.Navigation.INavigationService navigationService,
 			XStory.BL.Common.Contracts.IServiceStory serviceStory) : base(navigationService, serviceStory)
 		{
 			_serviceStory = serviceStory;

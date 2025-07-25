@@ -1,32 +1,48 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:constants="clr-namespace:XXRead.Helpers.Constants"
-             x:Class="XXRead.Views.WelcomePage" Title="{Binding Title}">
+             x:Class="XXRead.Views.WelcomePage" 
+             Title="{Binding Title}"
+             BackgroundColor="{Binding ThemePrimary}">
     <ContentPage.Resources>
         <ResourceDictionary>
 
             <Style TargetType="Button">
                 <Setter Property="BackgroundColor" Value="{Binding ThemeMain}"/>
+                <Setter Property="TextColor" Value="{Binding ThemeFontPrimary}"/>
+                <Setter Property="CharacterSpacing" Value="0.5"/>
                 <Setter Property="Command" Value="{Binding DataSourceSelectCommand}"/>
                 <Setter Property="CommandParameter" Value="{Binding Source={RelativeSource Self}, Path=Text}"/>
                 <Setter Property="CornerRadius" Value="3"/>
-                <Setter Property="Padding" Value="5"/>
+                <Setter Property="Padding" Value="20"/>
             </Style>
+
+            <Style TargetType="Label" BasedOn="{StaticResource Key=LabelSecondary}"/>
 
         </ResourceDictionary>
     </ContentPage.Resources>
+
+    <!-- NOT WORKING -->
+    <!--<ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="Fuchsia" StatusBarStyle="Default" ApplyOn="OnBehaviorAttachedTo"/>
+    </ContentPage.Behaviors>-->
+    <!-- / NOT WORKING -->
+    
     <ContentPage.Content>
         <StackLayout VerticalOptions="CenterAndExpand" 
                      HorizontalOptions="CenterAndExpand"
                      Margin="50"
                      Spacing="30">
             <Label Text="XXRead"
-                   FontSize="Large"
+                   FontSize="Title"
+                   FontAttributes="Bold"
+                   CharacterSpacing="0.3"
                    HorizontalTextAlignment="Center"/>
             <Label Text="{x:Static constants:WelcomePageConstants.WELCOMEPAGE_DATASOURCE_SELECT_MESSAGE}"/>
-            <StackLayout Spacing="10">
+            <StackLayout Spacing="15">
                 <Button Text="{x:Static constants:WelcomePageConstants.WELCOMEPAGE_DATASOURCE_XSTORY}"/>
                 <Button Text="{x:Static constants:WelcomePageConstants.WELCOMEPAGE_DATASOURCE_HDS}"/>
             </StackLayout>

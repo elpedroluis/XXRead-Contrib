@@ -2,11 +2,9 @@
 {
 	public partial class MainPage : ContentPage
 	{
-		public MainPage(ViewModels.MainPageViewModel vm)
+		public MainPage()
 		{
 			InitializeComponent();
-
-			this.BindingContext = vm;
 		}
 	}
 }

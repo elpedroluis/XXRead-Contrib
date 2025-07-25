@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:prism="http://prismlibrary.com/"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:constants="clr-namespace:XXRead.Helpers.Constants"
@@ -9,16 +10,10 @@
              x:DataType="vm:MainPageViewModel"
              x:Class="XXRead.Views.MainPage"
              Title="{Binding Title}" 
-             BackgroundColor="{Binding ThemePrimary}" 
-             Shell.BackgroundColor="{Binding ThemeMain}" 
-             Shell.TitleColor="{Binding ThemeFontPrimary}"
-             Shell.ForegroundColor="{Binding ThemeFontPrimary}">
+             BackgroundColor="{Binding ThemePrimary}">
     <ContentPage.Resources>
         <ResourceDictionary>
-
-
-
-            <toolkit:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter"/>
+            <toolkit:SelectedItemEventArgsConverter x:Key="SelectedItemEventArgsConverter"/>
 
             <converters:ViewStateConverter x:Key="ViewStateConverter"/>
             <converters:MainPageCurrentCategoryLabelConverter x:Key="MainPageCurrentCategoryLabelConverter"/>
@@ -31,7 +26,12 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior EventName="Appearing" Command="{Binding AppearingCommand}"/>
+
+        <!-- Couleur de la StatusBar (système, pas celle de l'app...) -->
+        <!--<toolkit:StatusBarBehavior StatusBarColor="Fuchsia" StatusBarStyle="Default" ApplyOn="OnBehaviorAttachedTo"/>-->
+        <!-- / Couleur de la StatusBar (système, pas celle de l'app) -->
     </ContentPage.Behaviors>
+
     <Grid HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
         <ContentView IsVisible="{Binding ViewState, Converter={StaticResource Key=ViewStateConverter}, ConverterParameter='loading'}">
             <ContentView.Content>
@@ -46,39 +46,31 @@
         </ContentView>
 
         <StackLayout IsVisible="{Binding ViewState, Converter={StaticResource Key=ViewStateConverter}}">
-            <ListView ItemsSource="{Binding Stories}"
-                      Margin="0,8"
-                      HasUnevenRows="True"
-                      SeparatorVisibility="None"
-                      IsPullToRefreshEnabled="True"
-                      RefreshCommand="{Binding StoriesRefreshCommand}"
-                      IsRefreshing="{Binding IsStoriesListRefreshing}"
-                      VerticalScrollBarVisibility="Always">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <contentViews:StoriesListItemView/>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-                <ListView.Header>
-                    <StackLayout Orientation="Horizontal" Padding="13,8">
-                        <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
-                            <StackLayout.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding CategoryTappedCommand}"/>
-                            </StackLayout.GestureRecognizers>
-                            <Label Style="{StaticResource Key=LabelPrimary}" FontSize="17">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Style="{StaticResource Key=SpanPrimary}" Text="{x:Static Member=constants:MainPageConstants.MAINPAGE_CATEGORY_CONTROL}"/>
-                                        <Span Style="{StaticResource Key=SpanPrimary}" Text="{Binding CurrentCategory, Converter={StaticResource Key=MainPageCurrentCategoryLabelConverter}}" TextDecorations="Underline"/>
-                                        <Span Style="{StaticResource Key=SpanPrimary}" Text="▼" FontSize="12"/>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                        </StackLayout>
+            <RefreshView Command="{Binding StoriesRefreshCommand}"
+                         IsRefreshing="{Binding IsStoriesListRefreshing}">
+                <CollectionView ItemsSource="{Binding Stories}"
+                                SelectionMode="Single"
+                                ItemTemplate="{StaticResource Key=StoryListItemDataTemplate}"
+                                Margin="0,8"
+                                VerticalScrollBarVisibility="Always">
+                    <CollectionView.Header>
+                        <StackLayout Orientation="Horizontal" Padding="13,8">
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding CategoryTappedCommand}"/>
+                                </StackLayout.GestureRecognizers>
+                                <Label Style="{StaticResource Key=LabelPrimary}" FontSize="17">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Style="{StaticResource Key=SpanPrimary}" Text="{x:Static Member=constants:MainPageConstants.MAINPAGE_CATEGORY_CONTROL}"/>
+                                            <Span Style="{StaticResource Key=SpanPrimary}" Text="{Binding CurrentCategory, Converter={StaticResource Key=MainPageCurrentCategoryLabelConverter}}" TextDecorations="Underline"/>
+                                            <Span Style="{StaticResource Key=SpanPrimary}" Text="▼" FontSize="12"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </StackLayout>
 
-                        <!--<StackLayout Orientation="Horizontal" HorizontalOptions="End">
+                            <!--<StackLayout Orientation="Horizontal" HorizontalOptions="End">
             <StackLayout.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding SortTappedCommand}"/>
             </StackLayout.GestureRecognizers>
@@ -91,22 +83,18 @@
                 </Label.FormattedText>
             </Label>
         </StackLayout>-->
-                    </StackLayout>
-                </ListView.Header>
-                <ListView.Footer>
-                    <StackLayout>
-                        <Button Text="Charger plus" 
+                        </StackLayout>
+                    </CollectionView.Header>
+                    <CollectionView.Footer>
+                        <StackLayout>
+                            <Button Text="Charger plus" 
                                 Margin="13,0" 
                                 Command="{Binding LoadMoreStoriesCommand}"
                                 BackgroundColor="{Binding ThemeMain}"/>
-                    </StackLayout>
-                </ListView.Footer>
-                <ListView.Behaviors>
-                    <toolkit:EventToCommandBehavior EventName="ItemTapped" 
-                                                                Command="{Binding StoriesItemTappedCommand}" 
-                                                                EventArgsConverter="{StaticResource ItemTappedEventArgsConverter}"/>
-                </ListView.Behaviors>
-            </ListView>
+                        </StackLayout>
+                    </CollectionView.Footer>
+                </CollectionView>
+            </RefreshView>
         </StackLayout>
     </Grid>
 </ContentPage>

@@ -25,7 +25,7 @@ namespace XXRead.ViewModels.PopupViewModels
         public RelayCommand<Category> CategoriesItemTappedCommand { get; set; }
         public RelayCommand ResetCategoriesCommand { get; set; }
 
-        public PopupSelectCategoryPageViewModel(INavigationService navigationService,
+        public PopupSelectCategoryPageViewModel(Prism.Navigation.INavigationService navigationService,
             XStory.BL.Common.Contracts.IServiceCategory serviceCategory) : base(navigationService)
         {
             _serviceCategory = serviceCategory;

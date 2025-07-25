@@ -7,7 +7,7 @@ namespace XXRead.ViewModels.PopupViewModels
 	{
 		public RelayCommand ClosePopupCommand { get; set; }
 
-		public BasePopupViewModel(INavigationService navigationService) : base(navigationService)
+		public BasePopupViewModel(Prism.Navigation.INavigationService navigationService) : base(navigationService)
 		{
 
 		}

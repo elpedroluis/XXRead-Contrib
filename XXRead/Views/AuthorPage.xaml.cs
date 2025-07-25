@@ -1,6 +1,6 @@
 ﻿namespace XXRead.Views
 {
-	public partial class AuthorPage : ContentPage
+	public partial class AuthorPage : TabbedPage
 	{
 		public AuthorPage(ViewModels.AuthorPageViewModel viewModel)
 		{
