@@ -5,6 +5,9 @@
              xmlns:converters="clr-namespace:XXRead.Helpers.Converters"
              xmlns:styles="clr-namespace:XXRead.Helpers.Styles"
              x:Class="XXRead.Helpers.DataTemplates.StoryListItemDictionary">
+
+    
+    
     <Style TargetType="Label" x:Key="LabelStoriesPrimary">
         <Setter Property="TextColor" Value="{Binding Source={x:RelativeSource AncestorType={x:Type vm:BaseViewModel}}, Path=ThemeFontPrimary}"/>
     </Style>
@@ -38,66 +41,65 @@
             </Border.Shadow>-->
 
             <!-- Content -->
-            <StackLayout Spacing="20">
+            <Grid RowDefinitions="Auto,Auto"
+                  RowSpacing="20">
 
                 <!-- Title & chapter -->
-                <StackLayout Padding="5">
+                <Grid Grid.Row="0" RowDefinitions="Auto,Auto" Padding="5">
                     <!-- Title -->
-                    <Label Text="{Binding Title, Mode=OneTime}"
+                    <Label Grid.Row="0" Text="{Binding Title, Mode=OneTime}"
                            Style="{StaticResource Key=LabelStoriesPrimary}"
-                           VerticalOptions="Center" 
-                           HorizontalOptions="Center"
                            HorizontalTextAlignment="Center"
                            CharacterSpacing="0.5" 
                            FontAttributes="Bold"/>
                     <!-- / Title -->
 
-                    <StackLayout IsVisible="{Binding ChapterName,Converter={StaticResource Key=MainPageChapterNameConverter}, ConverterParameter={Binding ChapterName}}">
+                    <Grid Grid.Row="1" RowDefinitions="*,Auto" IsVisible="{Binding ChapterName,Converter={StaticResource Key=MainPageChapterNameConverter}, ConverterParameter={Binding ChapterName}}">
 
                         <!-- Separator -->
-                        <Rectangle HeightRequest="1" 
+                        <Rectangle Grid.Row="0" HeightRequest="1" 
                                    Margin="50,5" 
                                    BackgroundColor="{Binding ThemeFontPrimary}"/>
                         <!-- / Separator -->
 
                         <!-- Chapter name -->
-                        <Label Text="{Binding ChapterName,Mode=OneTime}"
+                        <Label Grid.Row="1" Text="{Binding ChapterName,Mode=OneTime}"
                                 Style="{StaticResource Key=LabelStoriesSecondary}"
-                                VerticalTextAlignment="Center"
                                 HorizontalTextAlignment="Center"
                                 CharacterSpacing="0.5" 
                                 FontAttributes="Italic"/>
                         <!-- / Chapter name -->
-                    </StackLayout>
-                </StackLayout>
+                    </Grid>
+                </Grid>
                 <!-- / Title & chapter -->
 
                 <!-- Body -->
-                <StackLayout Orientation="Horizontal">
+                <Grid Grid.Row="1" RowDefinitions="*,Auto" RowSpacing="3">
 
                     <!-- Category area -->
-                    <StackLayout HorizontalOptions="StartAndExpand">
-                        <Image Source="{Binding CategoryUrl, Mode=OneTime, Converter={StaticResource Key=StoryCategoryImageConverter}}" 
-                       Style="{StaticResource Key=CategoryThumbnailImageStyle}"
-                       HorizontalOptions="Start"/>
-                        <Label Text="{Binding CategoryName, Mode=OneTime}" Style="{StaticResource Key=LabelStoriesSecondary}" 
-                       HorizontalTextAlignment="Start" 
-                       LineBreakMode="WordWrap"/>
-                    </StackLayout>
+                    <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto" ColumnSpacing="7">
+                        <Image Grid.Column="0" Source="{Binding CategoryUrl, Mode=OneTime, Converter={StaticResource Key=StoryCategoryImageConverter}}" 
+                               Style="{StaticResource Key=CategoryThumbnailImageStyle}"/>
+                        <Label Grid.Column="1" 
+                               Text="{Binding CategoryName, Mode=OneTime}" 
+                               Style="{StaticResource Key=LabelStoriesSecondary}" 
+                               LineBreakMode="WordWrap"
+                               VerticalTextAlignment="Center"/>
+                    </Grid>
                     <!-- / Category area -->
 
                     <!-- Author and date area -->
-                    <StackLayout HorizontalOptions="End">
-                        <Label Text="{Binding Author.Name, Mode=OneTime, Converter={StaticResource Key=AuthorNameConverter}}"
-                       Style="{StaticResource Key=LabelStoriesSecondary}"/>
-                        <Label Text="{Binding ReleaseDate, Mode=OneTime, Converter={StaticResource Key=StoryDateTimeConverter}}" 
-                       Style="{StaticResource Key=LabelStoriesSecondary}" 
-                       HorizontalOptions="EndAndExpand"/>
-                    </StackLayout>
+                    <Grid Grid.Row="1" ColumnDefinitions="Auto,*">
+                        <Label Grid.Column="0" Text="{Binding Author.Name, Mode=OneTime, Converter={StaticResource Key=AuthorNameConverter}}"
+                               Style="{StaticResource Key=LabelStoriesSecondary}"/>
+                        <Label Grid.Column="1" Text="{Binding ReleaseDate, Mode=OneTime, Converter={StaticResource Key=StoryDateTimeConverter}}" 
+                               Style="{StaticResource Key=LabelStoriesSecondary}" 
+                               HorizontalTextAlignment="End"/>
+                    </Grid>
                     <!-- / Author and date area -->
-                </StackLayout>
+                </Grid>
 
-            </StackLayout>
+            </Grid>
             <!-- / Content -->
 
         </Border>

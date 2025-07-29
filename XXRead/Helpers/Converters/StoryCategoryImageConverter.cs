@@ -30,6 +30,9 @@ namespace XXRead.Helpers.Converters
 		{
 			try
 			{
+				if (value as string == "Demo")
+					return ImageSource.FromFile("demo_icon");
+
 				var image = CategoryImageDictionary[(string)value];
 				return image;
 			}

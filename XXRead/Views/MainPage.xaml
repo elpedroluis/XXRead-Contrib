@@ -13,6 +13,9 @@
              BackgroundColor="{Binding ThemePrimary}">
     <ContentPage.Resources>
         <ResourceDictionary>
+            <SolidColorBrush x:Key="Main" Color="PaleVioletRed"></SolidColorBrush>
+
+            
             <toolkit:SelectedItemEventArgsConverter x:Key="SelectedItemEventArgsConverter"/>
 
             <converters:ViewStateConverter x:Key="ViewStateConverter"/>
@@ -28,7 +31,7 @@
         <toolkit:EventToCommandBehavior EventName="Appearing" Command="{Binding AppearingCommand}"/>
 
         <!-- Couleur de la StatusBar (système, pas celle de l'app...) -->
-        <!--<toolkit:StatusBarBehavior StatusBarColor="Fuchsia" StatusBarStyle="Default" ApplyOn="OnBehaviorAttachedTo"/>-->
+        <toolkit:StatusBarBehavior StatusBarColor="{StaticResource Key=OffBlack}" StatusBarStyle="Default" ApplyOn="OnBehaviorAttachedTo"/>
         <!-- / Couleur de la StatusBar (système, pas celle de l'app) -->
     </ContentPage.Behaviors>
 
@@ -54,11 +57,11 @@
                                 Margin="0,8"
                                 VerticalScrollBarVisibility="Always">
                     <CollectionView.Header>
-                        <StackLayout Orientation="Horizontal" Padding="13,8">
-                            <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
-                                <StackLayout.GestureRecognizers>
+                        <Grid RowDefinitions="*,Auto" Padding="13,8">
+                            <Border Padding="0,5" Stroke="Transparent">
+                                <Border.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding CategoryTappedCommand}"/>
-                                </StackLayout.GestureRecognizers>
+                                </Border.GestureRecognizers>
                                 <Label Style="{StaticResource Key=LabelPrimary}" FontSize="17">
                                     <Label.FormattedText>
                                         <FormattedString>
@@ -68,7 +71,7 @@
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
-                            </StackLayout>
+                            </Border>
 
                             <!--<StackLayout Orientation="Horizontal" HorizontalOptions="End">
             <StackLayout.GestureRecognizers>
@@ -83,15 +86,13 @@
                 </Label.FormattedText>
             </Label>
         </StackLayout>-->
-                        </StackLayout>
+                        </Grid>
                     </CollectionView.Header>
                     <CollectionView.Footer>
-                        <StackLayout>
-                            <Button Text="Charger plus" 
+                        <Button Text="Charger plus" 
                                 Margin="13,0" 
                                 Command="{Binding LoadMoreStoriesCommand}"
                                 BackgroundColor="{Binding ThemeMain}"/>
-                        </StackLayout>
                     </CollectionView.Footer>
                 </CollectionView>
             </RefreshView>
