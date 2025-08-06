@@ -51,11 +51,22 @@ namespace XStory.DAL.Web.XStory
 					string error = response.StatusCode + " " + response.ReasonPhrase;
 					throw new Exception(error);
 				}
-				string responseContent = await response.Content.ReadAsStringAsync();
 
-				htmlPage = HttpUtility.HtmlDecode(responseContent);
-			}
-			catch (Exception e)
+				// Start Encoding utf-8
+                System.Text.Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+                Encoding sourceEncoding = Encoding.GetEncoding("windows-1252");
+                Encoding targetEncoding = Encoding.UTF8;
+
+                byte[] sourceBytes = await response.Content.ReadAsByteArrayAsync();
+                byte[] utf8Bytes = Encoding.Convert(sourceEncoding, targetEncoding, sourceBytes);
+                string html = Encoding.UTF8.GetString(utf8Bytes);
+
+                htmlPage = HttpUtility.HtmlDecode(html);
+
+                // End Encoding utf-8
+            }
+            catch (Exception e)
 			{
 				Console.WriteLine(e.Message);
 			}
