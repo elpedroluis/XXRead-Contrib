@@ -2,7 +2,6 @@
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:appSettings="clr-namespace:XXRead.Helpers"
              xmlns:local="clr-namespace:XXRead"
              x:Class="XXRead.App">
     <Application.Resources>
@@ -10,11 +9,10 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Theme.xaml" />
                 <ResourceDictionary Source="Helpers/DataTemplates/StoryListItemDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-            
-            
             <Style TargetType="Label" x:Key="LabelPrimary">
                 <Setter Property="TextColor" Value="{Binding ThemeFontPrimary}"/>
             </Style>

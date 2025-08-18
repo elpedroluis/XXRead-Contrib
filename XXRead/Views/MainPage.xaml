@@ -13,9 +13,6 @@
              BackgroundColor="{Binding ThemePrimary}">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <SolidColorBrush x:Key="Main" Color="PaleVioletRed"></SolidColorBrush>
-
-            
             <toolkit:SelectedItemEventArgsConverter x:Key="SelectedItemEventArgsConverter"/>
 
             <converters:ViewStateConverter x:Key="ViewStateConverter"/>
@@ -31,7 +28,7 @@
         <toolkit:EventToCommandBehavior EventName="Appearing" Command="{Binding AppearingCommand}"/>
 
         <!-- Couleur de la StatusBar (système, pas celle de l'app...) -->
-        <toolkit:StatusBarBehavior StatusBarColor="{StaticResource Key=OffBlack}" StatusBarStyle="Default" ApplyOn="OnBehaviorAttachedTo"/>
+        <toolkit:StatusBarBehavior StatusBarColor="{Binding ThemeMain}" StatusBarStyle="Default" ApplyOn="OnBehaviorAttachedTo"/>
         <!-- / Couleur de la StatusBar (système, pas celle de l'app) -->
     </ContentPage.Behaviors>
 
@@ -54,8 +51,7 @@
                 <CollectionView ItemsSource="{Binding Stories}"
                                 SelectionMode="Single"
                                 ItemTemplate="{StaticResource Key=StoryListItemDataTemplate}"
-                                Margin="0,8"
-                                VerticalScrollBarVisibility="Always">
+                                Margin="0,8">
                     <CollectionView.Header>
                         <Grid RowDefinitions="*,Auto" Padding="13,8">
                             <Border Padding="0,5" Stroke="Transparent">

@@ -8,10 +8,7 @@
              x:DataType="vm:SettingsPageViewModel"
              x:Class="XXRead.Views.SettingsPage"
              Title="{Binding Title}"
-             BackgroundColor="{Binding ThemePrimary}" 
-             Shell.BackgroundColor="{Binding ThemeMain}" 
-             Shell.TitleColor="{Binding ThemeFontPrimary}" 
-             Shell.ForegroundColor="{Binding ThemeFontPrimary}">
+             BackgroundColor="{Binding ThemePrimary}">
     <!--<Shell.BackButtonBehavior>
         <BackButtonBehavior IconOverride="img.png"/>
     </Shell.BackButtonBehavior>-->
@@ -45,7 +42,7 @@
                 <TableSection Title="Catégories affichées">
                     <ViewCell>
                         <Button Text="Gestion des catégories" 
-                            BackgroundColor="{Binding ThemeMain}"
+                            BackgroundColor="{DynamicResource Key=ThemeMain}"
                             TextColor="{Binding ThemeFontPrimary}"
                             Command="{Binding DisplayCategoriesViewCommand}"
                             Margin="15"/>

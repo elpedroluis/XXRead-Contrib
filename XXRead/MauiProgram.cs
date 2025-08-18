@@ -19,6 +19,8 @@ namespace XXRead
                 {
                     prism.RegisterTypes(container =>
                     {
+                        container.RegisterForNavigation<Views.MyNavigationPage>();
+
                         container.RegisterForNavigation<Views.AuthorPage, ViewModels.AuthorPageViewModel>();
                         container.RegisterForNavigation<Views.MainPage, ViewModels.MainPageViewModel>();
                         container.RegisterForNavigation<Views.SettingsPage, ViewModels.SettingsPageViewModel>();
@@ -68,9 +70,9 @@ namespace XXRead
                     prism.CreateWindow(async (containerProvider, navigationService) =>
                     {
                         if (AppSettings.FirstRun)
-                            await navigationService.NavigateAsync("/NavigationPage/WelcomePage");
+                            await navigationService.NavigateAsync("/MyNavigationPage/WelcomePage");
                         else
-                            await navigationService.NavigateAsync("/NavigationPage/MainPage");
+                            await navigationService.NavigateAsync("/MyNavigationPage/MainPage");
                     });
                 })
                 .UseMauiCommunityToolkit()

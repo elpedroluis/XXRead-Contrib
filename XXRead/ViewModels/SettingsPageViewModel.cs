@@ -11,6 +11,7 @@ using XStory.Logger;
 using CommunityToolkit.Mvvm.Input;
 using XXRead.Helpers.Services;
 using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Maui.Behaviors;
 
 namespace XXRead.ViewModels
 {
@@ -107,12 +108,30 @@ namespace XXRead.ViewModels
             AppSettings.ThemeFontPrimary = this.ThemeFontPrimary.ToHex();
             AppSettings.ThemeFontSecondary = this.ThemeFontSecondary.ToHex();
 
+            ICollection<ResourceDictionary> mergedDictionaries = Application.Current.Resources.MergedDictionaries;
+            if (mergedDictionaries != null)
+            {
+                var themeDictionary = mergedDictionaries.FirstOrDefault(rd => rd.Source.OriginalString.Contains("Theme.xaml"));
+                themeDictionary["ThemeFontPrimary"] = this.ThemeFontPrimary;
+                themeDictionary["ThemeFontSecondary"] = this.ThemeFontSecondary;
+            }
         }
 
         private void ExecuteThemeMainTappedCommand(object color)
         {
-            this.ThemeMain = (Color)color;
-            AppSettings.ThemeMain = this.ThemeMain.ToHex();
+            var themeMain = (Color)color;
+            AppSettings.ThemeMain = themeMain.ToHex();
+
+            ICollection<ResourceDictionary> mergedDictionaries = Application.Current.Resources.MergedDictionaries;
+            if (mergedDictionaries != null)
+            {
+                var themeDictionary = mergedDictionaries.FirstOrDefault(rd => rd.Source.OriginalString.Contains("Theme.xaml"));
+                themeDictionary["ThemeMain"] = themeMain;
+            }
+
+            //((NavigationPage)Application.Current.Windows[0].Page).BarBackgroundColor = themeMain;
+
+            Application.Current.Windows[0].Page.Behaviors.Add(new StatusBarBehavior() { StatusBarStyle = StatusBarStyle.LightContent, StatusBarColor = themeMain, ApplyOn = StatusBarApplyOn.OnBehaviorAttachedTo });
         }
 
         private async void ExecuteStoriesSourceTappedCommand()
@@ -185,6 +204,10 @@ namespace XXRead.ViewModels
             }
         }
 
+        public override void OnNavigatedFrom()
+        {
+            base.OnNavigatedFrom();
+        }
         /*public override void OnNavigatedTo(INavigationParameters parameters)
 		{
 			if (CurrentDataSource != null)

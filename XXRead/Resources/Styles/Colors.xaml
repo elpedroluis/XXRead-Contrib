@@ -6,6 +6,34 @@
 
     <!-- Note: For Android please see also Platforms\Android\Resources\values\colors.xml -->
 
+
+    <Color x:Key="BackgroundDarkPrimary">#111</Color>
+    <Color x:Key="BackgroundDarkSecondary">#222</Color>
+    <Color x:Key="FontDarkPrimary">#333</Color>
+    <Color x:Key="FontDarkSecondary">#444</Color>
+    
+    <Color x:Key="BackgroundLightPrimary">#FFF</Color>
+    <Color x:Key="BackgroundLightSecondary">#FBF9FF</Color>
+    <Color x:Key="FontLightPrimary">#EEE</Color>
+    <Color x:Key="FontLightSecondary">#CCC</Color>
+    
+    <Color x:Key="MainRed">#A12F3C</Color>
+    <Color x:Key="MainPink">#E03577</Color>
+    <Color x:Key="MainBlack">#000</Color>
+    <Color x:Key="MainPurple">#B200A3</Color>
+    <Color x:Key="MainYellow">#FFD966</Color>
+    <Color x:Key="MainGreen">#238200</Color>
+    <Color x:Key="MainGreeyn">#135553</Color>
+    <Color x:Key="MainDarkBlue">#33467F</Color>
+    <Color x:Key="MainLightBlue">#66ACFF</Color>
+    <Color x:Key="MainBrown">#B06700</Color>
+    <Color x:Key="MainOrange">#F07700</Color>
+    
+    
+    
+    
+    <!-- Base -->
+    
     <Color x:Key="Primary">#512BD4</Color>
     <Color x:Key="PrimaryDark">#ac99ea</Color>
     <Color x:Key="PrimaryDarkText">#242424</Color>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<prism:PrismNavigationPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:prism="http://prismlibrary.com"
+                x:Class="XXRead.Views.MyNavigationPage"
+                Title="MyNavigationPage" 
+                BarBackgroundColor="{DynamicResource Key=ThemeMain}"
+                BarTextColor="{DynamicResource Key=ThemeFontPrimary}">
+</prism:PrismNavigationPage>

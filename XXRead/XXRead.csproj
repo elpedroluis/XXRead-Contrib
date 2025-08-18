@@ -37,6 +37,7 @@
     <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
     <!--<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>-->
     <DefaultLanguage>fr-fr</DefaultLanguage>
+    <Title>XXRead</Title>
   </PropertyGroup>
 
   <ItemGroup>
@@ -314,6 +315,9 @@
     <MauiXaml Update="Helpers\DataTemplates\StoryListItemDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
+    <MauiXaml Update="Resources\Styles\Theme.xaml">
+      <Generator></Generator>
+    </MauiXaml>
     <MauiXaml Update="Views\AuthorPage_bak2.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </MauiXaml>
@@ -363,6 +367,9 @@
     </MauiXaml>
     <MauiXaml Update="Views\MainPage.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\MyNavigationPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
     <MauiXaml Update="Views\Popup\PopupChaptersPage.xaml">

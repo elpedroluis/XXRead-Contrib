@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:theme="clr-namespace:XXRead.Helpers.Themes"
+             xmlns:colors="clr-namespace:XXRead.Resources.Styles"
              xmlns:vm="clr-namespace:XXRead.ViewModels"
              x:DataType="vm:SettingsPageViewModel"
              x:Class="XXRead.Views.ContentViews.SettingsPageThemesView">
@@ -43,13 +43,13 @@
 
                     <!-- Dark -->
                     <StackLayout>
-                        <Button Style="{StaticResource Key=ButtonColorBackgroundTheme}" BackgroundColor="{Binding Source={x:Static theme:Theme.DarkPrimary}}"/>
+                        <Button Style="{StaticResource Key=ButtonColorBackgroundTheme}" BackgroundColor="{StaticResource Key=BackgroundDarkPrimary}"/>
                         <Label Text="Dark" Style="{StaticResource Key=LabelColorTheme}"/>
                     </StackLayout>
 
                     <!-- Light -->
                     <StackLayout>
-                        <Button Style="{StaticResource Key=ButtonColorBackgroundTheme}" BackgroundColor="{Binding Source={x:Static theme:Theme.LightPrimary}}"/>
+                        <Button Style="{StaticResource Key=ButtonColorBackgroundTheme}" BackgroundColor="{StaticResource Key=BackgroundLightPrimary}"/>
                         <Label Text="Light" Style="{StaticResource Key=LabelColorTheme}"/>
                     </StackLayout>
 
@@ -72,37 +72,37 @@
                             Wrap="Wrap" 
                             Margin="10">
                     <!-- Red -->
-                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{Binding Source={x:Static theme:Theme.MainRed}}"/>
+                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{StaticResource Key=MainRed}"/>
 
                     <!-- Black -->
-                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{Binding Source={x:Static theme:Theme.MainBlack}}"/>
+                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{StaticResource Key=MainBlack}"/>
 
                     <!-- Pink -->
-                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{Binding Source={x:Static theme:Theme.MainPink}}"/>
+                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{StaticResource Key=MainPink}"/>
 
                     <!-- Purple -->
-                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{Binding Source={x:Static theme:Theme.MainPurple}}"/>
+                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{StaticResource Key=MainPurple}"/>
 
                     <!-- LightBlue -->
-                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{Binding Source={x:Static theme:Theme.MainLightBlue}}"/>
+                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{StaticResource Key=MainLightBlue}"/>
 
                     <!-- Green -->
-                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{Binding Source={x:Static theme:Theme.MainGreen}}"/>
+                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{StaticResource Key=MainGreen}"/>
 
                     <!-- Greeyn -->
-                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{Binding Source={x:Static theme:Theme.MainGreeyn}}"/>
+                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{StaticResource Key=MainGreeyn}"/>
 
                     <!-- Dark blue -->
-                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{Binding Source={x:Static theme:Theme.MainDarkBlue}}"/>
+                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{StaticResource Key=MainDarkBlue}"/>
 
                     <!-- Yellow -->
-                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{Binding Source={x:Static theme:Theme.MainYellow}}"/>
+                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{StaticResource Key=MainYellow}"/>
 
                     <!-- Orange -->
-                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{Binding Source={x:Static theme:Theme.MainOrange}}"/>
+                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{StaticResource Key=MainOrange}"/>
 
                     <!-- Brown -->
-                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{Binding Source={x:Static theme:Theme.MainBrown}}"/>
+                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{StaticResource Key=MainBrown}"/>
                 </FlexLayout>
             </Grid>
             <!-- End main theme-->

@@ -9,7 +9,7 @@
             xmlns:vms="clr-namespace:XXRead.ViewModels"
             x:Class="XXRead.Views.AuthorPage"
             Title="{Binding Title}" 
-            BackgroundColor="{Binding ThemePrimary}">
+            BackgroundColor="{Binding ThemePrimary}" BarBackgroundColor="{Binding ThemeMain}">
     <TabbedPage.Resources>
         <ResourceDictionary>
 

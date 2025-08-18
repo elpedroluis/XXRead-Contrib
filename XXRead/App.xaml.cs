@@ -14,10 +14,15 @@ namespace XXRead
 
             InitializeComponent();
 
-            this.InitLabelStoryContent();
+            Application.Current.Resources["ThemeMain"] = Color.FromArgb(AppSettings.ThemeMain);
 
-            //((NavigationPage)Application.Current.Windows[0].Page).BarBackgroundColor = Color.FromArgb(AppSettings.ThemeMain);
-            //Application.Current.Windows[0].Page.Behaviors.Add(new StatusBarBehavior() { StatusBarColor = Color.FromArgb(AppSettings.ThemeMain), ApplyOn = StatusBarApplyOn.OnBehaviorAttachedTo });
+            Application.Current.Resources["ThemeBackgroundPrimary"] = Color.FromArgb(AppSettings.ThemePrimary);
+            Application.Current.Resources["ThemeBackgroundSecondary"] = Color.FromArgb(AppSettings.ThemeSecondary);
+
+            Application.Current.Resources["ThemeFontPrimary"] = Color.FromArgb(AppSettings.ThemeFontPrimary);
+            Application.Current.Resources["ThemeFontSecondary"] = Color.FromArgb(AppSettings.ThemeFontSecondary);
+
+            this.InitLabelStoryContent();
         }
 
         private void InitLabelStoryContent()
