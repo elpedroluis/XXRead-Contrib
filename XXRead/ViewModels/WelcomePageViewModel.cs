@@ -22,7 +22,7 @@ namespace XXRead.ViewModels
             DataSourceSelectCommand = new RelayCommand<string>((param) => ExecuteDataSourceSelectCommand(param));
         }
 
-        private void ExecuteDataSourceSelectCommand(string param)
+        private async void ExecuteDataSourceSelectCommand(string param)
         {
             if (string.IsNullOrWhiteSpace(param))
             {
@@ -33,7 +33,7 @@ namespace XXRead.ViewModels
                 StaticContext.DATASOURCE = _dataSourceDictionary[param];
                 AppSettings.DataSource = StaticContext.DATASOURCE;
 
-                NavigationService.NavigateAsync(string.Concat("/NavigationPage/",nameof(Views.MainPage)));
+                await NavigationService.NavigateAsync(nameof(Views.MainPage));
             }
         }
     }
