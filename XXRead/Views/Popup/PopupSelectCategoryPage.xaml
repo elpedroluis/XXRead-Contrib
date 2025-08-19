@@ -1,13 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:constants="clr-namespace:XXRead.Helpers.Constants"
-             xmlns:converters="clr-namespace:XXRead.Helpers.Converters"
-             xmlns:vms="clr-namespace:XXRead.ViewModels.PopupViewModels"
-             x:Class="XXRead.Views.Popup.PopupSelectCategoryPage"
-             Color="Transparent"
-             Size="{Binding Converter={StaticResource Key=PopupSizeConverter}}">
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               xmlns:constants="clr-namespace:XXRead.Helpers.Constants"
+               xmlns:converters="clr-namespace:XXRead.Helpers.Converters"
+               xmlns:styles="clr-namespace:XXRead.Helpers.Styles"
+               xmlns:vms="clr-namespace:XXRead.ViewModels.PopupViewModels"
+               x:Class="XXRead.Views.Popup.PopupSelectCategoryPage"
+               Color="Transparent"
+               Size="{Binding Converter={StaticResource Key=PopupSizeConverter}}">
     <toolkit:Popup.Resources>
         <ResourceDictionary>
 
@@ -16,52 +17,66 @@
             <converters:StoryCategoryImageConverter x:Key="StoryCategoryImageConverter"/>
             <converters:PopupSizeConverter x:Key="PopupSizeConverter"/>
 
+            <Style TargetType="Image" 
+                   x:Key="CategoryThumbnailImageStyle" 
+                   BasedOn="{x:Static styles:ImageStyles.CategoryThumbnailImageStyle}">
+                <Setter Property="HorizontalOptions" Value="Start"/>
+            </Style>
+
         </ResourceDictionary>
     </toolkit:Popup.Resources>
-    <Grid>
-        <Frame Padding="0" 
-               BorderColor="{Binding ThemeMain}" 
-               BackgroundColor="{Binding ThemePrimary}">
-            <Grid>
-                <!-- No category -->
-                <Frame CornerRadius="0" Margin="10,0" BackgroundColor="Transparent">
-                    <StackLayout Orientation="Horizontal" Spacing="20">
-                        <Image HeightRequest="25" WidthRequest="25" HorizontalOptions="Start"/>
-                        <Label Text="Toutes" TextColor="{Binding Source={x:RelativeSource AncestorType={x:Type vms:PopupSelectCategoryPageViewModel}}, Path=ThemeFontPrimary}"/>
-                    </StackLayout>
-                    <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding ResetCategoriesCommand}"/>
-                    </Frame.GestureRecognizers>
-                </Frame>
+    <Border Padding="0"
+            Stroke="{DynamicResource Key=ThemeMain}" 
+            BackgroundColor="{DynamicResource Key=ThemeBackgroundPrimary}">
+        <Grid RowDefinitions="Auto,1,*,Auto">
+            <!-- No category -->
+            <Border Grid.Row="0" 
+                    Margin="10,0"
+                    Padding="20"
+                    Stroke="Transparent" 
+                    StrokeThickness="0" 
+                    BackgroundColor="Transparent">
+                <StackLayout Orientation="Horizontal" Spacing="20">
+                    <Image Style="{StaticResource Key=CategoryThumbnailImageStyle}"/>
+                    <Label Text="Toutes" TextColor="{DynamicResource Key=ThemeFontPrimary}"/>
+                </StackLayout>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ResetCategoriesCommand}"/>
+                </Border.GestureRecognizers>
+            </Border>
 
-                <!-- Separator -->
-                <Rectangle HeightRequest="1" BackgroundColor="{Binding Source={x:RelativeSource AncestorType={x:Type vms:PopupSelectCategoryPageViewModel}}, Path=ThemeFontSecondary}"/>
-                <!-- /Separator -->
+            <!-- Separator -->
+            <Rectangle Grid.Row="1" 
+                       HeightRequest="1" 
+                       BackgroundColor="{DynamicResource Key=ThemeFontSecondary}"/>
+            <!-- /Separator -->
 
-                <!-- Categories -->
-                <CollectionView ItemsSource="{Binding Categories}"
+            <!-- Categories -->
+            <CollectionView Grid.Row="2" ItemsSource="{Binding Categories}"
                                 SelectionMode="Single"
                                 SelectionChangedCommand="{Binding CategoriesItemTappedCommand}"
                                 SelectionChangedCommandParameter="{Binding Path=SelectedItem, Source={RelativeSource Self}}"
                                 SelectedItem="{Binding SelectedStory}">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Frame CornerRadius="0" Margin="10,0" BackgroundColor="Transparent">
-                                <StackLayout Orientation="Horizontal" Spacing="20">
-                                    <Image Source="{Binding Url, Converter={StaticResource Key=StoryCategoryImageConverter}}" HeightRequest="25" WidthRequest="25" HorizontalOptions="Start"/>
-                                    <Label Text="{Binding Title}" TextColor="{Binding Source={x:RelativeSource AncestorType={x:Type vms:PopupSelectCategoryPageViewModel}}, Path=ThemeFontPrimary}"/>
-                                </StackLayout>
-                            </Frame>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-                <Button Text="{x:Static Member=constants:GlobalConstants.CLOSE}"
-                        Command="{Binding ClosePopupCommand}" 
-                        TextColor="{Binding ThemeFontPrimary}"
-                        BackgroundColor="{Binding ThemeMain}" 
-                        CornerRadius="0"
-                        VerticalOptions="End"/>
-            </Grid>
-        </Frame>
-    </Grid>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="10,0" 
+                                Stroke="Transparent"
+                                Padding="20"
+                                BackgroundColor="Transparent">
+                            <StackLayout Orientation="Horizontal" Spacing="20">
+                                <Image Source="{Binding Url, Converter={StaticResource Key=StoryCategoryImageConverter}}" Style="{StaticResource Key=CategoryThumbnailImageStyle}"/>
+                                <Label Text="{Binding Title}" TextColor="{DynamicResource Key=ThemeFontPrimary}"/>
+                            </StackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Button Grid.Row="3" 
+                    Text="{x:Static Member=constants:GlobalConstants.CLOSE}"
+                    Command="{Binding ClosePopupCommand}" 
+                    TextColor="{DynamicResource Key=ThemeFontPrimary}"
+                    BackgroundColor="{Binding ThemeMain}" 
+                    CornerRadius="0"/>
+        </Grid>
+    </Border>
 </toolkit:Popup>
