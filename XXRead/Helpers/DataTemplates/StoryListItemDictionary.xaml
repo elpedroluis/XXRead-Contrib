@@ -4,10 +4,9 @@
              xmlns:vm="clr-namespace:XXRead.ViewModels"
              xmlns:converters="clr-namespace:XXRead.Helpers.Converters"
              xmlns:styles="clr-namespace:XXRead.Helpers.Styles"
+             xmlns:dto="clr-namespace:XStory.DTO;assembly=XStory.DTO"
              x:Class="XXRead.Helpers.DataTemplates.StoryListItemDictionary">
 
-    
-    
     <Style TargetType="Label" x:Key="LabelStoriesPrimary">
         <Setter Property="TextColor" Value="{Binding Source={x:RelativeSource AncestorType={x:Type vm:BaseViewModel}}, Path=ThemeFontPrimary}"/>
     </Style>
@@ -17,15 +16,15 @@
     </Style>
 
     <Style TargetType="Image" 
-       x:Key="CategoryThumbnailImageStyle" 
-       BasedOn="{x:Static styles:ImageStyles.CategoryThumbnailImageStyle}"/>
+           x:Key="CategoryThumbnailImageStyle" 
+           BasedOn="{x:Static styles:ImageStyles.CategoryThumbnailImageStyle}"/>
 
     <converters:StoryDateTimeConverter x:Key="StoryDateTimeConverter"/>
     <converters:MainPageChapterNameConverter x:Key="MainPageChapterNameConverter"/>
     <converters:AuthorNameConverter x:Key="AuthorNameConverter"/>
     <converters:StoryCategoryImageConverter x:Key="StoryCategoryImageConverter"/>
 
-    <DataTemplate x:Key="StoryListItemDataTemplate">
+    <DataTemplate x:Key="StoryListItemDataTemplate" x:DataType="dto:Story">
         <Border Margin="13,5" 
                 Stroke="Transparent"
                 BackgroundColor="{Binding Source={x:RelativeSource AncestorType={x:Type vm:BaseViewModel}}, Path=ThemeSecondary}"
