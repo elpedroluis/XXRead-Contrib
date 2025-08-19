@@ -8,11 +8,11 @@
              x:Class="XXRead.Helpers.DataTemplates.StoryListItemDictionary">
 
     <Style TargetType="Label" x:Key="LabelStoriesPrimary">
-        <Setter Property="TextColor" Value="{Binding Source={x:RelativeSource AncestorType={x:Type vm:BaseViewModel}}, Path=ThemeFontPrimary}"/>
+        <Setter Property="TextColor" Value="{DynamicResource Key=ThemeFontPrimary}"/>
     </Style>
 
     <Style TargetType="Label" x:Key="LabelStoriesSecondary">
-        <Setter Property="TextColor" Value="{Binding Source={x:RelativeSource AncestorType={x:Type vm:BaseViewModel}}, Path=ThemeFontSecondary}"/>
+        <Setter Property="TextColor" Value="{DynamicResource Key=ThemeFontSecondary}"/>
     </Style>
 
     <Style TargetType="Image" 
@@ -27,7 +27,7 @@
     <DataTemplate x:Key="StoryListItemDataTemplate" x:DataType="dto:Story">
         <Border Margin="13,5" 
                 Stroke="Transparent"
-                BackgroundColor="{Binding Source={x:RelativeSource AncestorType={x:Type vm:BaseViewModel}}, Path=ThemeSecondary}"
+                BackgroundColor="{DynamicResource Key=ThemeBackgroundSecondary}"
                 StrokeShape="RoundRectangle 3"
                 Padding="20">
             <Border.GestureRecognizers>
@@ -58,7 +58,7 @@
                         <!-- Separator -->
                         <Rectangle Grid.Row="0" HeightRequest="1" 
                                    Margin="50,5" 
-                                   BackgroundColor="{Binding ThemeFontPrimary}"/>
+                                   BackgroundColor="{DynamicResource Key=ThemeFontPrimary}"/>
                         <!-- / Separator -->
 
                         <!-- Chapter name -->
