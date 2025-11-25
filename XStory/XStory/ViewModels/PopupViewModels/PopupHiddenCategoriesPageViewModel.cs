@@ -58,6 +58,11 @@ namespace XStory.ViewModels.PopupViewModels
 			category.IsEnabled = baseState ? false : true;
 			int result = await _serviceCategory.Save(category);
 
+			if (!category.IsEnabled)
+			{
+				_serviceCategory.SetCurrentCategory(null);
+			}
+
 			if (result >= 0)
 			{
 				List<Category> categoriesUpdated = Categories.OrderBy(c => c.Title).ToList();

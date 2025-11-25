@@ -1,11 +1,12 @@
 ﻿using HtmlAgilityPack;
 using System;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using XStory.DAL.Web.XStory.Contracts;
 
-namespace XStory.DAL.Web
+namespace XStory.DAL.Web.XStory
 {
     public class RepositoryWebXStory : IRepositoryWebXStory
     {
@@ -27,6 +28,8 @@ namespace XStory.DAL.Web
                         },
                     }, false)
                     { BaseAddress = new Uri(BASE_URL) };
+                    _httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:141.0) Gecko/20100101 Firefox/141.0");
+                    _httpClient.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml");
                 }
                 return _httpClient;
             }
@@ -50,8 +53,20 @@ namespace XStory.DAL.Web
                     string error = response.StatusCode + " " + response.ReasonPhrase;
                     throw new Exception(error);
                 }
-                string responseContent = await response.Content.ReadAsStringAsync();
-                htmlPage = HttpUtility.HtmlDecode(responseContent);
+
+                // Start Encoding utf-8
+                System.Text.Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+                Encoding sourceEncoding = Encoding.GetEncoding("windows-1252");
+                Encoding targetEncoding = Encoding.UTF8;
+
+                byte[] sourceBytes = await response.Content.ReadAsByteArrayAsync();
+                byte[] utf8Bytes = Encoding.Convert(sourceEncoding, targetEncoding, sourceBytes);
+                string html = Encoding.UTF8.GetString(utf8Bytes);
+
+                htmlPage = HttpUtility.HtmlDecode(html);
+
+                // End Encoding utf-8
             }
             catch (Exception e)
             {

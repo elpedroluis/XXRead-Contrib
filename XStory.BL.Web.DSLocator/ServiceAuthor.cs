@@ -22,7 +22,7 @@ namespace XStory.BL.Web.DSLocator
 			_serviceAuthorDemo = serviceAuthorDemo;
 		}
 
-		public async Task<Author> GetAuthorPage(string dataSource, Author author)
+		public async Task<Author> GetAuthorPage(string dataSource, Author author, int pageNumber = 1)
 		{
 			try
 			{
@@ -31,7 +31,7 @@ namespace XStory.BL.Web.DSLocator
 					case "XStory":
 						return await _serviceAuthorXStory.GetAuthorPage(author);
 					case "HDS":
-						return await _serviceAuthorHDS.GetAuthorPage(author);
+						return await _serviceAuthorHDS.GetAuthorPage(author, pageNumber);
 					case "Demo":
 						return await _serviceAuthorDemo.GetAuthorPage(author);
 					default /* "All" */:

@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:colors="clr-namespace:XXRead.Resources.Styles"
+             xmlns:vm="clr-namespace:XXRead.ViewModels"
+             x:DataType="vm:SettingsPageViewModel"
+             x:Class="XXRead.Views.ContentViews.SettingsPageThemesView">
+    <ContentView.Resources>
+        <Style TargetType="Button" x:Key="ButtonColorBackgroundTheme">
+            <Setter Property="HeightRequest" Value="65"/>
+            <Setter Property="WidthRequest" Value="65"/>
+            <Setter Property="CornerRadius" Value="2"/>
+            <Setter Property="BorderColor" Value="#999"/>
+            <Setter Property="BorderWidth" Value="0.2"/>
+            <Setter Property="Command" Value="{Binding ThemeBackgroundTappedCommand}"/>
+            <Setter Property="CommandParameter" Value="{Binding Source={RelativeSource Self}, Path=BackgroundColor}"/>
+        </Style>
+
+        <Style TargetType="Button" x:Key="ButtonColorMainTheme" BasedOn="{StaticResource Key=ButtonColorBackgroundTheme}">
+            <Setter Property="HeightRequest" Value="50"/>
+            <Setter Property="WidthRequest" Value="50"/>
+            <Setter Property="FlexLayout.Basis" Value="25%"/>
+            <Setter Property="Command" Value="{Binding ThemeMainTappedCommand}"/>
+        </Style>
+
+        <Style TargetType="Label" x:Key="LabelColorTheme">
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="TextColor" Value="{Binding ThemeFontPrimary}"/>
+        </Style>
+    </ContentView.Resources>
+
+    <ContentView.Content>
+        <VerticalStackLayout Spacing="30">
+            <!-- Background theme -->
+            <Grid RowDefinitions="*,*" HorizontalOptions="Center" Margin="15">
+                <Label Grid.Row="0" 
+                       Text="Background" 
+                       Style="{StaticResource Key=LabelColorTheme}"
+                       FontAttributes="Bold" 
+                       FontSize="Small" 
+                       HorizontalOptions="Center" />
+                <StackLayout Grid.Row="1" Orientation="Horizontal" Spacing="20" Margin="10">
+
+                    <!-- Dark -->
+                    <StackLayout>
+                        <Button Style="{StaticResource Key=ButtonColorBackgroundTheme}" BackgroundColor="{StaticResource Key=BackgroundDarkPrimary}"/>
+                        <Label Text="Dark" Style="{StaticResource Key=LabelColorTheme}"/>
+                    </StackLayout>
+
+                    <!-- Light -->
+                    <StackLayout>
+                        <Button Style="{StaticResource Key=ButtonColorBackgroundTheme}" BackgroundColor="{StaticResource Key=BackgroundLightPrimary}"/>
+                        <Label Text="Light" Style="{StaticResource Key=LabelColorTheme}"/>
+                    </StackLayout>
+
+                </StackLayout>
+            </Grid>
+            <!-- End background -->
+
+            <!-- Main theme-->
+            <Grid RowDefinitions="*,*" HorizontalOptions="Center" Margin="5">
+                <Label Grid.Row="0" 
+                       Text="Main color" 
+                       Style="{StaticResource Key=LabelColorTheme}"
+                       FontAttributes="Bold" 
+                       FontSize="Small" 
+                       HorizontalOptions="Center" />
+
+                <FlexLayout Grid.Row="1"
+                            AlignItems="Start"
+                            AlignContent="SpaceEvenly"
+                            Wrap="Wrap" 
+                            Margin="10">
+                    <!-- Red -->
+                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{StaticResource Key=MainRed}"/>
+
+                    <!-- Black -->
+                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{StaticResource Key=MainBlack}"/>
+
+                    <!-- Pink -->
+                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{StaticResource Key=MainPink}"/>
+
+                    <!-- Purple -->
+                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{StaticResource Key=MainPurple}"/>
+
+                    <!-- LightBlue -->
+                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{StaticResource Key=MainLightBlue}"/>
+
+                    <!-- Green -->
+                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{StaticResource Key=MainGreen}"/>
+
+                    <!-- Greeyn -->
+                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{StaticResource Key=MainGreeyn}"/>
+
+                    <!-- Dark blue -->
+                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{StaticResource Key=MainDarkBlue}"/>
+
+                    <!-- Yellow -->
+                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{StaticResource Key=MainYellow}"/>
+
+                    <!-- Orange -->
+                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{StaticResource Key=MainOrange}"/>
+
+                    <!-- Brown -->
+                    <Button Style="{StaticResource Key=ButtonColorMainTheme}" BackgroundColor="{StaticResource Key=MainBrown}"/>
+                </FlexLayout>
+            </Grid>
+            <!-- End main theme-->
+        </VerticalStackLayout>
+    </ContentView.Content>
+</ContentView>

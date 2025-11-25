@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XXRead.Views.ContentViews.LogsView">
+    <!-- Page 2 (Logs) -->
+    <!--<ContentPage Title="{Binding LogsPageTitle}" BackgroundColor="{Binding ThemeSecondary}">-->
+    <ContentView.Content>
+        <ListView ItemsSource="{Binding Logs}"
+                  HasUnevenRows="True">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout>
+                            <!-- TODO : ADD A CONVERTER FOR TYPE COLOR-->
+                            <Label Text="{Binding Type}" TextColor="Red" HorizontalTextAlignment="Center"/>
+                            <Label Text="{Binding Content}" TextColor="{Binding ThemeFontSecondary}"/>
+                            <Label Text="{Binding Source}" TextColor="{Binding ThemeFontSecondary}"/>
+                            <Label Text="{Binding Date}" TextColor="{Binding ThemeFontSecondary}"/>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </ContentView.Content>
+    <!--</ContentPage>-->
+    <!-- End Page 2 -->
+</ContentView>

@@ -1,24 +1,30 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version = "1.0" encoding = "UTF-8" ?>
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:local="clr-namespace:XXRead"
              x:Class="XXRead.App">
     <Application.Resources>
         <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Theme.xaml" />
+                <ResourceDictionary Source="Helpers/DataTemplates/StoryListItemDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
 
-            <Color x:Key="PageBackgroundColor">#512bdf</Color>
-            <Color x:Key="PrimaryTextColor">White</Color>
-
-            <Style TargetType="Label">
-                <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}" />
-                <Setter Property="FontFamily" Value="OpenSansRegular" />
+            <Style TargetType="Label" x:Key="LabelPrimary">
+                <Setter Property="TextColor" Value="{Binding ThemeFontPrimary}"/>
+            </Style>
+            <Style TargetType="Label" x:Key="LabelSecondary">
+                <Setter Property="TextColor" Value="{Binding ThemeFontSecondary}"/>
             </Style>
 
-            <Style TargetType="Button">
-                <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}" />
-                <Setter Property="FontFamily" Value="OpenSansRegular" />
-                <Setter Property="BackgroundColor" Value="#2b0b98" />
-                <Setter Property="Padding" Value="14,10" />
+            <Style TargetType="Span" x:Key="SpanPrimary">
+                <Setter Property="TextColor" Value="{Binding ThemeFontPrimary}"/>
+            </Style>
+            <Style TargetType="Span" x:Key="SpanSecondary">
+                <Setter Property="TextColor" Value="{Binding ThemeFontSecondary}"/>
             </Style>
 
         </ResourceDictionary>

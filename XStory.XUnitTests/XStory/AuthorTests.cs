@@ -41,7 +41,7 @@ namespace XStory.XUnitTests.XStory
 				Id = "215478",
 				Name = "Lolo069",
 				Avatar = "https://www.xstory-fr.com/forum/img/avatars/215478.png",
-				Url = "auteur,215478,Lolo069.html"
+				Url = "https://www.xstory-fr.com/auteur,215478,Lolo069.html"
 			};
 
 			Task<Author> task = _serviceAuthor.GetAuthorPage(author);
@@ -60,7 +60,7 @@ namespace XStory.XUnitTests.XStory
 				Id = "220448",
 				Name = "Skell Dan",
 				Avatar = "https://www.xstory-fr.com/forum/img/avatars/220448.png",
-				Url = "auteur,220488,Skell-Dan.html"
+				Url = "https://www.xstory-fr.com/auteur,220488,Skell-Dan.html"
 			};
 
 			Task<Author> task = _serviceAuthor.GetAuthorPage(author);
@@ -79,7 +79,7 @@ namespace XStory.XUnitTests.XStory
 				Id = "215478",
 				Name = "Lolo069",
 				Avatar = "https://www.xstory-fr.com/forum/img/avatars/215478.png",
-				Url = "auteur,215478,Lolo069.html"
+				Url = "http://xstory-fr.com/auteur,215478,Lolo069.html"
 			};
 
 			Task<Author> task = _serviceAuthor.GetAuthorPage(author);
@@ -99,7 +99,7 @@ namespace XStory.XUnitTests.XStory
 				Id = "215478",
 				Name = "Lolo069",
 				Avatar = "https://www.xstory-fr.com/forum/img/avatars/215478.png",
-				Url = "auteur,215478,Lolo069.html"
+				Url = "http://xstory-fr.com/auteur,215478,Lolo069.html"
 				// https://www.xstory-fr.com/auteur,215478,Lolo069.html
 			};
 
@@ -120,7 +120,7 @@ namespace XStory.XUnitTests.XStory
 				Id = "119472",
 				Name = "matchless",
 				Avatar = "https://www.xstory-fr.com/forum/img/avatars/119472.jpg",
-				Url = "auteur,119472,matchless.html"
+				Url = "https://www.xstory-fr.com/auteur,119472,matchless.html"
 			};
 
 			Task<Author> task = _serviceAuthor.GetAuthorPage(author);
@@ -139,7 +139,7 @@ namespace XStory.XUnitTests.XStory
 				Id = "220488",
 				Name = "Skell Dan",
 				Avatar = "https://www.xstory-fr.com/forum/img/avatars/220488.jpg",
-				Url = "auteur,220488,Skell-Dan.html"
+				Url = "https://www.xstory-fr.com/auteur,220488,Skell-Dan.html"
 			};
 
 			Task<Author> task = _serviceAuthor.GetAuthorPage(author);

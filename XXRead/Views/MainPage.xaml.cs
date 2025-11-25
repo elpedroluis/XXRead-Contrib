@@ -1,9 +1,10 @@
-namespace XXRead.Views;
-
-public partial class MainPage : ContentPage
+﻿namespace XXRead.Views
 {
-	public MainPage()
+	public partial class MainPage : ContentPage
 	{
-		InitializeComponent();
-	}
+		public MainPage()
+		{
+			InitializeComponent();
+		}
+    }
 }

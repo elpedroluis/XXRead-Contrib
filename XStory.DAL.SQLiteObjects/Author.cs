@@ -9,7 +9,7 @@ namespace XStory.DAL.SQLiteObjects
     public class Author
     {
         [PrimaryKey]
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public string Url { get; set; }
     }

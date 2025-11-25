@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:XXRead.ViewModels"
+             xmlns:converters="clr-namespace:XXRead.Helpers.Converters"
+             xmlns:styles="clr-namespace:XXRead.Helpers.Styles"
+             xmlns:dto="clr-namespace:XStory.DTO;assembly=XStory.DTO"
+             x:Class="XXRead.Helpers.DataTemplates.StoryListItemDictionary">
+
+    <Style TargetType="Label" x:Key="LabelStoriesPrimary">
+        <Setter Property="TextColor" Value="{DynamicResource Key=ThemeFontPrimary}"/>
+    </Style>
+
+    <Style TargetType="Label" x:Key="LabelStoriesSecondary">
+        <Setter Property="TextColor" Value="{DynamicResource Key=ThemeFontSecondary}"/>
+    </Style>
+
+    <Style TargetType="Image" 
+           x:Key="CategoryThumbnailImageStyle" 
+           BasedOn="{x:Static styles:ImageStyles.CategoryThumbnailImageStyle}"/>
+
+    <converters:StoryDateTimeConverter x:Key="StoryDateTimeConverter"/>
+    <converters:MainPageChapterNameConverter x:Key="MainPageChapterNameConverter"/>
+    <converters:AuthorNameConverter x:Key="AuthorNameConverter"/>
+    <converters:StoryCategoryImageConverter x:Key="StoryCategoryImageConverter"/>
+
+    <DataTemplate x:Key="StoryListItemDataTemplate" x:DataType="dto:Story">
+        <Border Margin="13,5" 
+                Stroke="Transparent"
+                BackgroundColor="{DynamicResource Key=ThemeBackgroundSecondary}"
+                StrokeShape="RoundRectangle 3"
+                Padding="20">
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:BaseViewModel}}, Path=StoriesItemTappedCommand}"
+                                      CommandParameter="{Binding}"/>
+
+            </Border.GestureRecognizers>
+            <!--<Border.Shadow>
+                <Shadow Brush="#222222" Offset="0,0" Radius="10"/>
+            </Border.Shadow>-->
+
+            <!-- Content -->
+            <Grid RowDefinitions="Auto,Auto"
+                  RowSpacing="20">
+
+                <!-- Title & chapter -->
+                <Grid Grid.Row="0" RowDefinitions="Auto,Auto" Padding="5">
+                    <!-- Title -->
+                    <Label Grid.Row="0" Text="{Binding Title, Mode=OneTime}"
+                           Style="{StaticResource Key=LabelStoriesPrimary}"
+                           HorizontalTextAlignment="Center"
+                           CharacterSpacing="0.5" 
+                           FontAttributes="Bold"/>
+                    <!-- / Title -->
+
+                    <Grid Grid.Row="1" RowDefinitions="*,Auto" IsVisible="{Binding ChapterName,Converter={StaticResource Key=MainPageChapterNameConverter}, ConverterParameter={Binding ChapterName}}">
+
+                        <!-- Separator -->
+                        <Rectangle Grid.Row="0" HeightRequest="1" 
+                                   Margin="50,5" 
+                                   BackgroundColor="{DynamicResource Key=ThemeFontPrimary}"/>
+                        <!-- / Separator -->
+
+                        <!-- Chapter name -->
+                        <Label Grid.Row="1" Text="{Binding ChapterName,Mode=OneTime}"
+                                Style="{StaticResource Key=LabelStoriesSecondary}"
+                                HorizontalTextAlignment="Center"
+                                CharacterSpacing="0.5" 
+                                FontAttributes="Italic"/>
+                        <!-- / Chapter name -->
+                    </Grid>
+                </Grid>
+                <!-- / Title & chapter -->
+
+                <!-- Body -->
+                <Grid Grid.Row="1" RowDefinitions="*,Auto" RowSpacing="3">
+
+                    <!-- Category area -->
+                    <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto" ColumnSpacing="7">
+                        <Image Grid.Column="0" Source="{Binding CategoryUrl, Mode=OneTime, Converter={StaticResource Key=StoryCategoryImageConverter}}" 
+                               Style="{StaticResource Key=CategoryThumbnailImageStyle}"/>
+                        <Label Grid.Column="1" 
+                               Text="{Binding CategoryName, Mode=OneTime}" 
+                               Style="{StaticResource Key=LabelStoriesSecondary}" 
+                               LineBreakMode="WordWrap"
+                               VerticalTextAlignment="Center"/>
+                    </Grid>
+                    <!-- / Category area -->
+
+                    <!-- Author and date area -->
+                    <Grid Grid.Row="1" ColumnDefinitions="Auto,*">
+                        <Label Grid.Column="0" Text="{Binding Author.Name, Mode=OneTime, Converter={StaticResource Key=AuthorNameConverter}}"
+                               Style="{StaticResource Key=LabelStoriesSecondary}"/>
+                        <Label Grid.Column="1" Text="{Binding ReleaseDate, Mode=OneTime, Converter={StaticResource Key=StoryDateTimeConverter}}" 
+                               Style="{StaticResource Key=LabelStoriesSecondary}" 
+                               HorizontalTextAlignment="End"/>
+                    </Grid>
+                    <!-- / Author and date area -->
+                </Grid>
+
+            </Grid>
+            <!-- / Content -->
+
+        </Border>
+    </DataTemplate>
+</ResourceDictionary>

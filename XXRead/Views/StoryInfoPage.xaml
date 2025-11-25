@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:constants="clr-namespace:XXRead.Helpers.Constants"
+             x:Class="XXRead.Views.StoryInfoPage"
+             Title="{Binding Title}" BackgroundColor="{Binding ThemePrimary}">
+    <ContentPage.Resources>
+
+        <toolkit:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter"/>
+        
+        <Style TargetType="Label" BasedOn="{StaticResource Key=LabelSecondary}"/>
+
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Frame Padding="5" Margin="13" BackgroundColor="{Binding ThemeSecondary}" CornerRadius="3" HasShadow="True">
+            <StackLayout Margin="15,20" Spacing="20">
+                <StackLayout Orientation="Horizontal" Spacing="10">
+                    <Label Text="{x:Static Member=constants:StoryInfoConstants.STORY_AUTHOR}"/>
+                    <Label Text="{Binding Story.Author.Name}"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" Spacing="10">
+                    <Label Text="{x:Static Member=constants:StoryInfoConstants.STORY_RELEASE_DATE}"/>
+                    <Label Text="{Binding Story.ReleaseDate}"/>
+                </StackLayout>
+                <Rectangle HeightRequest="1" BackgroundColor="LightGray" Margin="10"/>
+                <StackLayout Orientation="Vertical" Spacing="10" IsVisible="{Binding IsChapterListVisible}">
+                    <Label Text="{x:Static Member=constants:StoryInfoConstants.STORY_CHAPTERS}" HorizontalOptions="Center"/>
+                    <ListView ItemsSource="{Binding Story.ChaptersList}" HasUnevenRows="True" HorizontalOptions="Center">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <StackLayout VerticalOptions="Center" Margin="10">
+                                        <Label Text="{Binding Title}" TextColor="DodgerBlue" TextDecorations="Underline" HorizontalOptions="Center"/>
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.Behaviors>
+                            <toolkit:EventToCommandBehavior EventName="ItemTapped" 
+                                                            Command="{Binding ChapterSelectionCommand}" 
+                                                            EventArgsConverter="{StaticResource Key=ItemTappedEventArgsConverter}"/>
+                        </ListView.Behaviors>
+                    </ListView>
+                </StackLayout>
+            </StackLayout>
+        </Frame>
+    </ContentPage.Content>
+</ContentPage>

@@ -13,7 +13,19 @@ namespace XStory.Helpers.Converters
 			if (string.IsNullOrWhiteSpace((string)value))
 			{ return ""; }
 
-			DateTime date = DateTime.Parse(value as string);
+			DateTime date;
+
+			switch (StaticContext.DATASOURCE)
+			{
+				case "HDS":
+					date = DateTime.ParseExact(value as string, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+					break;
+
+				default:
+					date = DateTime.Parse(value as string);
+					break;
+			}
+
 			return date.ToString("dd/MM/yyyy HH:mm");
 		}
 

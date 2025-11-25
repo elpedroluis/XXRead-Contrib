@@ -62,10 +62,5 @@ namespace XStory.ViewModels.PopupViewModels
 
 			ClosePopupCommand.Execute();
 		}
-
-		protected override async void ExecuteClosePopupCommand()
-		{
-			await NavigationService.GoBackAsync();
-		}
 	}
 }

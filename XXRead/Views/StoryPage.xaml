@@ -1,12 +1,259 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="XXRead.Views.StoryPage"
-             Title="StoryPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:converters="clr-namespace:XXRead.Helpers.Converters"
+             xmlns:constants="clr-namespace:XXRead.Helpers.Constants"
+             xmlns:contentViews="clr-namespace:XXRead.Views.ContentViews"
+             xmlns:customControls="clr-namespace:XXRead.Helpers.CustomControls"
+             xmlns:styles="clr-namespace:XXRead.Helpers.Styles"
+             xmlns:vm="clr-namespace:XXRead.ViewModels"
+             x:DataType="vm:StoryPageViewModel"
+             x:Class="XXRead.Views.StoryPage" 
+             Title="{Binding Title}" 
+             BackgroundColor="{Binding ThemePrimary}">
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior EventName="Appearing" Command="{Binding AppearingCommand}"/>
+    </ContentPage.Behaviors>
+    <ContentPage.ToolbarItems>
+        <!--<ToolbarItem IconImageSource="three_dots_white" Order="Primary" Command="{Binding OpenStoryActionsCommand}"/>-->
+        <ToolbarItem Text="{x:Static Member=constants:StoryPageConstants.STORYPAGE_SAVE}" Order="Secondary" Command="{Binding SaveStoryCommand}"/>
+        <!--<ToolbarItem Text="TestIsEnabledFalse" Order="Secondary" Command="{Binding SaveStoryCommand}"/>-->
+        <ToolbarItem Text="{x:Static Member=constants:StoryPageConstants.STORYPAGE_SHARE}" Order="Secondary" Command="{Binding ShareStoryCommand}"/>
+        <ToolbarItem Text="{x:Static Member=constants:StoryPageConstants.STORYPAGE_OPEN_IN_BROWSER}" Order="Secondary" Command="{Binding OpenInBrowserCommand}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Resources>
+
+        <converters:AuthorAvatarConverter x:Key="AuthorAvatarConverter"/>
+        <converters:ViewStateConverter x:Key="ViewStateConverter"/>
+        <converters:ArrowChapterConverter x:Key="ArrowChapterConverter"/>
+        <converters:StoryCategoryImageConverter x:Key="StoryCategoryImageConverter"/>
+        <converters:StoryInfoVisibleConverter x:Key="StoryInfoVisibleConverter"/>
+
+        <!-- Style for Title labels -->
+        <Style TargetType="Label" x:Key="LabelStoryTitles" BasedOn="{StaticResource Key=LabelPrimary}">
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="LineHeight" Value="1.1"/>
+        </Style>
+
+        <!-- Style for all other labels -->
+        <Style TargetType="Label" BasedOn="{StaticResource Key=LabelSecondary}"/>
+
+        <Style TargetType="Button">
+            <Setter Property="BackgroundColor" Value="{Binding ThemeMain}"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="CornerRadius" Value="7"/>
+        </Style>
+
+        <Style TargetType="Button" x:Key="ActionButtonStyle">
+            <Setter Property="BackgroundColor" Value="{Binding ThemeMain}"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="CornerRadius" Value="7"/>
+        </Style>
+
+        <Style x:Key="LabelStyle" TargetType="Label">
+            <!--<Setter Property="FontFamily" Value="Tahoma"/>-->
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="CharacterSpacing" Value="0.6"/>
+            <Setter Property="LineHeight" Value="1.1"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+        </Style>
+
+        <Style x:Key="LabelStoryContentStyle" TargetType="customControls:LabelStoryContent" BasedOn="{StaticResource Key=LabelStyle}">
+            <Setter Property="HorizontalTextAlignment" Value="Start"/>
+            <Setter Property="LineHeight" Value="1.2"/>
+            <Setter Property="FontAttributes" Value="None"/>
+            <Setter Property="CharacterSpacing" Value="0.1"/>
+            <Setter Property="TextColor" Value="{Binding ThemeFontSecondary}"/>
+        </Style>
+
+        <Style x:Key="ImageChapterArrowStyle" TargetType="Image">
+            <Setter Property="HeightRequest" Value="15"/>
+            <Setter Property="WidthRequest" Value="15"/>
+        </Style>
+
+        <Style TargetType="Rectangle" Class="Separator">
+            <Setter Property="HeightRequest" Value="1"/>
+            <Setter Property="BackgroundColor" Value="{Binding ThemeFontPrimary}"/>
+        </Style>
+
+        <Style TargetType="ContentView">
+            <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+        </Style>
+
+        <Style TargetType="Image" x:Key="TitleImageStyle" BasedOn="{x:Static styles:ImageStyles.TitleImageStyle}"/>
+        <Style TargetType="Frame" x:Key="MainFrameStyle" BasedOn="{x:Static styles:FrameStyles.MainFrameStyle}"/>
+
+    </ContentPage.Resources>
+
+    <Grid HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+        <ContentView IsVisible="{Binding ViewState, Converter={StaticResource Key=ViewStateConverter}, ConverterParameter='loading'}">
+            <ContentView.Content>
+                <contentViews:LoadingView/>
+            </ContentView.Content>
+        </ContentView>
+
+        <ContentView IsVisible="{Binding ViewState, Converter={StaticResource Key=ViewStateConverter}, ConverterParameter='error'}">
+            <ContentView.Content>
+                <contentViews:ErrorView/>
+            </ContentView.Content>
+        </ContentView>
+
+        <Grid IsVisible="{Binding ViewState, Converter={StaticResource Key=ViewStateConverter}}">
+            <ScrollView Padding="0,0,0,13">
+                <StackLayout>
+                    <!-- Story content -->
+                    <Frame BackgroundColor="{Binding ThemeSecondary}"
+                           Style="{StaticResource Key=MainFrameStyle}">
+                        <StackLayout Orientation="Vertical">
+
+                            <!-- Story header -->
+                            <StackLayout HorizontalOptions="Center" Margin="40">
+                                <ContentView>
+                                    <Label Text="{Binding Story.Title}" 
+                                       FontSize="Title" 
+                                       Style="{StaticResource Key=LabelStoryTitles}"/>
+                                </ContentView>
+
+
+                                <!-- Author -->
+                                <ContentView Margin="0,20,0,0">
+                                    <Frame Style="{StaticResource Key=MainFrameStyle}"
+                                           BackgroundColor="Transparent"
+                                           Margin="0"
+                                           Padding="0">
+                                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="5">
+                                            <Label Text="Par : "
+                                                   HorizontalTextAlignment="Center"
+                                                   VerticalTextAlignment="Center"/>
+                                            <Frame Padding="0"
+                                                   BackgroundColor="Transparent"
+                                                   BorderColor="Transparent"
+                                                   CornerRadius="3">
+                                                <Image 
+                                                    Source="{Binding Story.Author.Avatar, Converter={StaticResource Key=AuthorAvatarConverter}}" 
+                                                    HeightRequest="35"
+                                                    WidthRequest="35"/>
+                                            </Frame>
+                                            <Label 
+                                                Text="{Binding Story.Author.Name}"
+                                                FontAttributes="Bold"
+                                                TextDecorations="Underline"
+                                                VerticalTextAlignment="Center"/>
+                                        </HorizontalStackLayout>
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding AuthorTappedCommand}"/>
+                                        </Frame.GestureRecognizers>
+                                    </Frame>
+
+                                </ContentView>
+                                <!-- /Author -->
+
+
+                                <Label Text="Publiée le : " HorizontalTextAlignment="Center">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Style="{StaticResource Key=SpanSecondary}" Text="Publiée le : "/>
+                                            <Span Style="{StaticResource Key=SpanSecondary}" Text="{Binding Story.ReleaseDate}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Label Text="{Binding IsStoryInfoVisible, Converter={StaticResource Key=StoryInfoVisibleConverter}}" HorizontalTextAlignment="Center">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ToggleStoryInfosCommand}"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                                <StackLayout IsVisible="{Binding IsStoryInfoVisible}" HorizontalOptions="Center">
+                                    <!-- Views number -->
+                                    <Label HorizontalTextAlignment="Center">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Style="{StaticResource Key=SpanSecondary}" Text="Lue "/>
+                                                <Span Style="{StaticResource Key=SpanSecondary}" Text="{Binding Story.ViewsNumber}"/>
+                                                <Span Style="{StaticResource Key=SpanSecondary}" Text=" fois"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <!-- Likes number -->
+                                    <Label HorizontalTextAlignment="Center">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Style="{StaticResource Key=SpanSecondary}" Text="{Binding Story.LikesNumber}"/>
+                                                <Span Style="{StaticResource Key=SpanSecondary}" Text=" J'aime"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
+                            </StackLayout>
+                            <!-- /Story header -->
+
+                            <!-- Category -->
+                            <StackLayout HorizontalOptions="Center" Spacing="5">
+                                <Image Source="{Binding Story.CategoryUrl, Converter={StaticResource Key=StoryCategoryImageConverter}}" 
+                                       Style="{StaticResource Key=TitleImageStyle}"/>
+                                <Label Text="{Binding Story.CategoryName}" HorizontalTextAlignment="Center"
+                                       Style="{StaticResource Key=LabelSecondary}"/>
+                            </StackLayout>
+                            <!-- /Category -->
+
+                            <!-- Chapter name/navigation -->
+                            <StackLayout Orientation="Horizontal" Margin="10,10,10,0">
+                                <Image Source="arrow_triangle_left_white" 
+                                       IsVisible="{Binding Story, Converter={StaticResource Key=ArrowChapterConverter}, ConverterParameter='left'}" Style="{StaticResource Key=ImageChapterArrowStyle}" 
+                                       HorizontalOptions="Start">
+                                    <Image.Behaviors>
+                                        <toolkit:IconTintColorBehavior TintColor="{Binding ThemeFontPrimary}"/>
+                                    </Image.Behaviors>
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ChapterArrowTapped}" CommandParameter="left"/>
+                                    </Image.GestureRecognizers>
+                                </Image>
+                                <ContentView>
+                                    <ContentView.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ChapterNameTappedCommand}"/>
+                                    </ContentView.GestureRecognizers>
+                                    <Label Text="{Binding Story.ChapterName}" FontSize="Subtitle" TextDecorations="Underline" Style="{StaticResource Key=LabelStoryTitles}"/>
+                                </ContentView>
+                                <Image Source="arrow_triangle_right_white" 
+                                       IsVisible="{Binding Story, Converter={StaticResource Key=ArrowChapterConverter}, ConverterParameter='right'}" Style="{StaticResource Key=ImageChapterArrowStyle}" 
+                                       HorizontalOptions="End">
+                                    <Image.Behaviors>
+                                        <toolkit:IconTintColorBehavior TintColor="{Binding ThemeFontPrimary}"/>
+                                    </Image.Behaviors>
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ChapterArrowTapped}" CommandParameter="right"/>
+                                    </Image.GestureRecognizers>
+                                </Image>
+                            </StackLayout>
+                            <!-- END Chapter name/navigation -->
+
+                            <!-- Content -->
+                            <customControls:LabelStoryContent Text="{Binding Story.Content}" TextType="Text" FontSize="14" Margin="10" Style="{StaticResource Key=LabelStoryContentStyle}"/>
+                            <!-- / Content -->
+
+                            <!-- Separator -->
+                            <Rectangle HeightRequest="1" BackgroundColor="{Binding ThemeFontPrimary}" Margin="15"/>
+                            <!-- / Separator -->
+
+                            <!-- Like and save buttons -->
+                            <StackLayout HorizontalOptions="Center" Spacing="5" Orientation="Horizontal">
+                                <Button Text="{Binding SaveButtonText}"
+                                        TextColor="{Binding ThemeFontPrimary}"
+                                        Command="{Binding SaveStoryCommand}"
+                                        Style="{StaticResource Key=ActionButtonStyle}"/>
+                                <Button Text="Partager"
+                                        TextColor="{Binding ThemeFontPrimary}"
+                                        Command="{Binding ShareStoryCommand}"
+                                        Style="{StaticResource Key=ActionButtonStyle}"/>
+                            </StackLayout>
+                            <!-- /Like and save buttons -->
+                        </StackLayout>
+                    </Frame>
+                    <!-- /Story content -->
+                </StackLayout>
+            </ScrollView>
+        </Grid>
+    </Grid>
+    <!-- End content -->
 </ContentPage>

@@ -53,7 +53,7 @@ namespace XStory.ViewModels.PopupViewModels
 			this.ClosePopupCommand.Execute();
 		}
 
-		protected override async void ExecuteClosePopupCommand()
+		public override async void ExecuteClosePopupCommand()
 		{
 			if (_selectedChapter == null)
 			{

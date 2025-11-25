@@ -1,9 +1,12 @@
-namespace XXRead.Views;
-
-public partial class StoryPage : ContentPage
+﻿namespace XXRead.Views
 {
-	public StoryPage()
+	public partial class StoryPage : ContentPage
 	{
-		InitializeComponent();
+		public StoryPage(ViewModels.StoryPageViewModel vm)
+		{
+			InitializeComponent();
+
+			this.BindingContext = vm;
+		}
 	}
 }

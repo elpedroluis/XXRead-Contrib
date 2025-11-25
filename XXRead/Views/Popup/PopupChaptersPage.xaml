@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               xmlns:constants="clr-namespace:XXRead.Helpers.Constants"
+               xmlns:contentViews="clr-namespace:XXRead.Views.ContentViews"
+               xmlns:converters="clr-namespace:XXRead.Helpers.Converters"
+               xmlns:vm="clr-namespace:XXRead.ViewModels.PopupViewModels"
+               x:DataType="vm:PopupChaptersPageViewModel"
+               x:Class="XXRead.Views.Popup.PopupChaptersPage"
+               Color="Transparent"
+               Size="{Binding Converter={StaticResource Key=PopupSizeConverter}}">
+    <toolkit:Popup.Resources>
+        <ResourceDictionary>
+
+            <toolkit:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter"/>
+
+            <converters:PopupSizeConverter x:Key="PopupSizeConverter"/>
+
+            <Style TargetType="Label" x:Key="LabelStoryTitle" BasedOn="{StaticResource Key=LabelPrimary}">
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="LineHeight" Value="1.1"/>
+                <Setter Property="FontSize" Value="Medium"/>
+            </Style>
+        </ResourceDictionary>
+    </toolkit:Popup.Resources>
+
+    <Grid>
+        <Frame Padding="0"
+               HorizontalOptions="FillAndExpand"
+               BorderColor="{Binding ThemeMain}"
+               BackgroundColor="{Binding ThemePrimary}">
+            <StackLayout>
+                <Label Text="{Binding StoryTitle}" Margin="20,20,20,10" Style="{StaticResource Key=LabelStoryTitle}"/>
+
+                <Rectangle HeightRequest="1" BackgroundColor="{Binding ThemeFontSecondary}" Margin="20,10"/>
+
+                <ListView ItemsSource="{Binding Chapters}"
+                          HasUnevenRows="True">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <contentViews:ChaptersListItemView/>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.Behaviors>
+                        <toolkit:EventToCommandBehavior EventName="ItemTapped"
+                                                        Command="{Binding ChapterTappedCommand}"
+                                                        EventArgsConverter="{StaticResource Key=ItemTappedEventArgsConverter}"/>
+                    </ListView.Behaviors>
+                </ListView>
+                <Button Text="{x:Static Member=constants:GlobalConstants.CLOSE}" 
+                        Command="{Binding ClosePopupCommand}" 
+                        TextColor="{Binding ThemeFontPrimary}"
+                        BackgroundColor="{Binding ThemeMain}" 
+                        CornerRadius="0"
+                        VerticalOptions="End"/>
+            </StackLayout>
+        </Frame>
+    </Grid>
+</toolkit:Popup>

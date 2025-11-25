@@ -25,6 +25,7 @@ namespace XStory.ViewModels
 
 		private BL.Common.Contracts.IServiceStory _serviceStory;
 		private BL.Common.Contracts.IServiceCategory _serviceCategory;
+		private BL.Common.Contracts.IServiceConfig _serviceConfig;
 
 		private ObservableCollection<Story> _stories;
 
@@ -52,6 +53,7 @@ namespace XStory.ViewModels
 
 		#region --- Commands ---
 		public DelegateCommand CategoryTappedCommand { get; set; }
+		public DelegateCommand GetDbStoriesCommand { get; set; }
 		public DelegateCommand LoadMoreStoriesCommand { get; set; }
 		public DelegateCommand<DTO.Story> StoriesItemTappedCommand { get; set; }
 		public DelegateCommand StoriesRefreshCommand { get; set; }
@@ -62,19 +64,22 @@ namespace XStory.ViewModels
 		public MainPageViewModel(INavigationService navigationService,
 			IPageDialogService pageDialogService,
 			BL.Common.Contracts.IServiceStory serviceStory,
-			BL.Common.Contracts.IServiceCategory serviceCategory)
+			BL.Common.Contracts.IServiceCategory serviceCategory,
+			BL.Common.Contracts.IServiceConfig serviceConfig)
 			: base(navigationService)
 		{
 			_pageDialogService = pageDialogService;
 
 			_serviceStory = serviceStory;
 			_serviceCategory = serviceCategory;
+			_serviceConfig = serviceConfig;
 
 			Title = MainPageConstants.MAINPAGE_TITLE;
 			ViewState = ViewStateEnum.Loading;
 
 			AppearingCommand = new DelegateCommand(ExecuteAppearingCommand);
 			CategoryTappedCommand = new DelegateCommand(ExecuteCategoryTappedCommand);
+			GetDbStoriesCommand = new DelegateCommand(ExecuteGetDbStoriesCommand);
 			LoadMoreStoriesCommand = new DelegateCommand(ExecuteLoadMoreStoriesCommand);
 			SettingsCommand = new DelegateCommand(ExecuteSettingsCommand);
 			StoriesItemTappedCommand = new DelegateCommand<DTO.Story>((story) => ExecuteStoriesItemTappedCommand(story));
@@ -95,12 +100,14 @@ namespace XStory.ViewModels
 
 		private void InitData()
 		{
+			_serviceConfig.SetCurrentDataSource((DTO.Config.DataSources)Enum.Parse(typeof(DTO.Config.DataSources), AppSettings.DataSource));
+
 			Task.Run(this.InitCategories).Wait();
 			Task.Run(this.InitHiddenCategories).Wait();
 			Task.Run(() => this.InitStories()).Wait();
 		}
 
-		[Obsolete("Deprecated. Use InitData instead")]
+		[Obsolete("Deprecated. (to improvise - with Task.ContinueWith()) - Use InitData instead")]
 		private void InitDataOld()
 		{
 			this.InitCategories().ContinueWith(result =>
@@ -157,7 +164,7 @@ namespace XStory.ViewModels
 
 		private async void ExecuteSettingsCommand()
 		{
-			await NavigationService.NavigateAsync(nameof(Views.SettingsPage));
+			await NavigationService.NavigateAsync(nameof(Views.Popup.PopupFlyoutMenuPage));
 		}
 
 		private async void ExecuteStoriesItemTappedCommand(DTO.Story story)
@@ -225,6 +232,7 @@ namespace XStory.ViewModels
 			{
 				forceInit = true;
 				_serviceStory.ResetPageNumber();
+				CurrentCategory = _serviceCategory.GetCurrentCategory();
 			}
 
 			if (forceInit || (Stories == null || Stories.Count == 0))
@@ -242,6 +250,21 @@ namespace XStory.ViewModels
 				}
 				AppSettings.DataSourceChanged = false;
 				AppSettings.HiddenCategoriesChanged = false;
+			}
+		}
+
+		private async void ExecuteGetDbStoriesCommand()
+		{
+			if (Title == MainPageConstants.MAINPAGE_TITLE)
+			{
+				var storiess = await _serviceStory.GetStoriesSQLite();
+				Stories = new ObservableCollection<Story>(storiess);
+				Title = MainPageConstants.MAINPAGE_TITLE_SAVED;
+			}
+			else
+			{
+				this.InitStories(true);
+				Title = MainPageConstants.MAINPAGE_TITLE;
 			}
 		}
 

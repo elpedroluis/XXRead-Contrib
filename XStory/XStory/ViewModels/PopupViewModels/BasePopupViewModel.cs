@@ -15,7 +15,7 @@ namespace XStory.ViewModels.PopupViewModels
 
 		}
 
-		protected virtual async void ExecuteClosePopupCommand()
+		public virtual async void ExecuteClosePopupCommand()
 		{
 			await NavigationService.GoBackAsync();
 		}

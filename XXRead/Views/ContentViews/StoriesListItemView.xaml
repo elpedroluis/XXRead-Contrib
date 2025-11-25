@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:XXRead.Helpers.Converters"
+             xmlns:contentViews="clr-namespace:XXRead.Views.ContentViews"
+             xmlns:styles="clr-namespace:XXRead.Helpers.Styles"
+             xmlns:vms="clr-namespace:XXRead.ViewModels"
+             xmlns:dto="clr-namespace:XStory.DTO;assembly=XStory.DTO"
+             x:DataType="dto:Story"
+             x:Class="XXRead.Views.ContentViews.StoriesListItemView">
+    <ContentView.Resources>
+
+        <Style TargetType="Label" x:Key="LabelStoriesPrimary">
+            <Setter Property="TextColor" Value="{Binding Source={x:RelativeSource AncestorType={x:Type vms:BaseViewModel}}, Path=ThemeFontPrimary}"/>
+        </Style>
+
+        <Style TargetType="Label" x:Key="LabelStoriesSecondary">
+            <Setter Property="TextColor" Value="{Binding Source={x:RelativeSource AncestorType={x:Type vms:BaseViewModel}}, Path=ThemeFontSecondary}"/>
+        </Style>
+
+        <Style TargetType="Image" 
+               x:Key="CategoryThumbnailImageStyle" 
+               BasedOn="{x:Static styles:ImageStyles.CategoryThumbnailImageStyle}"/>
+
+        <converters:StoryDateTimeConverter x:Key="StoryDateTimeConverter"/>
+        <converters:MainPageChapterNameConverter x:Key="MainPageChapterNameConverter"/>
+        <converters:AuthorNameConverter x:Key="AuthorNameConverter"/>
+        <converters:StoryCategoryImageConverter x:Key="StoryCategoryImageConverter"/>
+    </ContentView.Resources>
+
+    <ContentView.Content>
+        <Frame Margin="13,5" 
+               BorderColor="Transparent"
+               BackgroundColor="{Binding Source={x:RelativeSource AncestorType={x:Type vms:BaseViewModel}}, Path=ThemeSecondary, Mode=OneTime}" 
+               CornerRadius="3" 
+               HasShadow="True">
+
+            <!-- Content -->
+            <StackLayout Spacing="20">
+
+                <!-- Title & chapter -->
+                <StackLayout Padding="5">
+                    <!-- Title -->
+                    <Label Text="{Binding Title, Mode=OneTime}"
+                           Style="{StaticResource Key=LabelStoriesPrimary}"
+                           VerticalOptions="Center" 
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"
+                           CharacterSpacing="0.5" 
+                           FontAttributes="Bold"/>
+                    <!-- / Title -->
+
+                    <StackLayout IsVisible="{Binding ChapterName,Converter={StaticResource Key=MainPageChapterNameConverter}, ConverterParameter={Binding ChapterName}}">
+
+                        <!-- Separator -->
+                        <contentViews:SeparatorView BindingContext="{Binding Source={x:RelativeSource AncestorType={x:Type vms:BaseViewModel}}}"/>
+                        <!-- / Separator -->
+
+                        <!-- Chapter name -->
+                        <Label Text="{Binding ChapterName,Mode=OneTime}"
+                                Style="{StaticResource Key=LabelStoriesSecondary}"
+                                VerticalTextAlignment="Center"
+                                HorizontalTextAlignment="Center"
+                                CharacterSpacing="0.5" 
+                                FontAttributes="Italic"/>
+                        <!-- / Chapter name -->
+                    </StackLayout>
+                </StackLayout>
+                <!-- / Title & chapter -->
+
+                <!-- Body -->
+                <StackLayout Orientation="Horizontal">
+
+                    <!-- Category area -->
+                    <StackLayout HorizontalOptions="StartAndExpand">
+                        <Image Source="{Binding CategoryUrl, Mode=OneTime, Converter={StaticResource Key=StoryCategoryImageConverter}}" 
+                               Style="{StaticResource Key=CategoryThumbnailImageStyle}"
+                               HorizontalOptions="Start"/>
+                        <Label Text="{Binding CategoryName, Mode=OneTime}" Style="{StaticResource Key=LabelStoriesSecondary}" 
+                               HorizontalTextAlignment="Start" 
+                               LineBreakMode="WordWrap"/>
+                    </StackLayout>
+                    <!-- / Category area -->
+
+                    <!-- Author and date area -->
+                    <StackLayout HorizontalOptions="End">
+                        <Label Text="{Binding Author.Name, Mode=OneTime, Converter={StaticResource Key=AuthorNameConverter}}"
+                               Style="{StaticResource Key=LabelStoriesSecondary}"/>
+                        <Label Text="{Binding ReleaseDate, Mode=OneTime, Converter={StaticResource Key=StoryDateTimeConverter}}" 
+                               Style="{StaticResource Key=LabelStoriesSecondary}" 
+                               HorizontalOptions="EndAndExpand"/>
+                    </StackLayout>
+                    <!-- / Author and date area -->
+                </StackLayout>
+
+            </StackLayout>
+            <!-- / Content -->
+
+        </Frame>
+    </ContentView.Content>
+</ContentView>

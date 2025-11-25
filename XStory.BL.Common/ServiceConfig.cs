@@ -13,7 +13,7 @@ namespace XStory.BL.Common
 	public class ServiceConfig : IServiceConfig
 	{
 
-		public void SetDataSource(DataSources dataSource)
+		public void SetCurrentDataSource(DataSources dataSource)
 		{
 			StaticContext.DataSource = dataSource;
 		}

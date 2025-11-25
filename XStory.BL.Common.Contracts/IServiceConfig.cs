@@ -10,13 +10,15 @@ namespace XStory.BL.Common.Contracts
 	/// </summary>
 	public interface IServiceConfig
 	{
-		/// <summary>
+		
 		/// Gets Stories contexts data sources from a JSON file
-		/// </summary>
-		/// <returns></returns>
 		// List<DataSourceItem> GetDataSourcesFromJSON();
 
-		void SetDataSource(DataSources dataSource);
+		/// <summary>
+		/// Sets curret data source from Enum.
+		/// </summary>
+		/// <returns></returns>
+		void SetCurrentDataSource(DataSources dataSource);
 		Array GetDataSources();
 		DataSources GetCurrentDataSource();
 	}

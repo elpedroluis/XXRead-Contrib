@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using XStory.BL.Web.XStory.Contracts;
 using XStory.BL.Web.XStory.Helpers;
-using XStory.DAL.Web;
+using XStory.DAL.Web.XStory;
 using XStory.DAL.Web.XStory.Contracts;
 using XStory.DTO;
 using XStory.Logger;
@@ -16,6 +16,8 @@ namespace XStory.BL.Web.XStory
 	public class ServiceStory : IServiceStory
 	{
 		private IRepositoryWebXStory _repositoryWeb;
+
+		private Uri _baseAdress;
 
 		public const string HTML_BR = "br";
 		public const string HTML_CLASS = "class";
@@ -43,6 +45,8 @@ namespace XStory.BL.Web.XStory
 		public ServiceStory()
 		{
 			_repositoryWeb = new RepositoryWebXStory();
+
+			_baseAdress = _repositoryWeb.GetHttpClient().BaseAddress;
 		}
 
 		public async Task<List<Story>> GetStoriesPage(int page = 0, string categoryUrl = "", string sortCriterion = "")
@@ -64,8 +68,7 @@ namespace XStory.BL.Web.XStory
 					pagePath = page > 1 ? ",,," + page : "";
 				}
 
-				Uri uri = new Uri(_repositoryWeb.GetHttpClient().BaseAddress,
-					string.Concat(basePath, categoryPath, pagePath, sortCriterion, endPath));
+				Uri uri = new Uri(_baseAdress, string.Concat(basePath, categoryPath, pagePath, sortCriterion, endPath));
 				return await GetStoriesBase(uri);
 			}
 			catch (Exception ex)
@@ -75,13 +78,13 @@ namespace XStory.BL.Web.XStory
 			return null;
 		}
 
-		public async Task<Story> GetStory(string path)
+		public async Task<Story> GetStory(string storyUrl)
 		{
 
 			Story story = new Story();
 			try
 			{
-				Uri uri = new Uri(_repositoryWeb.GetHttpClient().BaseAddress, path);
+				Uri uri = new Uri(storyUrl);
 
 				// Whole page
 				HtmlDocument html = new HtmlDocument();
@@ -146,7 +149,7 @@ namespace XStory.BL.Web.XStory
 				{
 					Id = storyHeaderContainer.SelectSingleNode(headerAuthorXPath).Attributes["data-author-id"].Value,
 					Name = storyHeaderContainer.SelectSingleNode(headerAuthorXPath).InnerText,
-					Url = storyHeaderContainer.SelectSingleNode(headerAuthorXPath).Attributes[HTML_HREF].Value
+					Url = string.Concat(_baseAdress, storyHeaderContainer.SelectSingleNode(headerAuthorXPath).Attributes[HTML_HREF].Value)
 				};
 				story.Author = author;
 
@@ -238,13 +241,15 @@ namespace XStory.BL.Web.XStory
 
 			string storyContent = string.Empty;
 
-			//storyContent += storyContentContainer.InnerHtml;
+			// storyContent += storyContentContainer.InnerHtml; //←←← OK Mais zone pub + infos police en pied de texte à masquer...
+
 			foreach (var element in storyContentParagraphsContainer)
 			{
 				if (element.Name == "p:p")
 				{
 					if (element.Attributes[HTML_CLASS].Value == XS_LIRE_HISTOIRE_PARAGRAPHE)
 					{
+						// ↓↓↓ OLD CODE A SUPPRIMER
 						if (element.InnerLength == 1)
 						{
 							storyContent += Environment.NewLine + Environment.NewLine;
@@ -253,6 +258,18 @@ namespace XStory.BL.Web.XStory
 						{
 							storyContent += Environment.NewLine + element.InnerText;
 						}
+						// ↑↑↑ OLD CODE A SUPPRIMER
+
+						// ↓↓↓ NEW CODE A GARDER
+						/*if (element.InnerLength == 1)
+						{
+							storyContent += "<br>" + "<br>";
+						}
+						else
+						{
+							storyContent += "<br>" + "<br>" + element.InnerText;
+						}*/
+						// ↑↑↑ NEW CODE A GARDER
 					}
 
 				}
@@ -294,7 +311,7 @@ namespace XStory.BL.Web.XStory
 					: Helpers.StaticUtils.CategorySubChaptersToCategoryUrlDictionary[categoryName];
 				chapterStory.CategoryUrl = categoryUrl;
 
-				string storyUrl;
+				string storyUrl = _baseAdress.ToString();
 				int chapterNumber;
 				string chapterName;
 
@@ -302,7 +319,7 @@ namespace XStory.BL.Web.XStory
 				{
 					// -> Author Page
 					// URL
-					storyUrl = secondLinkNode.Attributes[HTML_HREF]?.Value ?? string.Empty;
+					storyUrl += secondLinkNode.Attributes[HTML_HREF]?.Value ?? string.Empty;
 
 					// CHAPTER NUMBER
 					chapterNumber = int.Parse(secondLinkNode.InnerText.Split(' ')[1]);
@@ -317,7 +334,7 @@ namespace XStory.BL.Web.XStory
 					// -> Story Page
 
 					// URL
-					storyUrl = linkNode.Attributes[HTML_HREF]?.Value ?? string.Empty;
+					storyUrl += linkNode.Attributes[HTML_HREF]?.Value ?? string.Empty;
 
 					// CHAPTER NUMBER
 					chapterNumber = int.Parse(linkNode.InnerText.Trim().Split(' ')[1]);
@@ -442,7 +459,7 @@ namespace XStory.BL.Web.XStory
 
 				// Url
 				string url = titleNode.Attributes["href"]?.Value;
-				story.Url = url;
+				story.Url = string.Concat(_baseAdress, url);
 
 				// Release date
 				string releaseDate = infosNode.Element("time")?.Attributes["datetime"]?.Value ?? string.Empty;
@@ -463,7 +480,7 @@ namespace XStory.BL.Web.XStory
 				{
 					Author author = new Author();
 					author.Id = authorNode.Attributes["data-author-id"].Value;
-					author.Url = authorNode.Attributes["href"].Value;
+					author.Url = string.Concat(_baseAdress, authorNode.Attributes["href"].Value);
 					author.Name = authorNode.InnerHtml;
 
 					story.Author = author;
@@ -501,8 +518,7 @@ namespace XStory.BL.Web.XStory
 		{
 			try
 			{
-				Uri uri = new Uri(_repositoryWeb.GetHttpClient().BaseAddress,
-					string.Concat($"ajax.php?action=auteur_infos&id={authorId}"));
+				Uri uri = new Uri(_baseAdress, string.Concat($"ajax.php?action=auteur_infos&id={authorId}"));
 
 				HtmlDocument html = new HtmlDocument();
 				var s = await _repositoryWeb.GetHtmlPage(uri.ToString());
@@ -510,9 +526,7 @@ namespace XStory.BL.Web.XStory
 
 				HtmlNode document = html.DocumentNode;
 
-				var avatarUri = new Uri(
-					_repositoryWeb.GetHttpClient().BaseAddress,
-					document.SelectSingleNode("img").Attributes["src"].Value);
+				var avatarUri = new Uri(_baseAdress, document.SelectSingleNode("img").Attributes["src"].Value);
 
 				return avatarUri.ToString();
 			}
@@ -527,7 +541,7 @@ namespace XStory.BL.Web.XStory
 		{
 			HtmlDocument html = new HtmlDocument();
 
-			var uri = new Uri(_repositoryWeb.GetHttpClient().BaseAddress, authorPageUrl);
+			var uri = new Uri(authorPageUrl);
 
 			html.LoadHtml(await _repositoryWeb.GetHtmlPage(uri.ToString()));
 

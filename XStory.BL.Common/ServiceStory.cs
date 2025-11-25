@@ -13,11 +13,14 @@ namespace XStory.BL.Common
 	public class ServiceStory : BL.Common.Contracts.IServiceStory
 	{
 		private BL.Web.DSLocator.Contracts.IServiceStory _dsServiceStory;
+		private BL.SQLite.Contracts.IServiceStory _serviceStorySQLite;
+		private BL.SQLite.Contracts.IServiceAuthor _serviceAuthorSQLite;
 
-
-		public ServiceStory(BL.Web.DSLocator.Contracts.IServiceStory dsServiceStory)
+		public ServiceStory(BL.Web.DSLocator.Contracts.IServiceStory dsServiceStory,
+			BL.SQLite.Contracts.IServiceStory serviceStorySQLite)
 		{
 			_dsServiceStory = dsServiceStory;
+			_serviceStorySQLite = serviceStorySQLite;
 		}
 
 		private async Task<List<DTO.Story>> GetStories(int pageNumber = -1)
@@ -136,6 +139,76 @@ namespace XStory.BL.Common
 		public void ResetPageNumber()
 		{
 			StaticContext.PageNumber = 1;
+		}
+
+
+		/* SQLite */
+
+		public async Task<List<DTO.Story>> GetStoriesSQLite()
+		{
+			List<DTO.Story> storiesSQLite = new List<Story>();
+			try
+			{
+				storiesSQLite = await _serviceStorySQLite.GetStories();
+
+				storiesSQLite = storiesSQLite.OrderByDescending(s => s.ReleaseDate).ToList();
+			}
+			catch (Exception ex)
+			{
+				ServiceLog.Error(ex);
+				return null;
+			}
+			return storiesSQLite;
+		}
+
+		public async Task<Story> GetStorySQLite(DTO.Story story)
+		{
+			try
+			{
+				if (story == null || string.IsNullOrWhiteSpace(story.Url))
+				{
+					throw new ArgumentException("Parameter is not valid.");
+				}
+				DTO.Story storySQLite = await _serviceStorySQLite.GetStory(story.Url);
+				return storySQLite;
+			}
+			catch (Exception ex)
+			{
+				ServiceLog.Error(ex);
+				return null;
+			}
+		}
+
+		public async Task<int> InsertStorySQLite(DTO.Story story)
+		{
+			int affectedRows;
+
+			try
+			{
+				affectedRows = await _serviceStorySQLite.InsertStoryItem(story);
+			}
+			catch (Exception ex)
+			{
+				ServiceLog.Error(ex);
+				affectedRows = -1;
+			}
+			return affectedRows;
+		}
+
+		public async Task<int> DeleteStorySQLite(DTO.Story story)
+		{
+			int affectedRows;
+
+			try
+			{
+				affectedRows = await _serviceStorySQLite.DeleteStory(story);
+			}
+			catch (Exception ex)
+			{
+				ServiceLog.Error(ex);
+				affectedRows = -1;
+			}
+			return affectedRows;
 		}
 	}
 }

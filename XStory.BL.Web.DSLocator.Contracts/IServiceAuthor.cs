@@ -8,6 +8,6 @@ namespace XStory.BL.Web.DSLocator.Contracts
 {
 	public interface IServiceAuthor
 	{
-		Task<DTO.Author> GetAuthorPage(string dataSource, Author author);
+		Task<DTO.Author> GetAuthorPage(string dataSource, Author author, int pagenumber = 1);
 	}
 }

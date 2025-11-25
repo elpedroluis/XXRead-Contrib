@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:XXRead.Helpers.Converters"
+             xmlns:vms="clr-namespace:XXRead.ViewModels"
+             x:Class="XXRead.Views.ContentViews.CurrentDataSourceView">
+    <ContentView.Resources>
+        <ResourceDictionary>
+
+            <converters:DataSourceImageConverter x:Key="DataSourceImageConverter"/>
+
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <ContentView.Content>
+        <StackLayout 
+            Orientation="Horizontal"
+            HorizontalOptions="Start"
+            Margin="20" Spacing="10">
+
+            <Frame 
+                BorderColor="{Binding Source={x:RelativeSource AncestorType={x:Type vms:SettingsPageViewModel}}, Path=ThemeFontSecondary}"
+                BackgroundColor="Transparent"
+                Padding="-2">
+                <Image 
+                    Source="{Binding Image, Converter={StaticResource Key=DataSourceImageConverter}}"
+                    HeightRequest="70"
+                    WidthRequest="70"/>
+            </Frame>
+            <Label 
+                Text="{Binding Name}"
+                TextColor="{Binding Source={x:RelativeSource AncestorType={x:Type vms:SettingsPageViewModel}}, Path=ThemeFontPrimary}"
+                VerticalTextAlignment="Center"/>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

@@ -64,7 +64,7 @@ namespace XStory.DTO
 		public string RegisterDate { get; set; }
 
 		/// <summary>
-		/// XStory ONLY
+		/// Common
 		/// </summary>
 		public string Gender { get; set; }
 
@@ -78,11 +78,21 @@ namespace XStory.DTO
 		/// </summary>
 		public string Location { get; set; }
 
-		// Logged in :
+
 		/// <summary>
-		/// XStory ONLY
+		/// HDS ONLY
 		/// </summary>
-		//public string Contact { get; set; }
+		public string Description { get; set; }
+
+		/// <summary>
+		/// HDS ONLY
+		/// </summary>
+		public string Slogan { get; set; }
+
+		/// <summary>
+		/// HDS ONLY
+		/// </summary>
+		public bool HasMorePages { get; set; }
 
 		public Author()
 		{

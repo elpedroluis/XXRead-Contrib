@@ -27,9 +27,25 @@ namespace XStory.BL.Common
 			}
 		}
 
+		public void UpdateAlreadyLoadedAuthor(DTO.Author author)
+		{
+			var auth = StaticContext.ListAlreadyLoadedAuthors.Find(ala => ala.Url == author?.Url);
+			auth = author;
+		}
+
 		public DTO.Author GetAlreadyLoadedAuthor(DTO.Author author)
 		{
 			return StaticContext.ListAlreadyLoadedAuthors.FirstOrDefault(ala => ala.Url.Contains(author.Url));
+		}
+
+		public async Task<DTO.Author> GetAuthorStoriesNextPage(DTO.Author author)
+		{
+			StaticContext.PageNumberAuthor++;
+			var authorr = await _dsServiceAuthor.GetAuthorPage(StaticContext.DataSource.ToString(), author, StaticContext.PageNumberAuthor);
+
+			this.UpdateAlreadyLoadedAuthor(authorr);
+
+			return authorr;
 		}
 
 		public DTO.Author GetCurrentAuthor()
@@ -42,6 +58,8 @@ namespace XStory.BL.Common
 			try
 			{
 				DTO.Author author = await _dsServiceAuthor.GetAuthorPage(StaticContext.DataSource.ToString(), StaticContext.CurrentAuthor);
+				this.UpdateAlreadyLoadedAuthor(author);
+
 				return author;
 			}
 			catch (Exception ex)

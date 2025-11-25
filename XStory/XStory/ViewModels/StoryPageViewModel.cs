@@ -6,10 +6,11 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using XStory.DTO;
 using XStory.Helpers;
+using XStory.Logger;
 
 namespace XStory.ViewModels
 {
-	public class StoryPageViewModel : BaseViewModel
+	public class StoryPageViewModel : Common.BaseStoryViewModel
 	{
 		#region --- Fields ---
 
@@ -23,31 +24,26 @@ namespace XStory.ViewModels
 			set { SetProperty(ref _isStoryInfoVisible, value); }
 		}
 
-		private Story _story;
-		public Story Story
-		{
-			get { return _story; }
-			set { SetProperty(ref _story, value); }
-		}
-
 		/// <summary>
 		/// Story from current StoryPageViewModel. To keep Story from this VM when/if other StoryPageViewModel is instanciated
 		/// </summary>
 		private Story _storyKeep;
+		#endregion
 
+		#region --- Commands ---
 		public DelegateCommand AuthorTappedCommand { get; set; }
 		public DelegateCommand<string> ChapterArrowTapped { get; set; }
 		public DelegateCommand ChapterNameTappedCommand { get; set; }
 		public DelegateCommand DisplayStoryInfoCommand { get; set; }
-		public DelegateCommand ShareStoryCommand { get; set; }
+		public DelegateCommand OpenStoryActionsCommand { get; set; }
 		public DelegateCommand ToggleStoryInfosCommand { get; set; }
 		#endregion
 
 		#region --- Ctor ---
-		public StoryPageViewModel(INavigationService navigationService, 
+		public StoryPageViewModel(INavigationService navigationService,
 			BL.Common.Contracts.IServiceStory serviceStory,
 			BL.Common.Contracts.IServiceAuthor serviceAuthor)
-			: base(navigationService)
+			: base(navigationService, serviceStory)
 		{
 			_serviceStory = serviceStory;
 			_serviceAuthor = serviceAuthor;
@@ -57,7 +53,7 @@ namespace XStory.ViewModels
 			ChapterArrowTapped = new DelegateCommand<string>((direction) => ExecuteChapterArrowTappedCommand(direction));
 			ChapterNameTappedCommand = new DelegateCommand(ExecuteChapterNameTappedCommand);
 			DisplayStoryInfoCommand = new DelegateCommand(ExecuteDisplayStoryInfoCommand);
-			ShareStoryCommand = new DelegateCommand(ExecuteShareStoryCommand);
+			OpenStoryActionsCommand = new DelegateCommand(ExecuteOpenStoryActionsCommand);
 			ToggleStoryInfosCommand = new DelegateCommand(ExecuteToggleStoryInfosCommand);
 			TryAgainCommand = new DelegateCommand(InitStory);
 
@@ -183,21 +179,9 @@ namespace XStory.ViewModels
 			}
 		}
 
-		private async void ExecuteShareStoryCommand()
+		private async void ExecuteOpenStoryActionsCommand()
 		{
-			try
-			{
-				await Share.RequestAsync(new ShareTextRequest()
-				{
-					Uri = Story.Url,
-					Text = Story.Title,
-					Title = "Partager ce récit"
-				});
-			}
-			catch (Exception ex)
-			{
-				Logger.ServiceLog.Error(ex);
-			}
+			await NavigationService.NavigateAsync(nameof(Views.Popup.PopupStoryActionsPage));
 		}
 
 		private void ExecuteToggleStoryInfosCommand()

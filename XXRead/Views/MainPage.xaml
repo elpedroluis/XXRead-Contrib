@@ -1,12 +1,97 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:prism="http://prismlibrary.com/"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:constants="clr-namespace:XXRead.Helpers.Constants"
+             xmlns:contentViews="clr-namespace:XXRead.Views.ContentViews"
+             xmlns:converters="clr-namespace:XXRead.Helpers.Converters"
+             xmlns:vm="clr-namespace:XXRead.ViewModels"
+             x:DataType="vm:MainPageViewModel"
              x:Class="XXRead.Views.MainPage"
-             Title="MainPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="{Binding Title}" 
+             BackgroundColor="{Binding ThemePrimary}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:SelectedItemEventArgsConverter x:Key="SelectedItemEventArgsConverter"/>
+
+            <converters:ViewStateConverter x:Key="ViewStateConverter"/>
+            <converters:MainPageCurrentCategoryLabelConverter x:Key="MainPageCurrentCategoryLabelConverter"/>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="burger_icon_white.png" Command="{Binding SettingsCommand}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior EventName="Appearing" Command="{Binding AppearingCommand}"/>
+
+        <!-- Couleur de la StatusBar (système, pas celle de l'app...) -->
+        <toolkit:StatusBarBehavior StatusBarColor="{Binding ThemeMain}" StatusBarStyle="Default" ApplyOn="OnBehaviorAttachedTo"/>
+        <!-- / Couleur de la StatusBar (système, pas celle de l'app) -->
+    </ContentPage.Behaviors>
+
+    <Grid HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+        <ContentView IsVisible="{Binding ViewState, Converter={StaticResource Key=ViewStateConverter}, ConverterParameter='loading'}">
+            <ContentView.Content>
+                <contentViews:LoadingView/>
+            </ContentView.Content>
+        </ContentView>
+
+        <ContentView IsVisible="{Binding ViewState, Converter={StaticResource Key=ViewStateConverter}, ConverterParameter='error'}">
+            <ContentView.Content>
+                <contentViews:ErrorView/>
+            </ContentView.Content>
+        </ContentView>
+
+        <StackLayout IsVisible="{Binding ViewState, Converter={StaticResource Key=ViewStateConverter}}">
+            <RefreshView Command="{Binding StoriesRefreshCommand}"
+                         IsRefreshing="{Binding IsStoriesListRefreshing}">
+                <CollectionView ItemsSource="{Binding Stories}"
+                                SelectionMode="Single"
+                                ItemTemplate="{StaticResource Key=StoryListItemDataTemplate}"
+                                Margin="0,8">
+                    <CollectionView.Header>
+                        <Grid RowDefinitions="*,Auto" Padding="13,8">
+                            <Border Padding="0,5" Stroke="Transparent">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding CategoryTappedCommand}"/>
+                                </Border.GestureRecognizers>
+                                <Label Style="{StaticResource Key=LabelPrimary}" FontSize="17">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Style="{StaticResource Key=SpanPrimary}" Text="{x:Static Member=constants:MainPageConstants.MAINPAGE_CATEGORY_CONTROL}"/>
+                                            <Span Style="{StaticResource Key=SpanPrimary}" Text="{Binding CurrentCategory, Converter={StaticResource Key=MainPageCurrentCategoryLabelConverter}}" TextDecorations="Underline"/>
+                                            <Span Style="{StaticResource Key=SpanPrimary}" Text="▼" FontSize="12"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </Border>
+
+                            <!--<StackLayout Orientation="Horizontal" HorizontalOptions="End">
+            <StackLayout.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding SortTappedCommand}"/>
+            </StackLayout.GestureRecognizers>
+            <Label Style="{StaticResource Key=LabelPrimary}">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{x:Static Member=constants:MainPageConstants.MAINPAGE_SORT_CONTROL}"/>
+                        <Span Text="récentes ↓" TextDecorations="Underline"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+        </StackLayout>-->
+                        </Grid>
+                    </CollectionView.Header>
+                    <CollectionView.Footer>
+                        <Button Text="Charger plus" 
+                                Margin="13,0" 
+                                Command="{Binding LoadMoreStoriesCommand}"
+                                BackgroundColor="{Binding ThemeMain}"/>
+                    </CollectionView.Footer>
+                </CollectionView>
+            </RefreshView>
+        </StackLayout>
+    </Grid>
 </ContentPage>

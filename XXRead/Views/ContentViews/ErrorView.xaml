@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:constants="clr-namespace:XXRead.Helpers.Constants"
+             xmlns:vms="clr-namespace:XXRead.ViewModels"
+             x:Class="XXRead.Views.ContentViews.ErrorView">
+    <ContentView.Resources>
+        <ResourceDictionary>
+
+            <Style TargetType="Label">
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="TextColor" Value="{Binding Source={x:RelativeSource AncestorType={x:Type vms:BaseViewModel}}, Path=ThemeFontSecondary}"/>
+            </Style>
+
+            <Style TargetType="Button" x:Key="LabelErrorButton">
+                
+            </Style>
+
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <ContentView.Content>
+        <StackLayout Spacing="75">
+            <Label Text="{x:Static constants:ErrorViewConstants.ERROR_SAD}" FontSize="40"/>
+            <StackLayout Spacing="20">
+                <Label Text="{x:Static constants:ErrorViewConstants.ERROR_MESSAGE}" LineBreakMode="WordWrap"/>
+                <Button Text="{x:Static constants:ErrorViewConstants.ERROR_TRYAGAIN}" 
+                        Command="{Binding TryAgainCommand}"
+                        BackgroundColor="{Binding Source={x:RelativeSource AncestorType={x:Type vms:BaseViewModel}}, Path=ThemeMain}"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:constants="clr-namespace:XXRead.Helpers.Constants"
+             xmlns:contentViews="clr-namespace:XXRead.Views.ContentViews"
+             x:Class="XXRead.Views.Popup.PopupFlyoutMenuPage">
+             <!--x:Class="XXRead.Views.Popup.PopupFlyoutMenuPage" Padding="{Binding PopupPadding}">-->
+    <toolkit:Popup.Resources>
+        <ResourceDictionary>
+
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{Binding ThemeMain}"/>
+            </Style>
+
+        </ResourceDictionary>
+    </toolkit:Popup.Resources>
+
+    <toolkit:Popup.Content>
+        <Frame Padding="0" BackgroundColor="{Binding ThemePrimary}">
+            <StackLayout>
+                <!-- Datasource name + logo -->
+                <contentViews:CurrentDataSourceView BindingContext="{Binding CurrentDataSource}" Padding="20" HorizontalOptions="Center"/>
+                <!-- / Datasource name + logo -->
+                
+                <Button Text="{x:Static Member=constants:PopupFlyoutMenuConstants.FLYOUTMENU_SAVED_STORIES}"
+                        Command="{Binding SaveStoriesPageCommand}"/>
+                
+                <!-- Separator -->
+                <Rectangle VerticalOptions="FillAndExpand"/>
+                <!-- / Separator -->
+                
+                <Button Text="{x:Static Member=constants:PopupFlyoutMenuConstants.FLYOUTMENU_ABOUT}"
+                        Command="{Binding AboutPageCommand}"/>
+                <Button Text="{x:Static Member=constants:PopupFlyoutMenuConstants.FLYOUTMENU_SETTINGS}"
+                        Command="{Binding SettingsPageCommand}"/>
+            </StackLayout>
+        </Frame>
+    </toolkit:Popup.Content>
+</toolkit:Popup>

@@ -5,6 +5,7 @@ using Prism.Services;
 using Prism.Xaml;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using XStory.DTO;
 using XStory.Helpers;
@@ -19,6 +20,13 @@ namespace XStory.ViewModels
 		private BL.Common.Contracts.IServiceAuthor _serviceAuthor;
 		private BL.Common.Contracts.IServiceStory _serviceStory;
 
+		private bool _canLoadMorePages;
+		public bool CanLoadMorePages
+		{
+			get { return _canLoadMorePages; }
+			set { SetProperty(ref _canLoadMorePages, value); }
+		}
+
 		private Author _author;
 		public Author Author
 		{
@@ -26,7 +34,16 @@ namespace XStory.ViewModels
 			set { SetProperty(ref _author, value); }
 		}
 
+		private ObservableCollection<Story> _authorStories;
+
+		public ObservableCollection<Story> AuthorStories
+		{
+			get { return _authorStories; }
+			set { SetProperty(ref _authorStories, value); }
+		}
+
 		public DelegateCommand<DTO.Story> AuthorStoryItemTappedCommand { get; set; }
+		public DelegateCommand LoadMoreStoriesCommand { get; set; }
 
 		#endregion
 
@@ -38,7 +55,10 @@ namespace XStory.ViewModels
 			_serviceAuthor = serviceAuthor;
 			_serviceStory = serviceStory;
 
+
+
 			AuthorStoryItemTappedCommand = new DelegateCommand<DTO.Story>((story) => ExecuteAuthorStoryItemTappedCommand(story));
+			LoadMoreStoriesCommand = new DelegateCommand(ExecuteLoadMoreStoriesCommand);
 
 			this.InitAuthor();
 		}
@@ -58,6 +78,17 @@ namespace XStory.ViewModels
 				// only one chapter
 				await NavigationService.NavigateAsync(nameof(Views.StoryPage));
 			}
+		}
+
+		private async void ExecuteLoadMoreStoriesCommand()
+		{
+			// Get next page stories
+			_author = await _serviceAuthor.GetAuthorStoriesNextPage(_author);
+
+			// Display / hide button "Load more stories"
+			CanLoadMorePages = _author.HasMorePages;
+
+			AuthorStories = new ObservableCollection<DTO.Story>(_author.Stories);
 		}
 
 		private async void InitAuthor()
@@ -90,6 +121,10 @@ namespace XStory.ViewModels
 				}
 
 				_serviceAuthor.AddAlreadyLoadedAuthor(Author);
+
+				AuthorStories = new ObservableCollection<Story>(_author.Stories);
+
+				CanLoadMorePages = _author.HasMorePages;
 
 				ViewState = ViewStateEnum.Display;
 			}

@@ -50,6 +50,9 @@ namespace XStory.BL.Web.HDS
 				HtmlNode storyContainer = document.SelectSingleNode(STORY_CONTAINER_XPATH);
 				this.InitStoryInfos(story, storyContainer);
 
+				// HEADER Author avatar
+				this.SetStoryAuthorAvatar(story);
+
 				// CONTENT
 				HtmlNode storyContentContainer = document.SelectSingleNode(STORY_CONTENT_XPATH);
 				this.InitStoryContent(story, storyContentContainer);
@@ -75,6 +78,16 @@ namespace XStory.BL.Web.HDS
 			// AUTHOR
 			if (story.Author == null)
 			{
+				// Avatar
+				string authorAvatar = string.Empty;
+
+				var autorAvatarNode = storyContainer.SelectSingleNode("div[2]/div[1]/img");
+				if (autorAvatarNode != null && autorAvatarNode.Attributes["src"] != null)
+				{
+					authorAvatar = autorAvatarNode.Attributes["src"].Value;
+				}
+
+
 				var authorNode = storyContainer.SelectSingleNode("div[2]/div[2]/div[1]/a");
 				if (authorNode != null && authorNode.Attributes["href"] != null)
 				{
@@ -84,10 +97,12 @@ namespace XStory.BL.Web.HDS
 					{
 						Name = authorName,
 						Url = authorUrl,
+						Avatar = authorAvatar,
 					};
 
 					story.Author = author;
 				}
+
 			}
 
 			var publishNode = storyContainer.SelectSingleNode("div[3]/div[1]");
@@ -138,6 +153,12 @@ namespace XStory.BL.Web.HDS
 			}
 		}
 
+		private void SetStoryAuthorAvatar(Story story)
+		{
+			string avatar = this.GetAuthorAvatar(story.Author.Avatar);
+			story.Author.Avatar = avatar;
+		}
+
 		private void InitStoryContent(Story story, HtmlNode storyContentContainer)
 		{
 			// CONTENT
@@ -152,56 +173,10 @@ namespace XStory.BL.Web.HDS
 				HtmlDocument html = new HtmlDocument();
 				html.LoadHtml(await _repositoryWeb.GetHtmlPage(uri.ToString()));
 
-				List<Story> stories = new List<Story>();
-
 				HtmlNode document = html.DocumentNode;
 				var storiesContainer = document.SelectNodes(STORIES_XPATH).Where(node => node.Attributes["class"].Value == "story abstract");
-				foreach (var container in storiesContainer)
-				{
-					var publishedNode = container.SelectSingleNode("div[1]");
-					var categoryNode = container.SelectSingleNode("div[2]");
-					var authorNode = container.SelectSingleNode("div[3]/a");
-					var titleNode = container.SelectSingleNode("div[4]/a");
-					var textNode = container.SelectSingleNode("div[5]");
 
-					Story story = new Story();
-
-					// RELEASE DATE
-
-					// Histoire erotique publiée sur Histoires De Sexe le 07-02-2023 à 09 heures
-					string releaseDate = publishedNode.InnerText.Replace(" Histoire erotique publiée sur Histoires De Sexe le ", "");
-
-					//07-02-2023 à 09 heures
-					releaseDate = releaseDate.Replace(" à ", " ");
-
-					//07-02-2023 09:00:00
-					releaseDate = releaseDate.Replace(" heures", ":00:00");
-
-					story.ReleaseDate = releaseDate;
-
-					// TITLE
-					story.Title = titleNode.InnerText;
-
-					// URL
-					story.Url = titleNode.Attributes["href"].Value;
-
-					// CATEGORY
-					string category = categoryNode?.InnerText?.Split(':')[1]?.Trim();
-
-					if (!string.IsNullOrEmpty(category))
-					{
-						story.CategoryName = category;
-						story.CategoryUrl = Helpers.StaticUtils.StoryCategoryUrlDictionary[category];
-					}
-
-					// AUTHOR
-					Author author = new Author();
-					author.Url = authorNode.Attributes["href"].Value;
-					author.Name = authorNode.InnerText;
-					story.Author = author;
-
-					stories.Add(story);
-				}
+				List<Story> stories = this.GetStoriesFromContainer(storiesContainer);
 
 				return stories;
 			}
@@ -212,6 +187,59 @@ namespace XStory.BL.Web.HDS
 			return null;
 		}
 
+		private List<Story> GetStoriesFromContainer(IEnumerable<HtmlNode> storiesContainer)
+		{
+			List<Story> stories = new List<Story>();
+			foreach (var container in storiesContainer)
+			{
+				var publishedNode = container.SelectSingleNode("div[1]");
+				var categoryNode = container.SelectSingleNode("div[2]");
+				var authorNode = container.SelectSingleNode("div[3]/a");
+				var titleNode = container.SelectSingleNode("div[4]/a");
+				var textNode = container.SelectSingleNode("div[5]");
+
+				Story story = new Story();
+
+				// RELEASE DATE
+
+				// Histoire erotique publiée sur Histoires De Sexe le 07-02-2023 à 09 heures
+				string releaseDate = publishedNode.InnerText.Replace(" Histoire erotique publiée sur Histoires De Sexe le ", "");
+
+				//07-02-2023 à 09 heures
+				releaseDate = releaseDate.Replace(" à ", " ");
+
+				//07-02-2023 09:00:00
+				releaseDate = releaseDate.Replace(" heures", ":00:00");
+
+				story.ReleaseDate = releaseDate;
+
+				// TITLE
+				story.Title = titleNode.InnerText;
+
+				// URL
+				story.Url = titleNode.Attributes["href"].Value;
+
+				// CATEGORY
+				string category = categoryNode?.InnerText?.Split(':')[1]?.Trim();
+
+				if (!string.IsNullOrEmpty(category))
+				{
+					story.CategoryName = category;
+					story.CategoryUrl = Helpers.StaticUtils.StoryCategoryUrlDictionary[category];
+				}
+
+				// AUTHOR
+				Author author = new Author();
+				author.Url = authorNode.Attributes["href"].Value;
+				author.Name = authorNode.InnerText;
+				story.Author = author;
+
+				stories.Add(story);
+			}
+
+			return stories;
+		}
+
 		public async Task<List<Story>> GetStoriesPage(int page = 0, string categoryUrl = "", string sortCriterion = "")
 		{
 			try
@@ -219,7 +247,7 @@ namespace XStory.BL.Web.HDS
 				string basePath = "/sexe/";
 				string categoryPath = string.Empty;
 				string pagePath = page > 1 ? "?p=" + page : "";
-				string endPath = ".php";
+				string extensionPath = ".php";
 
 				if (!string.IsNullOrWhiteSpace(categoryUrl))
 				{
@@ -231,7 +259,7 @@ namespace XStory.BL.Web.HDS
 				}
 
 				Uri uri = new Uri(_repositoryWeb.GetHttpClient().BaseAddress,
-					string.Concat(basePath, categoryPath, pagePath, sortCriterion, endPath));
+					string.Concat(basePath, categoryPath, extensionPath, pagePath, sortCriterion));
 				return await GetStoriesBase(uri);
 			}
 			catch (Exception ex)
@@ -263,27 +291,24 @@ namespace XStory.BL.Web.HDS
 			return stories;
 		}
 
-		public async Task<string> GetAuthorAvatar(string authorId)
+		public string GetAuthorAvatar(string authorAvatar)
 		{
 			try
 			{
-				Uri uri = new Uri(_repositoryWeb.GetHttpClient().BaseAddress,
-					string.Concat($"avatars/{authorId}.jpg"));
-
-				HtmlDocument html = new HtmlDocument();
-				html.LoadHtml(await _repositoryWeb.GetHtmlPage(uri.ToString()));
-
-				HtmlNode document = html.DocumentNode;
-
-				string avatar = document.SelectSingleNode(IMAGE_XPATH)?.Attributes["src"]?.Value;
-
-				return avatar;
+				return string.Concat(_repositoryWeb.GetHttpClient().BaseAddress, authorAvatar);
 			}
 			catch (Exception ex)
 			{
 				ServiceLog.Error(ex);
 				return UNKNOWN_AUTHOR_AVATAR;
 			}
+		}
+
+		public List<Story> GetAuthorStories(IEnumerable<HtmlNode> authorStoriesContainer)
+		{
+			var stories = this.GetStoriesFromContainer(authorStoriesContainer);
+
+			return stories;
 		}
 	}
 }

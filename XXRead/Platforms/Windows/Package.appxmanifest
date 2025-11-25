@@ -8,7 +8,7 @@
 
   <Identity Name="maui-package-name-placeholder" Publisher="CN=User Name" Version="0.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="498E92B6-BEE9-4172-A47B-3AFA9FEC11B0" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="3ED862C4-5AEE-43A0-B67A-B868A6F15A38" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>$placeholder$</DisplayName>
@@ -28,7 +28,7 @@
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="$placeholder$"
+        DisplayName="XXRead"
         Description="$placeholder$"
         Square150x150Logo="$placeholder$.png"
         Square44x44Logo="$placeholder$.png"
@@ -41,6 +41,7 @@
 
   <Capabilities>
     <rescap:Capability Name="runFullTrust" />
+    <Capability Name="internetClient"/>
   </Capabilities>
 
 </Package>

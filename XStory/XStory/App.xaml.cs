@@ -12,6 +12,7 @@ using XStory.ViewModels.Settings;
 using XStory.Views;
 using XStory.Views.Settings;
 
+
 namespace XStory
 {
 	public partial class App
@@ -33,8 +34,13 @@ namespace XStory
 
 		protected override void RegisterTypes(IContainerRegistry containerRegistry)
 		{
+			/* App Init */
 			containerRegistry.RegisterSingleton<IAppInfo, AppInfoImplementation>();
 
+			/* Database */
+			containerRegistry.RegisterSingleton<DAL.SQLite.Contracts.IXXReadDatabase, DAL.SQLite.XXReadDatabase>();
+
+			/* UI Services*/
 			containerRegistry.RegisterPopupNavigationService();
 			containerRegistry.RegisterPopupDialogService();
 
@@ -50,12 +56,16 @@ namespace XStory
 			containerRegistry.RegisterForNavigation<WelcomePage, WelcomePageViewModel>();
 
 			/* Popup pages */
+			containerRegistry.RegisterForNavigation<Views.Popup.PopupFlyoutMenuPage, ViewModels.PopupViewModels.PopupFlyoutMenuPageViewModel>();
 			containerRegistry.RegisterForNavigation<Views.Popup.PopupSelectCategoryPage, ViewModels.PopupViewModels.PopupSelectCategoryPageViewModel>();
 			containerRegistry.RegisterForNavigation<Views.Popup.PopupHiddenCategoriesPage, ViewModels.PopupViewModels.PopupHiddenCategoriesPageViewModel>();
 			containerRegistry.RegisterForNavigation<Views.Popup.PopupChaptersPage, ViewModels.PopupViewModels.PopupChaptersPageViewModel>();
 			containerRegistry.RegisterForNavigation<Views.Popup.PopupDataSourceSelectionPage, ViewModels.PopupViewModels.PopupDataSourceSelectionPageViewModel>();
+			containerRegistry.RegisterForNavigation<Views.Popup.PopupStoryActionsPage, ViewModels.PopupViewModels.PopupStoryActionsPageViewModel>();
 
 			/* Dependency Injection */
+
+			/* --- BL --- */
 			containerRegistry.Register<BL.Common.Contracts.IServiceStory, BL.Common.ServiceStory>();
 			containerRegistry.Register<BL.Common.Contracts.IServiceCategory, BL.Common.ServiceCategory>();
 			containerRegistry.Register<BL.Common.Contracts.IServiceAuthor, BL.Common.ServiceAuthor>();
@@ -79,9 +89,15 @@ namespace XStory
 			containerRegistry.Register<BL.SQLite.Contracts.IServiceCategory, BL.SQLite.ServiceCategory>();
 			containerRegistry.Register<BL.SQLite.Contracts.IServiceSettings, BL.SQLite.ServiceSettings>();
 			containerRegistry.Register<BL.SQLite.Contracts.IServiceStory, BL.SQLite.ServiceStory>();
+			containerRegistry.Register<BL.SQLite.Contracts.IServiceAuthor, BL.SQLite.ServiceAuthor>();
+
+			/* --- DAL --- */
+			containerRegistry.Register<DAL.Web.HDS.Contracts.IRepositoryWebHDS, DAL.Web.HDS.RepositoryWebHDS>();
 
 			containerRegistry.Register<DAL.SQLite.Contracts.IRepositoryStory, DAL.SQLite.RepositoryStory>();
 			containerRegistry.Register<DAL.SQLite.Contracts.IRepositoryCategory, DAL.SQLite.RepositoryCategory>();
+			containerRegistry.Register<DAL.SQLite.Contracts.IRepositoryAuthor, DAL.SQLite.RepositoryAuthor>();
+			containerRegistry.Register<DAL.SQLite.Contracts.IRepositoryAuthorStory, DAL.SQLite.RepositoryAuthorStory>();
 		}
 	}
 }

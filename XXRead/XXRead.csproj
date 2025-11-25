@@ -1,108 +1,425 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
-    <PropertyGroup>
-        <TargetFrameworks>net7.0-android;net7.0-ios;net7.0-maccatalyst</TargetFrameworks>
-        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net6.0-windows10.0.19041.0</TargetFrameworks>
-        <!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
-        <!-- <TargetFrameworks>$(TargetFrameworks);net6.0-tizen</TargetFrameworks> -->
-        <OutputType>Exe</OutputType>
-        <RootNamespace>XXRead</RootNamespace>
-        <UseMaui>true</UseMaui>
-        <SingleProject>true</SingleProject>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <EnableDefaultCssItems>false</EnableDefaultCssItems>
+  <PropertyGroup>
+    <TargetFrameworks>net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>
+    <!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
+    <!-- <TargetFrameworks>$(TargetFrameworks);net8.0-tizen</TargetFrameworks> -->
 
-        <!-- Display name -->
-        <ApplicationTitle>XRead</ApplicationTitle>
+    <!-- Note for MacCatalyst:
+		The default runtime is maccatalyst-x64, except in Release config, in which case the default is maccatalyst-x64;maccatalyst-arm64.
+		When specifying both architectures, use the plural <RuntimeIdentifiers> instead of the singular <RuntimeIdentifier>.
+		The Mac App Store will NOT accept apps with ONLY maccatalyst-arm64 indicated;
+		either BOTH runtimes must be indicated or ONLY macatalyst-x64. -->
+    <!-- For example: <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
 
-        <!-- App Identifier -->
-        <ApplicationId>com.plm.xxread</ApplicationId>
-        <ApplicationIdGuid>774CF352-B9CA-4C40-8C1B-094DC9279E45</ApplicationIdGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>XXRead</RootNamespace>
+    <UseMaui>true</UseMaui>
+    <SingleProject>true</SingleProject>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
 
-        <!-- Versions -->
-        <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
-        <ApplicationVersion>1</ApplicationVersion>
+    <!-- Display name -->
+    <ApplicationTitle>XXRead</ApplicationTitle>
 
-        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
-        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">14.0</SupportedOSPlatformVersion>
-        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">24.0</SupportedOSPlatformVersion>
-        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
-        <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
-        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
-    </PropertyGroup>
+    <!-- App Identifier -->
+    <ApplicationId>com.xplm.xxread</ApplicationId>
 
-    <ItemGroup>
-        <!-- App Icon -->
-        <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+    <!-- Versions -->
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <ApplicationVersion>1</ApplicationVersion>
 
-        <!-- Splash Screen -->
-        <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">13.1</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+    <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+    <!--<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>-->
+    <DefaultLanguage>fr-fr</DefaultLanguage>
+    <Title>XXRead</Title>
+  </PropertyGroup>
 
-        <!-- Images -->
-        <MauiImage Include="Resources\Images\*" />
-        <MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
+  <ItemGroup>
+    <!-- App Icon -->
+    <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
 
-        <!-- Custom Fonts -->
-        <MauiFont Include="Resources\Fonts\*" />
+    <!-- Splash Screen -->
+    <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
 
-        <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
-        <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
-    </ItemGroup>
+    <!-- Images -->
+    <MauiImage Include="Resources\Images\*" />
+    <MauiImage Update="Resources\Images\arrow_triangle_down_white.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </MauiImage>
+    <MauiImage Update="Resources\Images\arrow_triangle_left_white.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </MauiImage>
+    <MauiImage Update="Resources\Images\arrow_triangle_right_white.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </MauiImage>
+    <MauiImage Update="Resources\Images\arrow_triangle_up_white.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </MauiImage>
+    <MauiImage Update="Resources\Images\avec_plusieurs_femmes_5.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </MauiImage>
+    <MauiImage Update="Resources\Images\avec_plusieurs_hommes_6.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </MauiImage>
+    <MauiImage Update="Resources\Images\burger_icon_white.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </MauiImage>
+    <MauiImage Update="Resources\Images\checked.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </MauiImage>
+    <MauiImage Update="Resources\Images\demo_icon.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </MauiImage>
+    <MauiImage Update="Resources\Images\divers_9.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </MauiImage>
+    <MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
+    <MauiImage Update="Resources\Images\erotique_14.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </MauiImage>
+    <MauiImage Update="Resources\Images\gay_3.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </MauiImage>
+    <MauiImage Update="Resources\Images\hds_icon.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </MauiImage>
+    <MauiImage Update="Resources\Images\hetero_1.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </MauiImage>
+    <MauiImage Update="Resources\Images\inceste_12.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </MauiImage>
+    <MauiImage Update="Resources\Images\lesbienne_2.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </MauiImage>
+    <MauiImage Update="Resources\Images\orgie_partouze_7.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </MauiImage>
+    <MauiImage Update="Resources\Images\settings.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </MauiImage>
+    <MauiImage Update="Resources\Images\share.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </MauiImage>
+    <MauiImage Update="Resources\Images\sm_fetichisme_8.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </MauiImage>
+    <MauiImage Update="Resources\Images\three_dots_white.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </MauiImage>
+    <MauiImage Update="Resources\Images\trash_13.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </MauiImage>
+    <MauiImage Update="Resources\Images\travesti_trans_11.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </MauiImage>
+    <MauiImage Update="Resources\Images\voyeur_exhibition_4.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </MauiImage>
+    <MauiImage Update="Resources\Images\xstory_icon.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </MauiImage>
+    <MauiImage Update="Resources\Images\zoophilie_10.png">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </MauiImage>
 
-    <ItemGroup>
-      <ProjectReference Include="..\XStory.BL.SQLite.Contracts\XStory.BL.SQLite.Contracts.csproj" />
-      <ProjectReference Include="..\XStory.BL.SQLite\XStory.BL.SQLite.csproj" />
-      <ProjectReference Include="..\XStory.BL.Web.Demo.Contracts\XStory.BL.Web.Demo.Contracts.csproj" />
-      <ProjectReference Include="..\XStory.BL.Web.Demo\XStory.BL.Web.Demo.csproj" />
-      <ProjectReference Include="..\XStory.BL.Web.DSLocator.Contracts\XStory.BL.Web.DSLocator.Contracts.csproj" />
-      <ProjectReference Include="..\XStory.BL.Web.DSLocator\XStory.BL.Web.DSLocator.csproj" />
-      <ProjectReference Include="..\XStory.BL.Web.HDS.Contracts\XStory.BL.Web.HDS.Contracts.csproj" />
-      <ProjectReference Include="..\XStory.BL.Web.HDS\XStory.BL.Web.HDS.csproj" />
-      <ProjectReference Include="..\XStory.BL.Web.XStory.Contracts\XStory.BL.Web.XStory.Contracts.csproj" />
-      <ProjectReference Include="..\XStory.BL.Web.XStory\XStory.BL.Web.XStory.csproj" />
-      <ProjectReference Include="..\XStory.DAL.SQLite.Contracts\XStory.DAL.SQLite.Contracts.csproj" />
-      <ProjectReference Include="..\XStory.DAL.SQLiteObjects\XStory.DAL.SQLiteObjects.csproj" />
-      <ProjectReference Include="..\XStory.DAL.SQLite\XStory.DAL.SQLite.csproj" />
-      <ProjectReference Include="..\XStory.DAL.Web.HDS.Contracts\XStory.DAL.Web.HDS.Contracts.csproj" />
-      <ProjectReference Include="..\XStory.DAL.Web.HDS\XStory.DAL.Web.HDS.csproj" />
-      <ProjectReference Include="..\XStory.DAL.Web.XStory.Contracts\XStory.DAL.Web.XStory.Contracts.csproj" />
-      <ProjectReference Include="..\XStory.DAL.Web.XStory\XStory.DAL.Web.XStory.csproj" />
-      <ProjectReference Include="..\XStory.DTO\XStory.DTO.csproj" />
-      <ProjectReference Include="..\XStory.Logger\XStory.Logger.csproj" />
-    </ItemGroup>
+    <!-- Custom Fonts -->
+    <MauiFont Include="Resources\Fonts\*" />
 
-    <ItemGroup>
-      <MauiXaml Update="StoryPage.xaml">
-        <Generator>MSBuild:Compile</Generator>
-      </MauiXaml>
-      <MauiXaml Update="Views\MainPage.xaml">
-        <Generator>MSBuild:Compile</Generator>
-      </MauiXaml>
-      <MauiXaml Update="Views\StoryPage.xaml">
-        <Generator>MSBuild:Compile</Generator>
-      </MauiXaml>
-    </ItemGroup>
+    <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+    <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="ViewModels\" />
-    </ItemGroup>
+  <ItemGroup>
+    <None Remove="Helpers\dataSources.json" />
+    <None Remove="Helpers\Fonts\Georgia-Regular-font.ttf" />
+    <None Remove="Helpers\Fonts\Tahoma-Regular-font.ttf" />
+    <None Remove="Resources\Images\arrow_triangle_down_white.png" />
+    <None Remove="Resources\Images\arrow_triangle_left_white.png" />
+    <None Remove="Resources\Images\arrow_triangle_right_white.png" />
+    <None Remove="Resources\Images\arrow_triangle_up_white.png" />
+    <None Remove="Resources\Images\avec_plusieurs_femmes_5.png" />
+    <None Remove="Resources\Images\avec_plusieurs_hommes_6.png" />
+    <None Remove="Resources\Images\burger_icon_white.png" />
+    <None Remove="Resources\Images\checked.png" />
+    <None Remove="Resources\Images\demo_icon.png" />
+    <None Remove="Resources\Images\divers_9.png" />
+    <None Remove="Resources\Images\erotique_14.png" />
+    <None Remove="Resources\Images\gay_3.png" />
+    <None Remove="Resources\Images\hds_icon.png" />
+    <None Remove="Resources\Images\hetero_1.png" />
+    <None Remove="Resources\Images\inceste_12.png" />
+    <None Remove="Resources\Images\lesbienne_2.png" />
+    <None Remove="Resources\Images\orgie_partouze_7.png" />
+    <None Remove="Resources\Images\settings.png" />
+    <None Remove="Resources\Images\share.png" />
+    <None Remove="Resources\Images\sm_fetichisme_8.png" />
+    <None Remove="Resources\Images\three_dots_white.png" />
+    <None Remove="Resources\Images\trash_13.png" />
+    <None Remove="Resources\Images\travesti_trans_11.png" />
+    <None Remove="Resources\Images\voyeur_exhibition_4.png" />
+    <None Remove="Resources\Images\xstory_icon.png" />
+    <None Remove="Resources\Images\zoophilie_10.png" />
+  </ItemGroup>
 
-    <ItemGroup Condition="'$(TargetFramework)' == 'net7.0-android'">
-      <PackageReference Include="CommunityToolkit.Maui">
-        <Version>5.2.0</Version>
-      </PackageReference>
-    </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Helpers\dataSources.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Helpers\Fonts\Georgia-Regular-font.ttf" />
+    <EmbeddedResource Include="Helpers\Fonts\Tahoma-Regular-font.ttf" />
+  </ItemGroup>
 
-    <ItemGroup Condition="'$(TargetFramework)' == 'net7.0-ios'">
-      <PackageReference Include="CommunityToolkit.Maui">
-        <Version>5.2.0</Version>
-      </PackageReference>
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Maui" Version="9.0.1" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
+    <PackageReference Include="Prism.DryIoc.Maui" Version="9.0.537" />
+    <PackageReference Include="Prism.Maui" Version="9.0.537" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
+  </ItemGroup>
 
-    <ItemGroup Condition="'$(TargetFramework)' == 'net7.0-maccatalyst'">
-      <PackageReference Include="CommunityToolkit.Maui">
-        <Version>5.2.0</Version>
-      </PackageReference>
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\XStory.BL.Common.Contracts\XStory.BL.Common.Contracts.csproj" />
+    <ProjectReference Include="..\XStory.BL.Common\XStory.BL.Common.csproj" />
+    <ProjectReference Include="..\XStory.BL.SQLite.Contracts\XStory.BL.SQLite.Contracts.csproj" />
+    <ProjectReference Include="..\XStory.BL.SQLite\XStory.BL.SQLite.csproj" />
+    <ProjectReference Include="..\XStory.BL.Web.Demo.Contracts\XStory.BL.Web.Demo.Contracts.csproj" />
+    <ProjectReference Include="..\XStory.BL.Web.Demo\XStory.BL.Web.Demo.csproj" />
+    <ProjectReference Include="..\XStory.BL.Web.DSLocator.Contracts\XStory.BL.Web.DSLocator.Contracts.csproj" />
+    <ProjectReference Include="..\XStory.BL.Web.DSLocator\XStory.BL.Web.DSLocator.csproj" />
+    <ProjectReference Include="..\XStory.BL.Web.HDS.Contracts\XStory.BL.Web.HDS.Contracts.csproj" />
+    <ProjectReference Include="..\XStory.BL.Web.HDS\XStory.BL.Web.HDS.csproj" />
+    <ProjectReference Include="..\XStory.BL.Web.XStory.Contracts\XStory.BL.Web.XStory.Contracts.csproj" />
+    <ProjectReference Include="..\XStory.BL.Web.XStory\XStory.BL.Web.XStory.csproj" />
+    <ProjectReference Include="..\XStory.DAL.SQLite.Contracts\XStory.DAL.SQLite.Contracts.csproj" />
+    <ProjectReference Include="..\XStory.DAL.SQLite\XStory.DAL.SQLite.csproj" />
+    <ProjectReference Include="..\XStory.DAL.Web.HDS.Contracts\XStory.DAL.Web.HDS.Contracts.csproj" />
+    <ProjectReference Include="..\XStory.DAL.Web.HDS\XStory.DAL.Web.HDS.csproj" />
+    <ProjectReference Include="..\XStory.DAL.Web.XStory.Contracts\XStory.DAL.Web.XStory.Contracts.csproj" />
+    <ProjectReference Include="..\XStory.DAL.Web.XStory\XStory.DAL.Web.XStory.csproj" />
+    <ProjectReference Include="..\XStory.DTO\XStory.DTO.csproj" />
+    <ProjectReference Include="..\XStory.Logger\XStory.Logger.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="RootMainPage.xaml.cs">
+      <DependentUpon>RootMainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\AuthorPage_bak2.xaml.cs">
+      <DependentUpon>AuthorPage_bak2.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\AuthorPage_bak1.xaml.cs">
+      <DependentUpon>AuthorPage_bak1.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\AuthorPage.xaml.cs">
+      <DependentUpon>AuthorPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\ContentViews\ChaptersListItemView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\ContentViews\CurrentDataSourceView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\ContentViews\ErrorView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\ContentViews\LoadingView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\ContentViews\LogsView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\ContentViews\SeparatorView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\ContentViews\SettingsPageThemesView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\ContentViews\StoriesListItemView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\MainPage.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Popup\PopupChaptersPage.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Popup\PopupDataSourceSelectionPage.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Popup\PopupFlyoutMenuPage.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Popup\PopupHiddenCategoriesPage.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Popup\PopupSelectCategoryPage.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Popup\PopupStoryActionsPage.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\SettingsPage.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Settings\SettingsAppearancePage.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\StoryInfoPage.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\StoryPage.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\WelcomePage.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <MauiXaml Update="Helpers\DataTemplates\StoryListItemDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Resources\Styles\Theme.xaml">
+      <Generator></Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\AuthorPage_bak2.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\AuthorPage_bak1.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\AuthorPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\ContentViews\Author\AuthorInfoView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\ContentViews\Author\AuthorStoriesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\ContentViews\ChaptersListItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\ContentViews\CurrentDataSourceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\ContentViews\ErrorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\ContentViews\LoadingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\ContentViews\LogsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\ContentViews\SeparatorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\ContentViews\SettingsPageThemesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\ContentViews\StoriesListItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\MyNavigationPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\Popup\PopupChaptersPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\Popup\PopupDataSourceSelectionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\Popup\PopupFlyoutMenuPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\Popup\PopupHiddenCategoriesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\Popup\PopupSelectCategoryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\Popup\PopupStoryActionsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\SettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\Settings\SettingsAppearancePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\StoryInfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\StoryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\WelcomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </MauiXaml>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Shared\" />
+  </ItemGroup>
 
 </Project>

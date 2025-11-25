@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:contentViews="clr-namespace:XXRead.Views.ContentViews"
+             xmlns:vms="clr-namespace:XXRead.ViewModels"
+             x:Class="XXRead.Views.ContentViews.Author.AuthorStoriesView">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            
+        </ResourceDictionary>
+    </ContentView.Resources>
+    
+    <Frame Style="{StaticResource Key=MainFrame}" BackgroundColor="Transparent" Padding="0" Margin="0,8">
+        <!-- Author stories list -->
+        <ListView ItemsSource="{Binding AuthorStories}" HasUnevenRows="True" SeparatorVisibility="None">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <contentViews:StoriesListItemView/>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.Behaviors>
+                <toolkit:EventToCommandBehavior EventName="ItemTapped" 
+                        Command="{Binding AuthorStoryItemTappedCommand}" 
+                        EventArgsConverter="{StaticResource Key=ItemTappedEventArgsConverter}"/>
+            </ListView.Behaviors>
+
+            <!-- Charger plus binding IsVisible -->
+            <ListView.Footer>
+                <StackLayout IsVisible="{Binding CanLoadMorePages,Converter={StaticResource Key=AuthorHasMorePagesConverter}}">
+                    <Button Text="Charger plus" 
+    Margin="13,0" 
+    Command="{Binding LoadMoreStoriesCommand}"
+    BackgroundColor="{Binding ThemeMain}"/>
+                </StackLayout>
+            </ListView.Footer>
+            <!-- / Charger plus binding IsVisible -->
+
+        </ListView>
+    </Frame>
+</ContentView>

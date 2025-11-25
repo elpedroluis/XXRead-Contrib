@@ -24,5 +24,12 @@ namespace XStory.BL.Common.Contracts
 		void SetPageNumber(int value);
 		void IncrementPageNumber();
 		void ResetPageNumber();
+
+		/* SQLite */
+
+		Task<List<DTO.Story>> GetStoriesSQLite();
+		Task<DTO.Story> GetStorySQLite(DTO.Story story);
+		Task<int> InsertStorySQLite(DTO.Story story);
+		Task<int> DeleteStorySQLite(DTO.Story story);
 	}
 }

@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:constants="clr-namespace:XXRead.Helpers.Constants"
+             x:Class="XXRead.Views.Popup.PopupStoryActionsPage">
+    <toolkit:Popup.Resources>
+        <ResourceDictionary>
+
+            <Style TargetType="Label" x:Key="LabelStoryTitle" BasedOn="{StaticResource Key=LabelPrimary}">
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="LineHeight" Value="1.1"/>
+                <Setter Property="FontSize" Value="Medium"/>
+            </Style>
+
+            <Style TargetType="Button" x:Key="ActionButtonStyle">
+                <Setter Property="BackgroundColor" Value="{Binding ThemeMain}"/>
+                <Setter Property="Padding" Value="10"/>
+                <Setter Property="CornerRadius" Value="7"/>
+            </Style>
+
+        </ResourceDictionary>
+    </toolkit:Popup.Resources>
+
+    <toolkit:Popup.Content>
+        <Frame Padding="0" BorderColor="{Binding ThemeMain}" BackgroundColor="{Binding ThemePrimary}">
+            <StackLayout>
+                <Label Text="{Binding Story.Title}" Margin="20,20,20,10" Style="{StaticResource Key=LabelStoryTitle}"/>
+
+                <Rectangle HeightRequest="1" BackgroundColor="{Binding ThemeFontSecondary}" Margin="20,10"/>
+
+                <StackLayout HorizontalOptions="Center" Orientation="Horizontal">
+                    <Button Text="{Binding SaveButtonText}" Command="{Binding SaveStoryCommand}" Style="{StaticResource Key=ActionButtonStyle}"/>
+                    <Button Text="Partager" Command="{Binding ShareStoryCommand}" Style="{StaticResource Key=ActionButtonStyle}"/>
+                </StackLayout>
+
+                <Button Text="{x:Static Member=constants:GlobalConstants.CLOSE}"
+                        Command="{Binding ClosePopupCommand}"
+                        BackgroundColor="{Binding ThemeMain}"
+                        CornerRadius="0"
+                        VerticalOptions="End"/>
+            </StackLayout>
+        </Frame>
+    </toolkit:Popup.Content>
+</toolkit:Popup>

@@ -4,8 +4,8 @@
              xmlns:prism="http://prismlibrary.com"
              prism:ViewModelLocator.AutowireViewModel="True"
              xmlns:converters="clr-namespace:XStory.Helpers.Converters"
-             xmlns:constants="clr-namespace:XStory.Helpers.Constants"
              xmlns:contentViews="clr-namespace:XStory.Views.ContentViews"
+             xmlns:authorContentViews="clr-namespace:XStory.Views.ContentViews.Author"
              xmlns:styles="clr-namespace:XStory.Helpers.Styles"
              xmlns:vms="clr-namespace:XStory.ViewModels"
              x:Class="XStory.Views.AuthorPage"
@@ -14,6 +14,8 @@
         <ResourceDictionary>
 
             <converters:ViewStateConverter x:Key="ViewStateConverter"/>
+            <converters:AuthorInfoViewConverter x:Key="AuthorInfoViewConverter"/>
+            <converters:AuthorHasMorePagesConverter x:Key="AuthorHasMorePagesConverter"/>
 
             <Style TargetType="Frame" x:Key="MainFrame" BasedOn="{x:Static Member=styles:FrameStyles.MainFrameStyle}"/>
 
@@ -22,18 +24,6 @@
                 <Setter Property="HorizontalTextAlignment" Value="Center"/>
                 <Setter Property="FontAttributes" Value="Bold"/>
                 <Setter Property="LineHeight" Value="1.1"/>
-            </Style>
-
-
-            <Style TargetType="Label" x:Key="LeftColumnAuthorInfosLabel" BasedOn="{StaticResource Key=LabelSecondary}">
-                <Setter Property="Padding" Value="0,10"/>
-                <Setter Property="Grid.Column" Value="0"/>
-            </Style>
-
-            <Style TargetType="Label" x:Key="RightColumnAuthorInfosLabel" BasedOn="{StaticResource Key=LabelPrimary}">
-                <Setter Property="Padding" Value="0,10"/>
-                <Setter Property="FontAttributes" Value="Bold"/>
-                <Setter Property="Grid.Column" Value="1"/>
             </Style>
 
             <Style TargetType="Label" x:Key="AuthorStoriesLabel" BasedOn="{StaticResource Key=LabelPrimary}">
@@ -79,67 +69,9 @@
                                     </StackLayout>
 
                                     <!-- Author infos -->
-                                    <Grid ColumnDefinitions="*,*"
-                                      RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
-                                      Margin="10">
-                                        <Label Text="{x:Static Member=constants:AuthorPageConstants.AUTHORPAGE_STATUS}"
-                                           Style="{StaticResource Key=LeftColumnAuthorInfosLabel}"
-                                           Grid.Row="0"/>
-                                        <Label Text="{Binding Author.Status}" Style="{StaticResource Key=RightColumnAuthorInfosLabel}"
-                                           Grid.Row="0"/>
+                                    <ContentView Content="{Binding Author, Converter={StaticResource Key=AuthorInfoViewConverter}}"/>
+                                    <!-- / Author infos -->
 
-                                        <Label Text="{x:Static Member=constants:AuthorPageConstants.AUTHORPAGE_RANK_30DAYS}"
-                                           Style="{StaticResource Key=LeftColumnAuthorInfosLabel}"
-                                           Grid.Row="1"/>
-                                        <Label Text="{Binding Author.Rank30Days}" Style="{StaticResource Key=RightColumnAuthorInfosLabel}"
-                                           Grid.Row="1"/>
-
-                                        <Label Text="{x:Static Member=constants:AuthorPageConstants.AUTHORPAGE_RANK_ALLTIME}"
-                                           Style="{StaticResource Key=LeftColumnAuthorInfosLabel}"
-                                           Grid.Row="2"/>
-                                        <Label Text="{Binding Author.RankAllTime}" Style="{StaticResource Key=RightColumnAuthorInfosLabel}"
-                                           Grid.Row="2"/>
-
-                                        <Label Text="{x:Static Member=constants:AuthorPageConstants.AUTHORPAGE_FOLLOWED_BY}"
-                                           Style="{StaticResource Key=LeftColumnAuthorInfosLabel}"
-                                           Grid.Row="3"/>
-                                        <Label Text="{Binding Author.FollowedBy}" Style="{StaticResource Key=RightColumnAuthorInfosLabel}"
-                                           Grid.Row="3"/>
-
-                                        <Label Text="{x:Static Member=constants:AuthorPageConstants.AUTHORPAGE_REGISTER_DATE}"
-                                           Style="{StaticResource Key=LeftColumnAuthorInfosLabel}"
-                                           Grid.Row="4"/>
-                                        <Label Text="{Binding Author.RegisterDate}" Style="{StaticResource Key=RightColumnAuthorInfosLabel}"
-                                           Grid.Row="4"/>
-
-                                        <Label Text="{x:Static Member=constants:AuthorPageConstants.AUTHORPAGE_GENRE}"
-                                           Style="{StaticResource Key=LeftColumnAuthorInfosLabel}"
-                                           Grid.Row="5"/>
-                                        <Label Text="{Binding Author.Gender}" Style="{StaticResource Key=RightColumnAuthorInfosLabel}"
-                                           Grid.Row="5"/>
-
-                                        <Label Text="{x:Static Member=constants:AuthorPageConstants.AUTHORPAGE_AGE}"
-                                           Style="{StaticResource Key=LeftColumnAuthorInfosLabel}"
-                                           Grid.Row="6"/>
-                                        <Label Text="{Binding Author.Age}" Style="{StaticResource Key=RightColumnAuthorInfosLabel}"
-                                           Grid.Row="6"/>
-
-                                        <Label Text="{x:Static Member=constants:AuthorPageConstants.AUTHORPAGE_LOCATION}"
-                                           Style="{StaticResource Key=LeftColumnAuthorInfosLabel}"
-                                           Grid.Row="7"/>
-                                        <Label Text="{Binding Author.Location}" Style="{StaticResource Key=RightColumnAuthorInfosLabel}"
-                                           Grid.Row="7"/>
-                                    </Grid>
-
-                                    <!-- Author stories -->
-                                    <!--
-                                <Label Text="Ses histoires : "
-                                       Style="{StaticResource Key=AuthorStoriesLabel}"/>
-                                -->
-                                    <!-- /Author stories -->
-
-                                    <!-- GERER LES AUTEURS QU'ON NE PEUT PAS AFFICHER (errorview?) -->
-                                    <!-- GERER UI BIZARRE-->
                                 </StackLayout>
                             </Frame>
                         </ScrollView>
@@ -148,7 +80,6 @@
             </ContentPage.Content>
         </ContentPage>
         <!-- / Content Page 1 :  Infos-->
-
 
         <!-- Content Page 2 :  Stories -->
         <ContentPage Title="Histoires" BackgroundColor="{Binding ThemePrimary}">
@@ -169,7 +100,7 @@
 
                     <Frame Style="{StaticResource Key=MainFrame}" BackgroundColor="Transparent" Padding="0" Margin="0,8">
                         <!-- Author stories list -->
-                        <ListView ItemsSource="{Binding Author.Stories}" HasUnevenRows="True" SeparatorVisibility="None">
+                        <ListView ItemsSource="{Binding AuthorStories}" HasUnevenRows="True" SeparatorVisibility="None">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
@@ -180,6 +111,18 @@
                             <ListView.Behaviors>
                                 <prism:EventToCommandBehavior EventName="ItemTapped" Command="{Binding AuthorStoryItemTappedCommand}" EventArgsParameterPath="Item"/>
                             </ListView.Behaviors>
+
+                            <!-- Charger plus binding IsVisible -->
+                            <ListView.Footer>
+                                <StackLayout IsVisible="{Binding CanLoadMorePages,Converter={StaticResource Key=AuthorHasMorePagesConverter}}">
+                                    <Button Text="Charger plus" 
+                                            Margin="13,0" 
+                                            Command="{Binding LoadMoreStoriesCommand}"
+                                            BackgroundColor="{Binding ThemeMain}"/>
+                                </StackLayout>
+                            </ListView.Footer>
+                            <!-- / Charger plus binding IsVisible -->
+
                         </ListView>
                     </Frame>
                     <!-- / Author stories list -->

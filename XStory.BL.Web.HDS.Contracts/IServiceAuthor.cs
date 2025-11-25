@@ -8,6 +8,6 @@ namespace XStory.BL.Web.HDS.Contracts
 {
 	public interface IServiceAuthor
 	{
-		Task<DTO.Author> GetAuthorPage(Author author);
+		Task<DTO.Author> GetAuthorPage(Author author, int pageNumber = 1);
 	}
 }

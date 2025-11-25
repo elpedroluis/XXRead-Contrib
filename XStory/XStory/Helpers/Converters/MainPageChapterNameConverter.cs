@@ -7,27 +7,27 @@ using XStory.DTO;
 
 namespace XStory.Helpers.Converters
 {
-    /// <summary>
-    /// On MainPage : Defines chapter name field visible or not if no value
-    /// </summary>
-    public class MainPageChapterNameConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if((value as string) == string.Empty)
-            {
-                
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
+	/// <summary>
+	/// On MainPage : Defines if separator + chapter name is visible or not if no value
+	/// </summary>
+	public class MainPageChapterNameConverter : IValueConverter
+	{
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			if (string.IsNullOrWhiteSpace(value as string))
+			{
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
+
+		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

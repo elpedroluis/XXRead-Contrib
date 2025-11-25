@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               xmlns:constants="clr-namespace:XXRead.Helpers.Constants"
+               xmlns:contentViews="clr-namespace:XXRead.Views.ContentViews"
+               xmlns:converters="clr-namespace:XXRead.Helpers.Converters"
+               xmlns:vms="clr-namespace:XXRead.ViewModels.PopupViewModels"
+               x:Class="XXRead.Views.Popup.PopupDataSourceSelectionPage"
+               Color="Transparent"
+               Size="{Binding Converter={StaticResource Key=PopupSizeConverter}}">
+    <toolkit:Popup.Resources>
+        <ResourceDictionary>
+
+            <toolkit:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter"/>
+
+            <converters:DataSourceImageConverter x:Key="DataSourceImageConverter"/>
+            <converters:PopupSizeConverter x:Key="PopupSizeConverter"/>
+
+        </ResourceDictionary>
+    </toolkit:Popup.Resources>
+
+    <toolkit:Popup.Content>
+        <Grid>
+            <Frame Padding="0" 
+                   BackgroundColor="{Binding ThemePrimary}"
+                   BorderColor="{Binding ThemeMain}">
+                <StackLayout>
+                    <!-- Current -->
+                    <contentViews:CurrentDataSourceView BindingContext="{Binding CurrentDataSource}">
+                        <contentViews:CurrentDataSourceView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding StoriesSourceTappedCommand}"/>
+                        </contentViews:CurrentDataSourceView.GestureRecognizers>
+                    </contentViews:CurrentDataSourceView>
+                    <!-- / Current -->
+
+                    <!-- Separator -->
+                    <Rectangle HeightRequest="1" 
+                               BackgroundColor="{Binding Source={x:RelativeSource AncestorType={x:Type vms:PopupDataSourceSelectionPageViewModel}}, Path=ThemeFontSecondary}"/>
+                    <!-- /Separator -->
+
+                    <!-- Others -->
+                    <ListView ItemsSource="{Binding DataSourceItems}"
+                              HasUnevenRows="True"
+                              SeparatorVisibility="None">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <contentViews:CurrentDataSourceView/>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.Behaviors>
+                            <toolkit:EventToCommandBehavior EventName="ItemTapped" 
+                                                            Command="{Binding DataSourceItemTappedCommand}"
+                                                            EventArgsConverter="{StaticResource Key=ItemTappedEventArgsConverter}"/>
+                        </ListView.Behaviors>
+                    </ListView>
+                    <!-- / Others -->
+
+                    <Button Text="{x:Static Member=constants:GlobalConstants.CLOSE}"
+                            Command="{Binding ClosePopupCommand}"
+                            TextColor="{Binding ThemeFontPrimary}"
+                            BackgroundColor="{Binding ThemeMain}" 
+                            CornerRadius="0"
+                            VerticalOptions="End"/>
+                </StackLayout>
+            </Frame>
+        </Grid>
+    </toolkit:Popup.Content>
+</toolkit:Popup>

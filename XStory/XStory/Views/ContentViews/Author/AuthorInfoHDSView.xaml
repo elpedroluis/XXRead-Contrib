@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:constants="clr-namespace:XStory.Helpers.Constants"
+             x:Class="XStory.Views.ContentViews.Author.AuthorInfoHDSView">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label" x:Key="LeftColumnAuthorInfosLabel" BasedOn="{StaticResource Key=LabelSecondary}">
+                <Setter Property="Padding" Value="0,10"/>
+                <Setter Property="Grid.Column" Value="0"/>
+            </Style>
+
+            <Style TargetType="Label" x:Key="RightColumnAuthorInfosLabel" BasedOn="{StaticResource Key=LabelPrimary}">
+                <Setter Property="Padding" Value="0,10"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="Grid.Column" Value="1"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentView.Resources>
+    
+    <ContentView.Content>
+        <Grid ColumnDefinitions="*,*"
+                                      RowDefinitions="Auto,Auto,Auto"
+                                      Margin="10">
+            <Label Text="{x:Static Member=constants:AuthorPageConstants.AUTHORPAGE_GENRE}"
+                                           Style="{StaticResource Key=LeftColumnAuthorInfosLabel}"
+                                           Grid.Row="0"/>
+            <Label Text="{Binding Author.Gender}" Style="{StaticResource Key=RightColumnAuthorInfosLabel}"
+                                           Grid.Row="0"/>
+
+            <Label Text="{x:Static Member=constants:AuthorPageConstants.AUTHORPAGE_HDS_DESCRIPTION}"
+                                           Style="{StaticResource Key=LeftColumnAuthorInfosLabel}"
+                                           Grid.Row="1"/>
+            <Label Text="{Binding Author.Description}" Style="{StaticResource Key=RightColumnAuthorInfosLabel}"
+                                           Grid.Row="1"/>
+
+            <Label Text="{x:Static Member=constants:AuthorPageConstants.AUTHORPAGE_HDS_SLOGAN}"
+                                           Style="{StaticResource Key=LeftColumnAuthorInfosLabel}"
+                                           Grid.Row="2"/>
+            <Label Text="{Binding Author.Slogan}" Style="{StaticResource Key=RightColumnAuthorInfosLabel}"
+                                           Grid.Row="2"/>
+
+        </Grid>
+    </ContentView.Content>
+</ContentView>

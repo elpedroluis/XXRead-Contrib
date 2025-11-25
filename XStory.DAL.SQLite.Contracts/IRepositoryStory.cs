@@ -10,5 +10,6 @@ namespace XStory.DAL.SQLite.Contracts
         Task<List<DTO.Story>> GetStories();
         Task<DTO.Story> GetStory(string url);
         Task<int> InsertStory(DTO.Story story);
+        Task<int> DeleteStory(DTO.Story story);
     }
 }

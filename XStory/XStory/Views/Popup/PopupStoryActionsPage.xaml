@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<popup:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             xmlns:prism="http://prismlibrary.com"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             xmlns:constants="clr-namespace:XStory.Helpers.Constants"
+             Padding="50,100"
+             x:Class="XStory.Views.Popup.PopupStoryActionsPage">
+    <popup:PopupPage.Resources>
+        <ResourceDictionary>
+
+            <Style TargetType="Label" x:Key="LabelStoryTitle" BasedOn="{StaticResource Key=LabelPrimary}">
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="LineHeight" Value="1.1"/>
+                <Setter Property="FontSize" Value="Medium"/>
+            </Style>
+
+            <Style TargetType="Button" x:Key="ActionButtonStyle">
+                <Setter Property="BackgroundColor" Value="{Binding ThemeMain}"/>
+                <Setter Property="Padding" Value="10"/>
+                <Setter Property="CornerRadius" Value="7"/>
+            </Style>
+
+        </ResourceDictionary>
+    </popup:PopupPage.Resources>
+
+    <popup:PopupPage.Content>
+        <Frame Padding="0" BorderColor="{Binding ThemeMain}" BackgroundColor="{Binding ThemePrimary}">
+            <StackLayout>
+                <Label Text="{Binding Story.Title}" Margin="20,20,20,10" Style="{StaticResource Key=LabelStoryTitle}"/>
+
+                <Rectangle HeightRequest="1" BackgroundColor="{Binding ThemeFontSecondary}" Margin="20,10"/>
+
+                <StackLayout HorizontalOptions="Center" Orientation="Horizontal">
+                    <Button Text="{Binding SaveButtonText}" Command="{Binding SaveStoryCommand}" Style="{StaticResource Key=ActionButtonStyle}"/>
+                    <Button Text="Partager" Command="{Binding ShareStoryCommand}" Style="{StaticResource Key=ActionButtonStyle}"/>
+                </StackLayout>
+
+                <Button Text="{x:Static Member=constants:GlobalConstants.CLOSE}"
+                        Command="{Binding ClosePopupCommand}"
+                        BackgroundColor="{Binding ThemeMain}"
+                        CornerRadius="0"
+                        VerticalOptions="End"/>
+            </StackLayout>
+        </Frame>
+    </popup:PopupPage.Content>
+</popup:PopupPage>

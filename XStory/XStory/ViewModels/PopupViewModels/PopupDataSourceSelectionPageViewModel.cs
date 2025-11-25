@@ -16,6 +16,7 @@ namespace XStory.ViewModels.PopupViewModels
 	{
 		#region --- Fields ---
 		private BL.Common.Contracts.IServiceConfig _serviceConfig;
+		private BL.Common.Contracts.IServiceCategory _serviceCategory;
 
 		private DataSourceItem _currentDataSource;
 		public DataSourceItem CurrentDataSource
@@ -38,9 +39,11 @@ namespace XStory.ViewModels.PopupViewModels
 		#endregion
 
 		public PopupDataSourceSelectionPageViewModel(INavigationService navigationService,
-			BL.Common.Contracts.IServiceConfig serviceConfig) : base(navigationService)
+			BL.Common.Contracts.IServiceConfig serviceConfig,
+			BL.Common.Contracts.IServiceCategory serviceCategory) : base(navigationService)
 		{
 			_serviceConfig = serviceConfig;
+			_serviceCategory = serviceCategory;
 
 			ClosePopupCommand = new DelegateCommand(ExecuteClosePopupCommand);
 			DataSourceItemTappedCommand = new DelegateCommand<DataSourceItem>((dataSourceItem) => ExecuteDataSourceItemTappedCommand(dataSourceItem));
@@ -53,11 +56,22 @@ namespace XStory.ViewModels.PopupViewModels
 				&& dataSourceItem.Name != _serviceConfig.GetCurrentDataSource().ToString().ToLower())
 			{
 				CurrentDataSource = dataSourceItem;
-				_serviceConfig.SetDataSource(
-					(DTO.Config.DataSources)Enum.Parse(typeof(DTO.Config.DataSources), dataSourceItem.Name));
+				this.SetCurrentDataSource(dataSourceItem);
+
 
 				ClosePopupCommand.Execute();
 			}
+		}
+
+
+		private void SetCurrentDataSource(DataSourceItem dataSourceItem)
+		{
+			_serviceConfig.SetCurrentDataSource(
+					(DTO.Config.DataSources)Enum.Parse(typeof(DTO.Config.DataSources), dataSourceItem.Name));
+
+			Helpers.StaticContext.DATASOURCE = dataSourceItem.Name;
+
+			_serviceCategory.SetCurrentCategory(null);
 		}
 
 		private async void ExecuteClosePopupCommand()
