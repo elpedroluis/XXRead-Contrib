@@ -18,13 +18,13 @@ Sorry for blurred images, content is not suitable to display on this page yet.
 Please download apk to have a preview of the app.
 
 Homepage: 
-![homepage]("https://github.com/elpedroluis/XXRead-Contrib/blob/master/Screenshots/Homepage_blured.png")
+<img width="1080" height="2400" alt="Image" src="https://github.com/user-attachments/assets/f48ea656-470f-4735-a683-95d689df9ab1" />
 
 Categories:
-![categories]("https://github.com/elpedroluis/XXRead-Contrib/blob/master/Screenshots/categories_blured.png")
+<img width="1080" height="2400" alt="Image" src="https://github.com/user-attachments/assets/70d82d57-d358-4e2a-ab2c-cb0f0bb8dbe0" />
 
 Settings and theming: 
-![settings]("https://github.com/elpedroluis/XXRead-Contrib/blob/master/Screenshots/settings_blured.png")
+<img width="1080" height="2400" alt="Image" src="https://github.com/user-attachments/assets/567ff040-29b3-4f78-95af-cef62c360337" />
 
 Story reading page:
-![storypage]("https://github.com/elpedroluis/XXRead-Contrib/blob/master/Screenshots/story_blured.png")
+<img width="1080" height="2400" alt="Image" src="https://github.com/user-attachments/assets/0b8520ec-4b01-4963-a64e-0c3479319116" />
